@@ -35,35 +35,36 @@ const InsightsSection = () => {
         
         <div className="grid md:grid-cols-3 gap-8">
           {insights.map((insight, index) => (
-            <Card 
+            <a 
               key={index} 
-              className="bg-white dark:bg-navy-light border-none rounded-lg shadow-md overflow-hidden
-                       transition-transform hover:scale-105 duration-300 flex flex-col"
+              href={`/article/${index + 1}`}
+              className="block"
             >
-              <div className="h-48 bg-gray-200 dark:bg-navy-dark"></div>
-              <CardContent className="p-6 flex-grow">
-                <div className="flex justify-center mb-4">
-                  <div className="p-2 rounded-full bg-cyan bg-opacity-20">
-                    {insight.icon}
-                  </div>
-                </div>
-                <h3 className="text-xl font-semibold mb-2 text-center text-navy dark:text-soft-white">
-                  {insight.title}
-                </h3>
-                <p className="text-neutral-gray dark:text-gray-300 text-center">
-                  {insight.description}
-                </p>
-              </CardContent>
-            </Card>
+              <Card 
+                className="bg-white dark:bg-navy-light border-none rounded-lg shadow-md overflow-hidden
+                         transition-transform hover:scale-105 duration-300 flex flex-col h-full"
+              >
+                <div className="h-48 bg-gray-200 dark:bg-navy-dark"></div>
+                <CardContent className="p-6 flex-grow">
+                  <h3 className="text-xl font-semibold mb-2 text-navy dark:text-soft-white">
+                    {insight.title}
+                  </h3>
+                  <p className="text-neutral-gray dark:text-gray-300">
+                    {insight.description}
+                  </p>
+                </CardContent>
+              </Card>
+            </a>
           ))}
         </div>
         
         <div className="mt-12 text-center">
           <Button 
+            asChild
             className="inline-block bg-navy dark:bg-cyan hover:bg-navy-light dark:hover:bg-cyan-light 
                      text-soft-white dark:text-navy font-medium py-2 px-6 rounded-md transition-colors duration-300"
           >
-            View All Articles
+            <a href="/articles">View All Articles</a>
           </Button>
         </div>
       </div>
