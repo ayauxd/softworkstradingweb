@@ -9,7 +9,7 @@ const ServicesSection = ({ onTalkToArchitect }: ServicesSectionProps) => {
     {
       title: "AI Setup Support",
       description: "Let us co-design one time-saving workflow tailored to your business. Start this week.",
-      imageUrl: "https://images.unsplash.com/photo-1620712943543-bcc4688e7485?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTJ8fGFydGlmaWNpYWwlMjBpbnRlbGxpZ2VuY2V8ZW58MHx8MHx8fDA%3D&auto=format&fit=crop&w=800&q=60"
+      imageUrl: "https://images.unsplash.com/photo-1533750516457-a7f992034fec?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTZ8fGF1dG9tYXRpb258ZW58MHx8MHx8fDA%3D&auto=format&fit=crop&w=800&q=60"
     },
     {
       title: "Workflow Coaching for Founders",

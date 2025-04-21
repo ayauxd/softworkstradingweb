@@ -20,11 +20,11 @@ const HeroSection = ({ onTalkToArchitect }: HeroSectionProps) => {
   return (
     <section id="home" className="relative min-h-[90vh] bg-navy dark:bg-navy-dark text-soft-white py-32 md:py-20 transition-colors duration-300 overflow-hidden flex items-center">
       {/* Pulsating Neural Background */}
-      <div className="absolute inset-0 z-0 bg-gradient-to-b from-navy/70 to-navy/50 dark:from-navy-dark/70 dark:to-navy-dark/50">
+      <div className="absolute inset-0 z-0 bg-gradient-to-b from-navy/60 to-navy/40 dark:from-navy-dark/60 dark:to-navy-dark/40">
         <img 
           src={neuralBackgroundSrc} 
           alt="Animated Neural Workflow Background" 
-          className="w-full h-full object-cover animate-pulse-slow mix-blend-soft-light"
+          className="w-full h-full object-cover animate-pulse-slow mix-blend-screen"
         />
       </div>
       
