@@ -33,23 +33,23 @@ const InsightsSection = () => {
           </p>
         </div>
         
-        <div className="grid md:grid-cols-3 gap-8">
+        <div className="grid md:grid-cols-2 gap-12 max-w-5xl mx-auto">
           {insights.map((insight, index) => (
             <a 
               key={index} 
               href={`/article/${index + 1}`}
-              className="block"
+              className="block p-4"
             >
               <Card 
                 className="bg-white dark:bg-navy-light border-none rounded-lg shadow-md overflow-hidden
                          transition-transform hover:scale-105 duration-300 flex flex-col h-full"
               >
-                <div className="h-48 bg-gray-200 dark:bg-navy-dark"></div>
-                <CardContent className="p-6 flex-grow">
-                  <h3 className="text-xl font-semibold mb-2 text-navy dark:text-soft-white">
+                <div className="h-64 bg-gray-200 dark:bg-navy-dark"></div>
+                <CardContent className="p-8 flex-grow">
+                  <h3 className="text-2xl font-semibold mb-4 text-navy dark:text-soft-white">
                     {insight.title}
                   </h3>
-                  <p className="text-neutral-gray dark:text-gray-300">
+                  <p className="text-lg text-neutral-gray dark:text-gray-300">
                     {insight.description}
                   </p>
                 </CardContent>
