@@ -1,9 +1,19 @@
 import { MessageSquare, FileText, Rocket } from "lucide-react";
+import neuralBackgroundSrc from "../assets/neural-background-prominent.svg";
 
 const HowItWorksSection = () => {
   return (
-    <section id="how-it-works" className="bg-[#F9FAFC] dark:bg-[#0A2A43] text-[#0A2A43] dark:text-white py-12 px-6 transition-colors duration-300">
-      <div className="container max-w-screen-xl mx-auto">
+    <section id="how-it-works" className="relative bg-[#F9FAFC] dark:bg-[#0A2A43] text-[#0A2A43] dark:text-white py-12 px-6 transition-colors duration-300 overflow-hidden">
+      {/* Neural Network Background */}
+      <div className="absolute inset-0 z-0 pointer-events-none">
+        <img 
+          src={neuralBackgroundSrc} 
+          alt="Neural Network Background" 
+          className="w-full h-full object-cover animate-pulse-slow opacity-10 dark:opacity-20 mix-blend-multiply dark:mix-blend-soft-light"
+        />
+      </div>
+      
+      <div className="container max-w-screen-xl mx-auto relative z-10">
         <div className="text-center mb-12">
           <h2 className="text-3xl font-bold mb-4">Easy Steps to Start Automating</h2>
           <p className="text-[#4A5568] dark:text-gray-100 max-w-2xl mx-auto">
