@@ -6,11 +6,13 @@ interface LogoIconProps {
 
 const LogoIcon = ({ className = "" }: LogoIconProps) => {
   return (
-    <img 
-      src={logoImage} 
-      alt="Softworks Logo" 
-      className={className} 
-    />
+    <div className={`${className} relative overflow-hidden rounded-full bg-transparent flex items-center justify-center`}>
+      <img 
+        src={logoImage} 
+        alt="Softworks Logo" 
+        className="w-full h-full object-contain filter drop-shadow-md" 
+      />
+    </div>
   );
 };
 

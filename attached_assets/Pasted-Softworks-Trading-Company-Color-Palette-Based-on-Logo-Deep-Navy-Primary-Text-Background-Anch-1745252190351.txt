@@ -1,0 +1,122 @@
+Softworks Trading Company
+
+Color Palette (Based on Logo):
+
+Deep Navy (Primary Text / Background Anchor): #0A2A43
+
+Bright Cyan (Accent / Buttons / Highlights): #00BCD4
+
+Soft White (Background): #F9FAFC
+
+Neutral Gray (Secondary Text): #4A5568
+
+Ensure text and logo contrast clearly in both light and dark mode.
+
+Header (Sticky)
+
+Logo (Top Left)
+
+Navigation: Home | Services | How It Works | Insights | Contact
+
+Icons: LinkedIn, Email, Language Selector, Theme Toggle (Light/Dark)
+
+Hero Section
+
+Headline:
+"Automate Your Business With Intelligent AI Solutions"
+
+Subheading:
+"We make AI adoption easy for entrepreneurs by designing clear, practical workflows that automate tasks and enhance everyday operations."
+
+Primary CTA:
+[Get Your Free AI Consultation]
+
+Floating CTA (Scroll Activated):
+[Talk to an AI Workflow Expert]
+
+Services Section
+
+Title:
+"Spend Less Time on Tasks, More on Growth."
+
+Feature Cards:
+
+Tailored AI Automation
+Work closely with us to create practical automations that match your business needs.
+
+Workflow Coaching
+Clear, straightforward support to improve how you handle your daily tasks.
+
+AI Planning Sessions
+Step-by-step guidance to smoothly introduce AI into your workflows.
+
+CTA:
+[View Our Services]
+
+How It Works Section
+
+Title:
+"Easy Steps to Start Automating"
+
+Steps:
+
+Tell Us Your Needs – Discuss your routine tasks and identify areas ready for AI automation.
+
+Get a Custom Plan – Receive a simple, actionable AI workflow designed specifically for your tasks.
+
+Implement and Improve – Quickly start using your new automation and easily refine it for better results.
+
+Testimonials Section
+
+Include 2–3 straightforward testimonial cards featuring:
+
+Client photo
+
+Client name and role
+
+Brief, clear testimonials about how automation made a practical difference
+
+Insights Section
+
+Title:
+"Practical AI Tips for Real Results"
+
+Article Cards (3):
+Each card has a relevant image, clear headline, and simple summary highlighting practical insights.
+
+CTA:
+[Read More Articles]
+
+Contact CTA Section
+
+Title:
+"Ready to Simplify Your Workflow?"
+
+Form Fields:
+
+Full Name
+
+Email Address
+
+How Can We Help?
+
+CTA:
+[Send Request ↗]
+
+Supporting Tagline:
+"Friendly advice without any pressure."
+
+Footer
+
+3 Columns:
+
+Quick Links: Easy navigation links.
+
+Services: Direct access to service details.
+
+Contact: Quick ways to reach out.
+
+Social Icons: LinkedIn | Facebook | X | Instagram
+
+Legal Links: Privacy Policy | Terms of Service | Cookie Policy
+

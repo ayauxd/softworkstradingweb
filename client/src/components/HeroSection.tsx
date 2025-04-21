@@ -21,25 +21,25 @@ const HeroSection = ({ onTalkToArchitect }: HeroSectionProps) => {
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="max-w-4xl mx-auto text-center">
           <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 leading-tight">
-            Automate What Slows You Down—Without the Overwhelm.
+            Automate Your Business With Intelligent AI Solutions
           </h1>
           <p className="text-xl md:text-2xl mb-10 text-gray-300">
-            We help solo founders and small teams rethink operations using smart, 
-            human-friendly AI workflows.
+            We make AI adoption easy for entrepreneurs by designing clear, practical workflows 
+            that automate tasks and enhance everyday operations.
           </p>
           <div className="flex flex-col sm:flex-row justify-center gap-4">
             <Button 
               onClick={scrollToContact}
               className="bg-cyan hover:bg-cyan-light text-navy font-medium py-3 px-8 rounded-md transition-colors duration-300 transform hover:scale-105 h-auto"
             >
-              Book My Free AI Consult
+              Get Your Free AI Consultation
             </Button>
             <Button 
               onClick={onTalkToArchitect}
               variant="outline" 
               className="border-2 border-soft-white hover:border-cyan hover:text-cyan text-soft-white font-medium py-3 px-8 rounded-md transition-all duration-300 transform hover:scale-105 h-auto"
             >
-              Talk to a Workflow Architect
+              Talk to an AI Workflow Expert
             </Button>
           </div>
         </div>
