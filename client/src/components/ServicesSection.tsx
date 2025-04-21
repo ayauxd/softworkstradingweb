@@ -63,12 +63,10 @@ const ServicesSection = ({ onTalkToArchitect }: ServicesSectionProps) => {
         
         <div className="mt-12 text-center">
           <Button 
-            variant="link"
             onClick={onTalkToArchitect}
-            className="inline-flex items-center text-cyan hover:text-cyan-dark 
-                     dark:hover:text-cyan-light font-medium transition-colors duration-300"
+            className="bg-cyan hover:bg-cyan-light text-navy font-semibold text-sm md:text-base py-3 px-8 rounded-md transition-all duration-300 transform hover:scale-105 h-auto shadow-lg shadow-cyan/20 hover:shadow-cyan/30"
           >
-            See How We Can Help <ArrowRight className="h-5 w-5 ml-1" />
+            Learn More
           </Button>
         </div>
       </div>
