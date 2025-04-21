@@ -3,14 +3,11 @@ import { MessageSquare, FileText, Rocket } from "lucide-react";
 const HowItWorksSection = () => {
   return (
     <div>
-      <section id="how-it-works" className="bg-slate-100 dark:bg-slate-800 text-slate-800 dark:text-white py-12 transition-colors duration-300">
+      <section id="how-it-works" className="bg-slate-100 dark:bg-slate-800 text-slate-800 dark:text-white py-16 pb-24 transition-colors duration-300">
         <div className="max-w-screen-xl mx-auto px-4">
-          <h2 className="text-2xl font-semibold text-slate-800 dark:text-white text-center mb-4">
+          <h2 className="text-2xl font-semibold text-slate-800 dark:text-white text-center mb-10">
             Easy Steps to Start Automating
           </h2>
-          <p className="text-center text-slate-600 dark:text-slate-300 mb-10 max-w-2xl mx-auto">
-            We've simplified the process of implementing AI into your business operations.
-          </p>
           
           <div className="max-w-5xl mx-auto flex flex-col md:flex-row gap-y-8 md:gap-x-12 text-center">
             {/* Step 1 */}
@@ -62,8 +59,6 @@ const HowItWorksSection = () => {
           </div>
         </div>
       </section>
-      
-      <div className="border-t border-slate-300 dark:border-slate-700 my-8 w-full max-w-screen-xl mx-auto"></div>
     </div>
   );
 };
