@@ -56,7 +56,7 @@ const Header = () => {
         <div className="flex justify-between items-center py-4">
           {/* Logo */}
           <a href="#home" className="flex items-center" onClick={(e) => { e.preventDefault(); scrollToSection("home"); }}>
-            <LogoIcon className="h-10 w-auto" />
+            <LogoIcon className="h-12 w-auto" />
             <span className="ml-3 text-lg font-semibold hidden md:block text-navy dark:text-soft-white">Softworks</span>
           </a>
           
