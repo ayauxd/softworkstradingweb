@@ -8,8 +8,8 @@ interface ServicesSectionProps {
 const ServicesSection = ({ onTalkToArchitect }: ServicesSectionProps) => {
   const services = [
     {
-      title: "Quick-Start Automation",
-      description: "Let us co-design one workflow that saves you time—Starting this week.",
+      title: "AI Setup Support",
+      description: "Let us co-design one time-saving workflow tailored to your business. Start this week.",
       icon: <Settings className="h-10 w-10 text-cyan" />
     },
     {
@@ -25,7 +25,7 @@ const ServicesSection = ({ onTalkToArchitect }: ServicesSectionProps) => {
   ];
 
   return (
-    <section id="services" className="py-20 bg-soft-white dark:bg-navy transition-colors duration-300">
+    <section id="services" className="py-20 pb-16 bg-soft-white dark:bg-navy transition-colors duration-300 border-b border-neutral-200 dark:border-navy-light">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-16">
           <h2 className="text-3xl md:text-4xl font-bold mb-4 text-navy dark:text-soft-white">
@@ -68,7 +68,7 @@ const ServicesSection = ({ onTalkToArchitect }: ServicesSectionProps) => {
             className="inline-flex items-center text-cyan hover:text-cyan-dark 
                      dark:hover:text-cyan-light font-medium transition-colors duration-300"
           >
-            Chat with an Agent <ArrowRight className="h-5 w-5 ml-1" />
+            See How We Can Help <ArrowRight className="h-5 w-5 ml-1" />
           </Button>
         </div>
       </div>
