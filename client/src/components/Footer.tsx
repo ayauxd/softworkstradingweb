@@ -42,7 +42,7 @@ const Footer = () => {
             <h3 className="text-lg font-semibold mb-4">Services</h3>
             <ul className="space-y-2">
               {[
-                "Quick-Start Automation", 
+                "AI Setup Support", 
                 "Workflow Coaching for Founders", 
                 "AI Strategy Session", 
                 "Process Optimization", 
@@ -63,18 +63,18 @@ const Footer = () => {
             <ul className="space-y-2">
               <li className="flex items-center">
                 <Mail className="h-5 w-5 mr-2 text-cyan" />
-                <a href="mailto:hello@softworks.co" className="text-gray-300 hover:text-cyan transition-colors">
-                  hello@softworks.co
+                <a href="mailto:workflow@softworkstrading.com" className="text-gray-300 hover:text-cyan transition-colors">
+                  workflow@softworkstrading.com
                 </a>
               </li>
               <li className="flex items-center">
                 <Phone className="h-5 w-5 mr-2 text-cyan" />
-                <span className="text-gray-300">(800) 555-9876</span>
+                <span className="text-gray-300">(971) 238-3860</span>
               </li>
               <li className="flex items-start">
                 <MapPin className="h-5 w-5 mr-2 mt-1 text-cyan" />
                 <span className="text-gray-300">
-                  350 Market Street, Suite 200<br />San Francisco, CA 94105
+                  301 SW 1st Avenue<br />Fort Lauderdale, Florida 33301
                 </span>
               </li>
             </ul>
