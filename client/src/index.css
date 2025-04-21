@@ -41,8 +41,11 @@
   }
   
   @keyframes pulse-slow {
-    0%, 100% { opacity: 0.2; transform: scale(1); }
-    50% { opacity: 0.4; transform: scale(1.02); }
+    0% { opacity: 0.15; transform: scale(1); filter: blur(0px); }
+    25% { opacity: 0.25; transform: scale(1.01); filter: blur(0.5px); }
+    50% { opacity: 0.35; transform: scale(1.02); filter: blur(1px); }
+    75% { opacity: 0.25; transform: scale(1.01); filter: blur(0.5px); }
+    100% { opacity: 0.15; transform: scale(1); filter: blur(0px); }
   }
   
   .animate-fadeIn {
@@ -58,6 +61,6 @@
   }
   
   .animate-pulse-slow {
-    animation: pulse-slow 6s ease-in-out infinite;
+    animation: pulse-slow 10s cubic-bezier(0.4, 0, 0.6, 1) infinite;
   }
 }
