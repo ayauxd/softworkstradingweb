@@ -8,15 +8,18 @@ const ServicesSection = ({ onTalkToArchitect }: ServicesSectionProps) => {
   const services = [
     {
       title: "AI Setup Support",
-      description: "Let us co-design one time-saving workflow tailored to your business. Start this week."
+      description: "Let us co-design one time-saving workflow tailored to your business. Start this week.",
+      imageUrl: "https://images.unsplash.com/photo-1620712943543-bcc4688e7485?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTJ8fGFydGlmaWNpYWwlMjBpbnRlbGxpZ2VuY2V8ZW58MHx8MHx8fDA%3D&auto=format&fit=crop&w=800&q=60"
     },
     {
       title: "Workflow Coaching for Founders",
-      description: "Learn how to use tools like ChatGPT or Gemini to reduce daily bottlenecks."
+      description: "Learn how to use tools like ChatGPT or Gemini to reduce daily bottlenecks.",
+      imageUrl: "https://images.unsplash.com/photo-1581089781785-603411fa81e5?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8OHx8ZGlnaXRhbCUyMHRyYW5zZm9ybWF0aW9ufGVufDB8fDB8fHww&auto=format&fit=crop&w=800&q=60"
     },
     {
       title: "AI Strategy Session (No Code Required)",
-      description: "We'll map where AI can help your specific business—from inbox to delivery."
+      description: "We'll map where AI can help your specific business—from inbox to delivery.",
+      imageUrl: "https://images.unsplash.com/photo-1581091877018-dac6a371d50f?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTh8fHRlY2hub2xvZ3klMjBzdHJhdGVneXxlbnwwfHwwfHx8MA%3D%3D&auto=format&fit=crop&w=800&q=60"
     }
   ];
 
@@ -40,7 +43,13 @@ const ServicesSection = ({ onTalkToArchitect }: ServicesSectionProps) => {
               className="bg-white dark:bg-navy-light rounded-lg shadow-md overflow-hidden 
                         transition-transform hover:scale-105 duration-300"
             >
-              <div className="h-48 bg-gray-200 dark:bg-navy-dark"></div>
+              <div className="h-48 bg-gray-200 dark:bg-navy-dark overflow-hidden">
+                <img 
+                  src={service.imageUrl} 
+                  alt={service.title}
+                  className="w-full h-full object-cover"
+                />
+              </div>
               <div className="p-6">
                 <h3 className="text-xl font-semibold mb-2 text-center text-navy dark:text-soft-white">
                   {service.title}

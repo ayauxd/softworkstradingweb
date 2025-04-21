@@ -7,17 +7,17 @@ const InsightsSection = () => {
     {
       title: "AI in Supply Chain",
       description: "Discover how agentic AI is reshaping logistics and streamlining operations.",
-      icon: <GitGraph className="h-6 w-6 text-cyan" />
+      imageUrl: "https://images.unsplash.com/photo-1566576721346-d4a3b4eaeb55?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTd8fHN1cHBseSUyMGNoYWlufGVufDB8fDB8fHww&auto=format&fit=crop&w=800&q=60"
     },
     {
       title: "AI as Team Members",
       description: "See how teams leverage AI agents to enhance decision-making and productivity.",
-      icon: <Users className="h-6 w-6 text-cyan" />
+      imageUrl: "https://images.unsplash.com/photo-1556155092-490a1ba16284?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NXx8YWklMjBjb2xsYWJvcmF0aW9ufGVufDB8fDB8fHww&auto=format&fit=crop&w=800&q=60"
     },
     {
       title: "Workflow Case Study",
       description: "Learn how we helped a Fortune 500 firm gain 40% efficiency with smart automation.",
-      icon: <CheckCircle className="h-6 w-6 text-cyan" />
+      imageUrl: "https://images.unsplash.com/photo-1453906971074-ce568cccbc63?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTZ8fGNhc2UlMjBzdHVkeXxlbnwwfHwwfHx8MA%3D%3D&auto=format&fit=crop&w=800&q=60"
     }
   ];
   
@@ -44,7 +44,13 @@ const InsightsSection = () => {
                 className="bg-white dark:bg-navy-light border-none rounded-lg shadow-md overflow-hidden
                          transition-transform hover:scale-105 duration-300 flex flex-col h-full"
               >
-                <div className="h-64 bg-gray-200 dark:bg-navy-dark"></div>
+                <div className="h-64 bg-gray-200 dark:bg-navy-dark overflow-hidden">
+                  <img 
+                    src={insight.imageUrl} 
+                    alt={insight.title}
+                    className="w-full h-full object-cover"
+                  />
+                </div>
                 <CardContent className="p-8 flex-grow">
                   <h3 className="text-2xl font-semibold mb-4 text-navy dark:text-soft-white">
                     {insight.title}
