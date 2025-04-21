@@ -24,7 +24,7 @@ const HeroSection = ({ onTalkToArchitect }: HeroSectionProps) => {
         <img 
           src={neuralBackgroundSrc} 
           alt="Animated Neural Workflow Background" 
-          className="w-full h-full object-cover animate-pulse-slow opacity-20"
+          className="w-full h-full object-cover animate-pulse-slow"
         />
       </div>
       
