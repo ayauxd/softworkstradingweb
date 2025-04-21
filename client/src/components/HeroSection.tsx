@@ -31,7 +31,6 @@ const HeroSection = ({ onTalkToArchitect }: HeroSectionProps) => {
       {/* Hero Content (Remains on Top) */}
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         <div className="max-w-4xl mx-auto text-center">
-          <div className="mb-1 text-cyan text-sm md:text-base font-medium tracking-wider uppercase animate-fadeIn">Next-Generation Automation</div>
           <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 leading-tight animate-fadeIn">
             Automate Your Business With <span className="text-cyan">Intelligent AI</span> Solutions
           </h1>
