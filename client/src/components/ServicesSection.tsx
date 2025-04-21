@@ -1,10 +1,14 @@
-import { Settings, Users, Shield } from "lucide-react";
+import { Settings, Users, Shield, ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
-const ServicesSection = () => {
+interface ServicesSectionProps {
+  onTalkToArchitect?: () => void;
+}
+
+const ServicesSection = ({ onTalkToArchitect }: ServicesSectionProps) => {
   const services = [
     {
-      title: "Done-With-You Automation",
+      title: "Quick-Start Automation",
       description: "Let us co-design one workflow that saves you time—Starting this week.",
       icon: <Settings className="h-10 w-10 text-cyan" />
     },
@@ -60,13 +64,11 @@ const ServicesSection = () => {
         <div className="mt-12 text-center">
           <Button 
             variant="link"
+            onClick={onTalkToArchitect}
             className="inline-flex items-center text-cyan hover:text-cyan-dark 
                      dark:hover:text-cyan-light font-medium transition-colors duration-300"
           >
-            Explore All Services
-            <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 ml-1" viewBox="0 0 20 20" fill="currentColor">
-              <path fillRule="evenodd" d="M12.293 5.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-2.293-2.293a1 1 0 010-1.414z" clipRule="evenodd" />
-            </svg>
+            Chat with an Agent <ArrowRight className="h-5 w-5 ml-1" />
           </Button>
         </div>
       </div>

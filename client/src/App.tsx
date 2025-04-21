@@ -31,7 +31,7 @@ function HomePage() {
       <Header />
       <main className="pt-16 flex-grow">
         <HeroSection onTalkToArchitect={openModal} />
-        <ServicesSection />
+        <ServicesSection onTalkToArchitect={openModal} />
         <HowItWorksSection />
         <TestimonialsSection />
         <InsightsSection />
