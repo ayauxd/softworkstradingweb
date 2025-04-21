@@ -7,6 +7,7 @@ import { ThemeProvider } from "./components/ThemeProvider";
 import Header from "./components/Header";
 import HeroSection from "./components/HeroSection";
 import ServicesSection from "./components/ServicesSection";
+import HowItWorksSection from "./components/HowItWorksSection";
 import TestimonialsSection from "./components/TestimonialsSection";
 import InsightsSection from "./components/InsightsSection";
 import ContactSection from "./components/ContactSection";
@@ -31,6 +32,7 @@ function HomePage() {
       <main className="pt-16 flex-grow">
         <HeroSection onTalkToArchitect={openModal} />
         <ServicesSection />
+        <HowItWorksSection />
         <TestimonialsSection />
         <InsightsSection />
         <ContactSection />
