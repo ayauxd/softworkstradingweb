@@ -34,7 +34,7 @@ const InsightsSection = () => {
         </div>
         
         <div className="grid md:grid-cols-2 gap-12 max-w-5xl mx-auto">
-          {insights.map((insight, index) => (
+          {insights.slice(0, 2).map((insight, index) => (
             <a 
               key={index} 
               href={`/article/${index + 1}`}
