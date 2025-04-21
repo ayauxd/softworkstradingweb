@@ -105,6 +105,7 @@ Clearly list unfinished or pending features:
 - Service section CTA buttons use consistent styling across the site
 - Services display with actual images from Unsplash instead of icons for more visual impact
 - Insights cards feature relevant article images for better visual appeal
+- Testimonials carousel with real user photos and smooth auto-scrolling functionality
 
 ## 10. Design Philosophy
 
