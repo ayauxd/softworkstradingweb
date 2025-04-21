@@ -6,8 +6,12 @@
             <stop stop-color="#00BCD4" offset="0%"></stop>
             <stop stop-color="#0A2A43" offset="100%"></stop>
         </linearGradient>
-        <filter id="glow" x="-20%" y="-20%" width="140%" height="140%">
-            <feGaussianBlur stdDeviation="4" result="blur"/>
+        <filter id="glow" x="-30%" y="-30%" width="160%" height="160%">
+            <feGaussianBlur stdDeviation="6" result="blur"/>
+            <feComposite in="SourceGraphic" in2="blur" operator="over"/>
+        </filter>
+        <filter id="connection-glow" x="-10%" y="-10%" width="120%" height="120%">
+            <feGaussianBlur stdDeviation="2" result="blur"/>
             <feComposite in="SourceGraphic" in2="blur" operator="over"/>
         </filter>
     </defs>
@@ -87,9 +91,9 @@
         </circle>
 
         <!-- Connections -->
-        <line x1="100" y1="100" x2="300" y2="50" opacity="0.6">
-            <animate attributeName="opacity" values="0.4;0.7;0.4" dur="4s" repeatCount="indefinite" />
-            <animate attributeName="stroke-width" values="0.8;1.8;0.8" dur="5s" repeatCount="indefinite" />
+        <line x1="100" y1="100" x2="300" y2="50" opacity="0.8" stroke="#00BCD4" filter="url(#connection-glow)">
+            <animate attributeName="opacity" values="0.6;0.9;0.6" dur="4s" repeatCount="indefinite" />
+            <animate attributeName="stroke-width" values="1.2;2.2;1.2" dur="5s" repeatCount="indefinite" />
         </line>
         <line x1="100" y1="100" x2="200" y2="200" opacity="0.6">
             <animate attributeName="opacity" values="0.4;0.7;0.4" dur="3.5s" repeatCount="indefinite" />
