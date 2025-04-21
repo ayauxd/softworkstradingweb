@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="800px" height="600px" viewBox="0 0 800 600" version="1.1" xmlns="http://www.w3.org/2000/svg">
+    <title>Neural Network Background</title>
+    <defs>
+        <linearGradient x1="0%" y1="0%" x2="100%" y2="100%" id="gradient">
+            <stop stop-color="#00BCD4" offset="0%"></stop>
+            <stop stop-color="#0A2A43" offset="100%"></stop>
+        </linearGradient>
+    </defs>
+    <g stroke="url(#gradient)" stroke-width="1" fill="none" fill-rule="evenodd">
+        <!-- Nodes -->
+        <circle cx="100" cy="100" r="8" fill="#00BCD4" opacity="0.5">
+            <animate attributeName="opacity" values="0.3;0.7;0.3" dur="3s" repeatCount="indefinite" />
+        </circle>
+        <circle cx="300" cy="50" r="6" fill="#00BCD4" opacity="0.4">
+            <animate attributeName="opacity" values="0.2;0.6;0.2" dur="4s" repeatCount="indefinite" />
+        </circle>
+        <circle cx="500" cy="120" r="7" fill="#00BCD4" opacity="0.5">
+            <animate attributeName="opacity" values="0.3;0.7;0.3" dur="5s" repeatCount="indefinite" />
+        </circle>
+        <circle cx="700" cy="80" r="5" fill="#00BCD4" opacity="0.4">
+            <animate attributeName="opacity" values="0.2;0.5;0.2" dur="3.5s" repeatCount="indefinite" />
+        </circle>
+        <circle cx="200" cy="200" r="6" fill="#00BCD4" opacity="0.6">
+            <animate attributeName="opacity" values="0.4;0.8;0.4" dur="4s" repeatCount="indefinite" />
+        </circle>
+        <circle cx="400" cy="180" r="8" fill="#00BCD4" opacity="0.5">
+            <animate attributeName="opacity" values="0.3;0.7;0.3" dur="4.5s" repeatCount="indefinite" />
+        </circle>
+        <circle cx="600" cy="220" r="7" fill="#00BCD4" opacity="0.4">
+            <animate attributeName="opacity" values="0.2;0.6;0.2" dur="3s" repeatCount="indefinite" />
+        </circle>
+        <circle cx="150" cy="300" r="5" fill="#00BCD4" opacity="0.5">
+            <animate attributeName="opacity" values="0.3;0.7;0.3" dur="3.5s" repeatCount="indefinite" />
+        </circle>
+        <circle cx="350" cy="320" r="6" fill="#00BCD4" opacity="0.6">
+            <animate attributeName="opacity" values="0.4;0.8;0.4" dur="4s" repeatCount="indefinite" />
+        </circle>
+        <circle cx="550" cy="280" r="8" fill="#00BCD4" opacity="0.5">
+            <animate attributeName="opacity" values="0.3;0.7;0.3" dur="4.5s" repeatCount="indefinite" />
+        </circle>
+        <circle cx="750" cy="350" r="6" fill="#00BCD4" opacity="0.4">
+            <animate attributeName="opacity" values="0.2;0.6;0.2" dur="3s" repeatCount="indefinite" />
+        </circle>
+        <circle cx="250" cy="400" r="7" fill="#00BCD4" opacity="0.5">
+            <animate attributeName="opacity" values="0.3;0.7;0.3" dur="3.5s" repeatCount="indefinite" />
+        </circle>
+        <circle cx="450" cy="450" r="5" fill="#00BCD4" opacity="0.6">
+            <animate attributeName="opacity" values="0.4;0.8;0.4" dur="4s" repeatCount="indefinite" />
+        </circle>
+        <circle cx="650" cy="420" r="8" fill="#00BCD4" opacity="0.5">
+            <animate attributeName="opacity" values="0.3;0.7;0.3" dur="4.5s" repeatCount="indefinite" />
+        </circle>
+        <circle cx="100" cy="500" r="6" fill="#00BCD4" opacity="0.4">
+            <animate attributeName="opacity" values="0.2;0.6;0.2" dur="3s" repeatCount="indefinite" />
+        </circle>
+        <circle cx="300" cy="550" r="7" fill="#00BCD4" opacity="0.5">
+            <animate attributeName="opacity" values="0.3;0.7;0.3" dur="3.5s" repeatCount="indefinite" />
+        </circle>
+        <circle cx="500" cy="500" r="5" fill="#00BCD4" opacity="0.6">
+            <animate attributeName="opacity" values="0.4;0.8;0.4" dur="4s" repeatCount="indefinite" />
+        </circle>
+        <circle cx="700" cy="520" r="8" fill="#00BCD4" opacity="0.5">
+            <animate attributeName="opacity" values="0.3;0.7;0.3" dur="4.5s" repeatCount="indefinite" />
+        </circle>
+
+        <!-- Connections -->
+        <line x1="100" y1="100" x2="300" y2="50" opacity="0.3">
+            <animate attributeName="opacity" values="0.1;0.4;0.1" dur="3s" repeatCount="indefinite" />
+        </line>
+        <line x1="100" y1="100" x2="200" y2="200" opacity="0.3">
+            <animate attributeName="opacity" values="0.1;0.4;0.1" dur="3.5s" repeatCount="indefinite" />
+        </line>
+        <line x1="300" y1="50" x2="500" y2="120" opacity="0.3">
+            <animate attributeName="opacity" values="0.1;0.4;0.1" dur="4s" repeatCount="indefinite" />
+        </line>
+        <line x1="300" y1="50" x2="400" y2="180" opacity="0.3">
+            <animate attributeName="opacity" values="0.1;0.4;0.1" dur="3s" repeatCount="indefinite" />
+        </line>
+        <line x1="500" y1="120" x2="700" y2="80" opacity="0.3">
+            <animate attributeName="opacity" values="0.1;0.4;0.1" dur="3.5s" repeatCount="indefinite" />
+        </line>
+        <line x1="500" y1="120" x2="600" y2="220" opacity="0.3">
+            <animate attributeName="opacity" values="0.1;0.4;0.1" dur="4s" repeatCount="indefinite" />
+        </line>
+        <line x1="200" y1="200" x2="400" y2="180" opacity="0.3">
+            <animate attributeName="opacity" values="0.1;0.4;0.1" dur="3s" repeatCount="indefinite" />
+        </line>
+        <line x1="200" y1="200" x2="150" y2="300" opacity="0.3">
+            <animate attributeName="opacity" values="0.1;0.4;0.1" dur="3.5s" repeatCount="indefinite" />
+        </line>
+        <line x1="400" y1="180" x2="600" y2="220" opacity="0.3">
+            <animate attributeName="opacity" values="0.1;0.4;0.1" dur="4s" repeatCount="indefinite" />
+        </line>
+        <line x1="400" y1="180" x2="350" y2="320" opacity="0.3">
+            <animate attributeName="opacity" values="0.1;0.4;0.1" dur="3s" repeatCount="indefinite" />
+        </line>
+        <line x1="600" y1="220" x2="550" y2="280" opacity="0.3">
+            <animate attributeName="opacity" values="0.1;0.4;0.1" dur="3.5s" repeatCount="indefinite" />
+        </line>
+        <line x1="150" y1="300" x2="350" y2="320" opacity="0.3">
+            <animate attributeName="opacity" values="0.1;0.4;0.1" dur="4s" repeatCount="indefinite" />
+        </line>
+        <line x1="150" y1="300" x2="250" y2="400" opacity="0.3">
+            <animate attributeName="opacity" values="0.1;0.4;0.1" dur="3s" repeatCount="indefinite" />
+        </line>
+        <line x1="350" y1="320" x2="550" y2="280" opacity="0.3">
+            <animate attributeName="opacity" values="0.1;0.4;0.1" dur="3.5s" repeatCount="indefinite" />
+        </line>
+        <line x1="350" y1="320" x2="450" y2="450" opacity="0.3">
+            <animate attributeName="opacity" values="0.1;0.4;0.1" dur="4s" repeatCount="indefinite" />
+        </line>
+        <line x1="550" y1="280" x2="750" y2="350" opacity="0.3">
+            <animate attributeName="opacity" values="0.1;0.4;0.1" dur="3s" repeatCount="indefinite" />
+        </line>
+        <line x1="550" y1="280" x2="650" y2="420" opacity="0.3">
+            <animate attributeName="opacity" values="0.1;0.4;0.1" dur="3.5s" repeatCount="indefinite" />
+        </line>
+        <line x1="250" y1="400" x2="450" y2="450" opacity="0.3">
+            <animate attributeName="opacity" values="0.1;0.4;0.1" dur="4s" repeatCount="indefinite" />
+        </line>
+        <line x1="250" y1="400" x2="100" y2="500" opacity="0.3">
+            <animate attributeName="opacity" values="0.1;0.4;0.1" dur="3s" repeatCount="indefinite" />
+        </line>
+        <line x1="450" y1="450" x2="650" y2="420" opacity="0.3">
+            <animate attributeName="opacity" values="0.1;0.4;0.1" dur="3.5s" repeatCount="indefinite" />
+        </line>
+        <line x1="450" y1="450" x2="500" y2="500" opacity="0.3">
+            <animate attributeName="opacity" values="0.1;0.4;0.1" dur="4s" repeatCount="indefinite" />
+        </line>
+        <line x1="650" y1="420" x2="700" y2="520" opacity="0.3">
+            <animate attributeName="opacity" values="0.1;0.4;0.1" dur="3s" repeatCount="indefinite" />
+        </line>
+        <line x1="100" y1="500" x2="300" y2="550" opacity="0.3">
+            <animate attributeName="opacity" values="0.1;0.4;0.1" dur="3.5s" repeatCount="indefinite" />
+        </line>
+        <line x1="300" y1="550" x2="500" y2="500" opacity="0.3">
+            <animate attributeName="opacity" values="0.1;0.4;0.1" dur="4s" repeatCount="indefinite" />
+        </line>
+        <line x1="500" y1="500" x2="700" y2="520" opacity="0.3">
+            <animate attributeName="opacity" values="0.1;0.4;0.1" dur="3s" repeatCount="indefinite" />
+        </line>
+    </g>
+</svg>
