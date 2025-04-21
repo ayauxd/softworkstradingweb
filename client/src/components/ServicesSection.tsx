@@ -1,4 +1,3 @@
-import { Settings, Users, Shield, ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 interface ServicesSectionProps {
@@ -9,18 +8,15 @@ const ServicesSection = ({ onTalkToArchitect }: ServicesSectionProps) => {
   const services = [
     {
       title: "AI Setup Support",
-      description: "Let us co-design one time-saving workflow tailored to your business. Start this week.",
-      icon: <Settings className="h-10 w-10 text-cyan" />
+      description: "Let us co-design one time-saving workflow tailored to your business. Start this week."
     },
     {
       title: "Workflow Coaching for Founders",
-      description: "Learn how to use tools like ChatGPT or Gemini to reduce daily bottlenecks.",
-      icon: <Users className="h-10 w-10 text-cyan" />
+      description: "Learn how to use tools like ChatGPT or Gemini to reduce daily bottlenecks."
     },
     {
       title: "AI Strategy Session (No Code Required)",
-      description: "We'll map where AI can help your specific business—from inbox to delivery.",
-      icon: <Shield className="h-10 w-10 text-cyan" />
+      description: "We'll map where AI can help your specific business—from inbox to delivery."
     }
   ];
 
@@ -44,12 +40,8 @@ const ServicesSection = ({ onTalkToArchitect }: ServicesSectionProps) => {
               className="bg-white dark:bg-navy-light rounded-lg shadow-md overflow-hidden 
                         transition-transform hover:scale-105 duration-300"
             >
+              <div className="h-48 bg-gray-200 dark:bg-navy-dark"></div>
               <div className="p-6">
-                <div className="flex justify-center mb-4">
-                  <div className="p-3 rounded-full bg-cyan bg-opacity-20">
-                    {service.icon}
-                  </div>
-                </div>
                 <h3 className="text-xl font-semibold mb-2 text-center text-navy dark:text-soft-white">
                   {service.title}
                 </h3>

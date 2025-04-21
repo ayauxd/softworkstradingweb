@@ -103,6 +103,7 @@ Clearly list unfinished or pending features:
 - The "Talk to a Workflow Expert" modal can be accessed from multiple entry points
 - Insights section displays only 2 articles in preview (out of all available articles) with increased spacing and larger card size for better readability, with the rest shown on the dedicated insights page
 - Service section CTA buttons use consistent styling across the site
+- Services display with placeholder image banners instead of icons for more visual impact
 
 ## 10. Design Philosophy
 
