@@ -1,0 +1,56 @@
+// Update section wrapper styles
+<section className="w-full bg-[#F9FAFC] dark:bg-[#1F2937] py-24">
+  <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+    <h2 className="text-3xl font-semibold text-[#0A2A43] dark:text-white">
+      Easy Steps to Start Automating
+    </h2>
+    <p className="mt-2 text-lg text-[#4A5568] dark:text-[#E0E0E0]">
+      We've simplified the process of implementing AI into your business operations.
+    </p>
+
+    <div className="mt-16 grid grid-cols-1 sm:grid-cols-3 gap-12 justify-items-center">
+      {/* Step 1 */}
+      <div className="flex flex-col items-center space-y-4">
+        <div className="bg-[#E0F7FA] dark:bg-[#0A2A43] text-[#00BCD4] p-4 rounded-full">
+          <IconMessage size={32} />
+        </div>
+        <h3 className="text-xl font-semibold text-[#0A2A43] dark:text-white">Tell Us Your Needs</h3>
+        <p className="text-[#4A5568] dark:text-[#E0E0E0] max-w-xs">
+          Discuss your routine tasks and identify areas ready for AI automation.
+        </p>
+      </div>
+
+      {/* Step 2 */}
+      <div className="flex flex-col items-center space-y-4">
+        <div className="bg-[#E0F7FA] dark:bg-[#0A2A43] text-[#00BCD4] p-4 rounded-full">
+          <IconClipboardText size={32} />
+        </div>
+        <h3 className="text-xl font-semibold text-[#0A2A43] dark:text-white">Get a Custom Plan</h3>
+        <p className="text-[#4A5568] dark:text-[#E0E0E0] max-w-xs">
+          Receive a simple, actionable AI workflow designed specifically for your tasks.
+        </p>
+      </div>
+
+      {/* Step 3 */}
+      <div className="flex flex-col items-center space-y-4">
+        <div className="bg-[#E0F7FA] dark:bg-[#0A2A43] text-[#00BCD4] p-4 rounded-full">
+          <IconRocket size={32} />
+        </div>
+        <h3 className="text-xl font-semibold text-[#0A2A43] dark:text-white">Implement and Improve</h3>
+        <p className="text-[#4A5568] dark:text-[#E0E0E0] max-w-xs">
+          Quickly start using your new automation and easily refine it for better results.
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+✅ Notes:
+🔹 Spacing: Remove the horizontal divider line (<hr /> or border-bottom) between sections.
+
+🔹 Padding: Ensure consistent vertical padding (py-24) to balance spacing.
+
+🔹 Background Fill: Light mode uses #F9FAFC, dark mode uses #1F2937.
+
+🔹 Contrast-Ready Colors: Headings and icons match branding contrast expectations.
+
+🔹 Responsive: Use grid for mobile-to-desktop scaling.
