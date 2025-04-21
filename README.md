@@ -101,11 +101,12 @@ Clearly list unfinished or pending features:
 - The color scheme follows brand styling with Deep Navy (#0A2A43) as primary and Cyan (#00BCD4) as accent
 - All components support both light and dark modes with proper contrast
 - The "Talk to a Workflow Expert" modal can be accessed from multiple entry points
-- Insights section displays only 2 articles in preview (out of all available articles) with increased spacing and larger card size for better readability, with the rest shown on the dedicated insights page
+- Insights section displays only 2 articles in preview (out of all available articles) with increased spacing and larger card size for better readability, with complete article view pages for each insight
 - Service section CTA buttons use consistent styling across the site
 - Services display with actual images from Unsplash instead of icons for more visual impact
 - Insights cards feature relevant article images for better visual appeal
 - Testimonials carousel with real user photos and smooth auto-scrolling functionality
+- Article pages feature rich content with proper typography, responsive hero images, author information, and related article suggestions
 
 ## 10. Design Philosophy
 
