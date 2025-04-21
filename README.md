@@ -11,7 +11,7 @@ This is a responsive AI consulting website built for SMEs and solo entrepreneurs
 - Step-by-step explainer section: "Easy Steps to Start Automating"
 - "Talk to a Workflow Expert" modal with both chat and voice triggers
 - Testimonial carousel (3 rotating quotes with image and name)
-- Insights & Publications: 3 article cards linking to external pages
+- Insights & Publications: 2 prominent article cards with larger layout for better readability
 - Responsive layout for mobile and desktop
 - Light/dark mode toggle with color contrast handling
 - Scroll-activated floating CTA
@@ -101,6 +101,8 @@ Clearly list unfinished or pending features:
 - The color scheme follows brand styling with Deep Navy (#0A2A43) as primary and Cyan (#00BCD4) as accent
 - All components support both light and dark modes with proper contrast
 - The "Talk to a Workflow Expert" modal can be accessed from multiple entry points
+- Insights section displays 2 articles with increased spacing and larger card size for better readability
+- Service section CTA buttons use consistent styling across the site
 
 ## 10. Design Philosophy
 
