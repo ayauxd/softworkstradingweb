@@ -147,8 +147,8 @@ const WorkflowArchitectModal = ({ onClose }: WorkflowArchitectModalProps) => {
                   </div>
                   <div className={`
                     ${message.from === "architect" 
-                      ? "bg-white dark:bg-navy p-3 rounded-lg inline-block max-w-md mt-1 text-navy dark:text-soft-white" 
-                      : "bg-cyan bg-opacity-20 p-3 rounded-lg inline-block max-w-md mt-1 text-navy dark:text-soft-white"}
+                      ? "bg-white dark:bg-navy p-3 rounded-lg inline-block max-w-[75%] mt-1 text-navy dark:text-soft-white" 
+                      : "bg-cyan bg-opacity-20 p-3 rounded-lg inline-block max-w-[75%] mt-1 text-navy dark:text-soft-white"}
                   `}>
                     {message.text}
                   </div>
@@ -158,7 +158,7 @@ const WorkflowArchitectModal = ({ onClose }: WorkflowArchitectModalProps) => {
             </div>
             
             <div className="flex flex-col space-y-3">
-              <div className="flex space-x-2">
+              <div className="flex flex-wrap gap-2">
                 <Button
                   variant="outline"
                   onClick={() => setChatInput("How can AI help my customer service?")}
@@ -177,7 +177,7 @@ const WorkflowArchitectModal = ({ onClose }: WorkflowArchitectModalProps) => {
                 </Button>
               </div>
               
-              <div className="flex">
+              <div className="flex w-full">
                 <Input
                   type="text"
                   value={chatInput}
