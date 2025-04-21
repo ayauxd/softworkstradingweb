@@ -3,6 +3,7 @@ import { QueryClientProvider } from "@tanstack/react-query";
 import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { queryClient } from "./lib/queryClient";
+import { ThemeProvider } from "./components/ThemeProvider";
 import Header from "./components/Header";
 import HeroSection from "./components/HeroSection";
 import ServicesSection from "./components/ServicesSection";
@@ -25,7 +26,7 @@ function HomePage() {
   };
 
   return (
-    <div className="min-h-screen flex flex-col">
+    <div className="min-h-screen flex flex-col bg-soft-white dark:bg-navy text-navy dark:text-soft-white transition-colors duration-300">
       <Header />
       <main className="pt-16 flex-grow">
         <HeroSection onTalkToArchitect={openModal} />
@@ -43,12 +44,14 @@ function HomePage() {
 function App() {
   return (
     <QueryClientProvider client={queryClient}>
-      <TooltipProvider>
-        <Toaster />
-        <Switch>
-          <Route path="/" component={HomePage} />
-        </Switch>
-      </TooltipProvider>
+      <ThemeProvider>
+        <TooltipProvider>
+          <Toaster />
+          <Switch>
+            <Route path="/" component={HomePage} />
+          </Switch>
+        </TooltipProvider>
+      </ThemeProvider>
     </QueryClientProvider>
   );
 }

@@ -44,6 +44,19 @@ export default {
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
         ring: "hsl(var(--ring))",
+        // Brand specific colors
+        navy: {
+          DEFAULT: "#0A2A43", // Deep Navy
+          light: "#0F3A59",
+          dark: "#071E30",
+        },
+        cyan: {
+          DEFAULT: "#00BCD4", // Bright Cyan
+          light: "#33C9DB",
+          dark: "#00A5BB",
+        },
+        "soft-white": "#F9FAFC",
+        "neutral-gray": "#4A5568",
         chart: {
           "1": "hsl(var(--chart-1))",
           "2": "hsl(var(--chart-2))",
