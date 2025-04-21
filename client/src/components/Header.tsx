@@ -49,7 +49,7 @@ const Header = () => {
   return (
     <header 
       className={`fixed top-0 w-full bg-soft-white dark:bg-navy z-50 transition-colors duration-300 ${
-        scrolled ? "shadow-md" : ""
+        scrolled ? "shadow-md" : "border-b border-neutral-300 dark:border-neutral-700"
       }`}
     >
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
