@@ -82,7 +82,7 @@ const ContactSection = () => {
         <div className="max-w-3xl mx-auto">
           <div className="text-center mb-12">
             <h2 className="text-3xl md:text-4xl font-bold mb-4">Ready to Transform Your Operations?</h2>
-            <p className="text-lg text-gray-300">Let's explore how intelligent systems can streamline your business.</p>
+            <p className="text-lg text-gray-100">Let's explore how intelligent systems can streamline your business.</p>
           </div>
           
           <form onSubmit={handleSubmit} className="space-y-6">
@@ -104,19 +104,19 @@ const ContactSection = () => {
             
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div>
-                <Label htmlFor="company" className="text-gray-300">Company (Optional)</Label>
+                <Label htmlFor="company" className="text-gray-100">Company (Optional)</Label>
                 <Input
                   type="text"
                   id="company"
                   name="company"
                   value={formData.company}
                   onChange={handleChange}
-                  className="w-full px-4 py-3 bg-navy-light border border-gray-600 rounded-md text-soft-white focus:ring-2 focus:ring-cyan"
+                  className="w-full px-4 py-3 bg-navy-light border border-gray-600 rounded-md text-white focus:ring-2 focus:ring-cyan"
                 />
               </div>
               
               <div>
-                <Label htmlFor="email" className="text-gray-300">Email</Label>
+                <Label htmlFor="email" className="text-gray-100">Email</Label>
                 <Input
                   type="email"
                   id="email"
@@ -124,7 +124,7 @@ const ContactSection = () => {
                   value={formData.email}
                   onChange={handleChange}
                   className={`w-full px-4 py-3 bg-navy-light border border-gray-600 rounded-md
-                            text-soft-white focus:ring-2 focus:ring-cyan ${formErrors.email ? 'border-red-500' : ''}`}
+                            text-white focus:ring-2 focus:ring-cyan ${formErrors.email ? 'border-red-500' : ''}`}
                 />
                 {formErrors.email && (
                   <p className="mt-1 text-sm text-red-400">{formErrors.email}</p>
@@ -133,19 +133,19 @@ const ContactSection = () => {
             </div>
             
             <div>
-              <Label htmlFor="phone" className="text-gray-300">Phone (Optional)</Label>
+              <Label htmlFor="phone" className="text-gray-100">Phone (Optional)</Label>
               <Input
                 type="tel"
                 id="phone"
                 name="phone"
                 value={formData.phone}
                 onChange={handleChange}
-                className="w-full px-4 py-3 bg-navy-light border border-gray-600 rounded-md text-soft-white focus:ring-2 focus:ring-cyan"
+                className="w-full px-4 py-3 bg-navy-light border border-gray-600 rounded-md text-white focus:ring-2 focus:ring-cyan"
               />
             </div>
             
             <div>
-              <Label htmlFor="message" className="text-gray-300">Message</Label>
+              <Label htmlFor="message" className="text-gray-100">Message</Label>
               <Textarea
                 id="message"
                 name="message"
@@ -153,7 +153,7 @@ const ContactSection = () => {
                 value={formData.message}
                 onChange={handleChange}
                 className={`w-full px-4 py-3 bg-navy-light border border-gray-600 rounded-md
-                          text-soft-white focus:ring-2 focus:ring-cyan resize-none ${formErrors.message ? 'border-red-500' : ''}`}
+                          text-white focus:ring-2 focus:ring-cyan resize-none ${formErrors.message ? 'border-red-500' : ''}`}
               />
               {formErrors.message && (
                 <p className="mt-1 text-sm text-red-400">{formErrors.message}</p>
