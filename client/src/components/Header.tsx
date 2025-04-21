@@ -48,7 +48,7 @@ const Header = () => {
 
   return (
     <header 
-      className={`fixed top-0 w-full bg-soft-white dark:bg-navy z-50 transition-colors duration-300 border-b border-neutral-300 dark:border-neutral-700 ${
+      className={`fixed top-0 w-full bg-soft-white dark:bg-[#102C44] z-50 transition-colors duration-300 border-b border-neutral-300 dark:border-neutral-700 ${
         scrolled ? "shadow-md" : ""
       }`}
     >
@@ -122,7 +122,7 @@ const Header = () => {
         
         {/* Mobile Navigation Menu */}
         {mobileMenuOpen && (
-          <div className="md:hidden pb-4 animate-fadeIn">
+          <div className="md:hidden pb-4 animate-fadeIn bg-soft-white dark:bg-[#102C44]">
             <nav className="flex flex-col space-y-4">
               {["home", "services", "how-it-works", "insights", "contact"].map((item) => (
                 <a 
