@@ -1,0 +1,78 @@
+Design and develop the full frontend for the Softworks Trading Company landing page using React and Tailwind CSS inside Replit.
+
+🎯 Purpose:
+Create a single-page consulting website for solo entrepreneurs and small business owners interested in AI-powered workflow automation. The page should be clean, fast, and focused on conversion.
+
+🧩 Technologies to Use:
+- React (functional components, hooks)
+- Tailwind CSS for styling
+- React Router DOM (if needed for modals/interactions)
+- Heroicons or Lucide for iconography
+
+🧠 Design System & Brand:
+- Font: Sans-serif (preferably Inter or system default)
+- Colors:
+  - Deep Navy: `#0A2A43` (backgrounds/primary text)
+  - Bright Cyan: `#00BCD4` (buttons/accents)
+  - Soft White: `#F9FAFC` (background)
+  - Neutral Gray: `#4A5568` (secondary text)
+- Favicon: Use the logo provided (attached PNG)
+- Page should work in both light and dark mode (theme toggle included)
+
+📌 Required Components & Layout (Top to Bottom):
+
+1. **Sticky Header**
+   - Logo (left)
+   - Navigation: Home | Services | How It Works | Insights | Contact
+   - Theme Toggle | LinkedIn | Email Icon
+
+2. **Hero Section**
+   - Headline: “Automate What Slows You Down—Without the Overwhelm.”
+   - Subheadline: “We help solo founders and small teams rethink operations using smart, human-friendly AI workflows.”
+   - Buttons:
+     - Primary: `Book My Free AI Consult`
+     - Secondary: `Talk to a Workflow Architect` (see interaction below)
+
+3. **Services Section**
+   - Title: “Start Small. Get Results Fast.”
+   - 3 Feature Cards:
+     1. Done-With-You Automation
+     2. Workflow Coaching for Founders
+     3. AI Strategy Session
+   - CTA: `Explore All Services`
+
+4. **Interaction Section (Chat / Call Simulation)**
+   - Triggered by clicking “Talk to a Workflow Architect”
+   - Modal opens with two buttons:
+     - `Chat`: Simulates a basic chat interface with 1-2 prompt suggestions and an input field (no backend logic needed).
+     - `Call`: Plays a 2-second voice call animation (use an animated mic or waveform SVG), then auto-pops a small form:
+       - Fields: Name, Phone, What do you want help with?
+       - Submit button: “Request a Callback”
+
+5. **Testimonials Section**
+   - Title: “What Our Clients Say”
+   - 2-3 Client quote cards with avatars and names
+
+6. **Insights Section**
+   - Title: “Simple Wins with Smart Tech”
+   - 3 blog cards: Thumbnail + headline + 2-line summary
+
+7. **Lead Capture Section**
+   - Title: “Let’s Design Your First AI Workflow—Together”
+   - Fields: Name, Email, Message
+   - Button: “Send Your Request ↗”
+
+8. **Footer**
+   - Columns: Quick Links | Services | Contact Info
+   - Social Icons: LinkedIn, Facebook, X, Instagram
+   - Legal Links: Privacy Policy | Terms of Service | Cookie Policy
+   - Favicon/Logo must contrast clearly against footer background
+
+🔁 Notes:
+- Do **not** implement backend logic.
+- Keep state and modal logic in React only.
+- Animate transitions where helpful (modals, hover effects, chat slide-in).
+- Prioritize responsiveness across mobile/tablet/desktop.
+
+🎯 Success Criteria:
+- Visual design
