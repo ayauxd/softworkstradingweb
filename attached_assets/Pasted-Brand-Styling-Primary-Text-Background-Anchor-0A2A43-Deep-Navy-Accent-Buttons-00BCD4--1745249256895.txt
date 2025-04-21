@@ -1,0 +1,95 @@
+Brand Styling
+	•	Primary Text / Background Anchor: #0A2A43 (Deep Navy)
+	•	Accent / Buttons: #00BCD4 (Bright Cyan)
+	•	Background: #F9FAFC (Soft White)
+	•	Secondary Text: #4A5568 (Neutral Gray)
+	•	Favicon: Use provided Softworks logo PNG
+
+⸻
+
+📐 Page Structure
+
+Header (Sticky)
+	•	Left: Logo
+	•	Center: Nav (Home | Services | How It Works | Insights | Contact)
+	•	Right: LinkedIn, Email, Language Toggle, Theme Toggle
+
+⸻
+
+Hero Section
+	•	Headline: “Automate What Slows You Down—Without the Overwhelm.”
+	•	Subheadline: “We help solo founders and small teams rethink operations using smart, human-friendly AI workflows.”
+	•	CTA: “Book My Free AI Consult”
+	•	[Optional] Floating secondary button appears after scroll: “Talk to a Workflow Architect”
+
+⸻
+
+Services Section
+	•	Title: “Start Small. Get Results Fast.”
+	•	Three feature cards:
+	1.	Done-With-You Automation
+	2.	Workflow Coaching
+	3.	AI Strategy Session
+	•	CTA: “Explore All Services”
+
+⸻
+
+Interactive CTA: Talk to a Workflow Architect
+	•	When clicked:
+	•	Show modal with 2 choices:
+	•	“Chat” → Simulates chat interface (quick prompts + input field, no backend)
+	•	“Call” → Plays 2s animation (voice waveform)
+→ Then shows form:
+	•	Full Name (required)
+	•	Phone Number (optional)
+	•	“What do you want help with?” (textarea)
+	•	Confirmation text: “Thanks! One of our team members will reach out shortly.”
+
+⸻
+
+Testimonials Section
+	•	2–3 quote cards
+	•	Include avatar, name, and title
+
+⸻
+
+Insights Section
+	•	Title: “Simple Wins with Smart Tech”
+	•	3 article cards (image, headline, summary)
+	•	CTA: “View All Articles”
+
+⸻
+
+Contact CTA Section
+	•	Title: “Let’s Design Your First AI Workflow—Together”
+	•	Fields:
+	•	Full Name
+	•	Email
+	•	Message
+	•	CTA: “Send Your Request ↗”
+	•	Footer tagline: “No pressure. Just helpful answers.”
+
+⸻
+
+Footer
+	•	3 columns: Quick Links | Services | Contact Info
+	•	Social Icons: LinkedIn, Facebook, X, Instagram
+	•	Legal: Privacy Policy | Terms of Service | Cookie Policy
+	•	Favicon clearly visible with contrast
+	•	Background: #0A2A43 | Text: #F9FAFC
+
+⸻
+
+📱 Responsive Design
+	•	Prioritize mobile-first layout
+	•	Buttons must be thumb-friendly (min height: 48px)
+	•	Use Flex/Grid for adaptive stacking
+	•	Smooth scroll behavior for section links
+
+⸻
+
+✅ Success Conditions
+	•	Hero loads in <2s and CTA is clearly visible on all devices
+	•	“Talk to an Architect” interaction flow feels fluid and intentional
+	•	All sections are styled, accessible, and readable in light and dark mode
+	•	Logo and brand colors appear consistently throughout
