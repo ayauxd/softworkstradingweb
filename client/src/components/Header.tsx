@@ -74,7 +74,7 @@ const Header = () => {
             ))}
           </nav>
           
-          {/* Right side icons */}
+          {/* Right side controls */}
           <div className="flex items-center space-x-4">
             {/* Theme Toggle */}
             <button 
@@ -88,26 +88,6 @@ const Header = () => {
                 <Moon className="h-6 w-6 text-navy" />
               )}
             </button>
-            
-            {/* LinkedIn Icon */}
-            <a
-              href="https://linkedin.com"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="p-1 rounded-full hover:bg-gray-200 dark:hover:bg-navy-light transition-colors"
-              aria-label="LinkedIn Profile"
-            >
-              <Linkedin className="h-6 w-6 text-navy dark:text-soft-white" />
-            </a>
-            
-            {/* Email Icon */}
-            <a
-              href="mailto:contact@softworks.com"
-              className="p-1 rounded-full hover:bg-gray-200 dark:hover:bg-navy-light transition-colors"
-              aria-label="Email Us"
-            >
-              <Mail className="h-6 w-6 text-navy dark:text-soft-white" />
-            </a>
             
             {/* Mobile Menu Button */}
             <button

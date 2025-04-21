@@ -26,7 +26,7 @@ const InsightsSection = () => {
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-16">
           <h2 className="text-3xl md:text-4xl font-bold mb-4 text-navy dark:text-soft-white">
-            Insights & Innovation
+            Insights & Publications
           </h2>
           <p className="text-lg text-neutral-gray dark:text-gray-300 max-w-3xl mx-auto">
             Explore how businesses like yours are using AI to scale faster.
