@@ -19,6 +19,7 @@ import { useState } from "react";
 import AiInSupplyChain from "./pages/articles/ai-in-supply-chain";
 import AiTeamMembers from "./pages/articles/ai-team-members";
 import WorkflowCaseStudy from "./pages/articles/workflow-case-study";
+import NotFound from "./pages/not-found";
 
 function HomePage() {
   const [showModal, setShowModal] = useState(false);
@@ -59,6 +60,7 @@ function App() {
             <Route path="/articles/ai-in-supply-chain" component={AiInSupplyChain} />
             <Route path="/articles/ai-team-members" component={AiTeamMembers} />
             <Route path="/articles/workflow-case-study" component={WorkflowCaseStudy} />
+            <Route component={NotFound} />
           </Switch>
         </TooltipProvider>
       </ThemeProvider>
