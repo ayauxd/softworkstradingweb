@@ -1,0 +1,71 @@
+// 1. Update the Insights & Publications section
+<section className="bg-[#F9FAFC] dark:bg-[#111827] py-20">
+  <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+    <h2 className="text-3xl font-semibold text-[#0A2A43] dark:text-white">Insights & Publications</h2>
+    <p className="text-lg mt-2 text-[#4A5568] dark:text-[#E0E0E0]">Explore how businesses like yours are using AI to scale faster.</p>
+
+    <div className="mt-10 grid grid-cols-1 md:grid-cols-3 gap-8">
+      {/* Article 1 */}
+      <a href="/articles/ai-in-supply-chain" className="bg-white dark:bg-[#1F2937] rounded-lg shadow-md overflow-hidden hover:shadow-lg transition">
+        <img src="/images/article-supplychain.jpg" alt="AI in Supply Chain" className="w-full h-40 object-cover" />
+        <div className="p-4 text-left">
+          <h3 className="text-lg font-semibold text-[#0A2A43] dark:text-white">AI in Supply Chain</h3>
+          <p className="text-sm mt-1 text-[#4A5568] dark:text-[#E0E0E0]">Discover how agentic AI is reshaping logistics and streamlining operations.</p>
+        </div>
+      </a>
+
+      {/* Article 2 */}
+      <a href="/articles/ai-team-members" className="bg-white dark:bg-[#1F2937] rounded-lg shadow-md overflow-hidden hover:shadow-lg transition">
+        <img src="/images/article-teammembers.jpg" alt="AI as Team Members" className="w-full h-40 object-cover" />
+        <div className="p-4 text-left">
+          <h3 className="text-lg font-semibold text-[#0A2A43] dark:text-white">AI as Team Members</h3>
+          <p className="text-sm mt-1 text-[#4A5568] dark:text-[#E0E0E0]">See how teams leverage AI agents to enhance decision-making and productivity.</p>
+        </div>
+      </a>
+
+      {/* Article 3 */}
+      <a href="/articles/workflow-case-study" className="bg-white dark:bg-[#1F2937] rounded-lg shadow-md overflow-hidden hover:shadow-lg transition">
+        <img src="/images/article-casestudy.jpg" alt="Workflow Case Study" className="w-full h-40 object-cover" />
+        <div className="p-4 text-left">
+          <h3 className="text-lg font-semibold text-[#0A2A43] dark:text-white">Workflow Case Study</h3>
+          <p className="text-sm mt-1 text-[#4A5568] dark:text-[#E0E0E0]">Learn how we helped a Fortune 500 firm gain 40% efficiency with smart automation.</p>
+        </div>
+      </a>
+    </div>
+  </div>
+</section>
+
+// 2. Update Testimonials to a slider with images
+import { Carousel } from 'react-responsive-carousel';
+import "react-responsive-carousel/lib/styles/carousel.min.css";
+
+<section className="bg-[#0A2A43] text-white py-20">
+  <div className="max-w-4xl mx-auto px-6 text-center">
+    <h2 className="text-3xl font-semibold mb-8">What Our Clients Say</h2>
+    <Carousel showArrows={false} showStatus={false} showThumbs={false} infiniteLoop autoPlay interval={6000}>
+      {/* Testimonial 1 */}
+      <div className="p-8">
+        <img src="/images/client-alex.png" className="w-16 h-16 mx-auto rounded-full mb-4" alt="Alex Chen" />
+        <p className="text-lg">"Softworks has completely transformed our operational workflows. Their intelligent systems removed bottlenecks we thought were permanent."</p>
+        <h4 className="mt-4 font-semibold">Alex Chen</h4>
+        <p className="text-sm text-[#CBD5E0]">CTO, TechSolutions Inc.</p>
+      </div>
+
+      {/* Testimonial 2 */}
+      <div className="p-8">
+        <img src="/images/client-julia.png" className="w-16 h-16 mx-auto rounded-full mb-4" alt="Julia Osei" />
+        <p className="text-lg">"We launched automation without technical training—Softworks made it easy, strategic, and incredibly helpful."</p>
+        <h4 className="mt-4 font-semibold">Julia Osei</h4>
+        <p className="text-sm text-[#CBD5E0]">Operations Lead, Nova Ventures</p>
+      </div>
+
+      {/* Testimonial 3 */}
+      <div className="p-8">
+        <img src="/images/client-rahul.png" className="w-16 h-16 mx-auto rounded-full mb-4" alt="Rahul Patel" />
+        <p className="text-lg">"Working with Softworks felt like having an AI team member. Clear, fast, and aligned with our business goals."</p>
+        <h4 className="mt-4 font-semibold">Rahul Patel</h4>
+        <p className="text-sm text-[#CBD5E0]">Founder, SmartEdge Retail</p>
+      </div>
+    </Carousel>
+  </div>
+</section>

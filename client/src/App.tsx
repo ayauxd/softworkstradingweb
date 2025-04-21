@@ -15,6 +15,11 @@ import Footer from "./components/Footer";
 import WorkflowArchitectModal from "./components/WorkflowArchitectModal";
 import { useState } from "react";
 
+// Article Pages
+import AiInSupplyChain from "./pages/articles/ai-in-supply-chain";
+import AiTeamMembers from "./pages/articles/ai-team-members";
+import WorkflowCaseStudy from "./pages/articles/workflow-case-study";
+
 function HomePage() {
   const [showModal, setShowModal] = useState(false);
   
@@ -51,6 +56,9 @@ function App() {
           <Toaster />
           <Switch>
             <Route path="/" component={HomePage} />
+            <Route path="/articles/ai-in-supply-chain" component={AiInSupplyChain} />
+            <Route path="/articles/ai-team-members" component={AiTeamMembers} />
+            <Route path="/articles/workflow-case-study" component={WorkflowCaseStudy} />
           </Switch>
         </TooltipProvider>
       </ThemeProvider>
