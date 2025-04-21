@@ -2,11 +2,11 @@ import { MessageSquare, FileText, Rocket } from "lucide-react";
 
 const HowItWorksSection = () => {
   return (
-    <section id="how-it-works" className="bg-soft-white dark:bg-navy text-navy dark:text-soft-white py-12 px-6 transition-colors duration-300">
-      <div className="container mx-auto">
+    <section id="how-it-works" className="bg-[#F9FAFC] dark:bg-[#0A2A43] text-[#0A2A43] dark:text-white py-12 px-6 transition-colors duration-300">
+      <div className="container max-w-screen-xl mx-auto">
         <div className="text-center mb-12">
           <h2 className="text-3xl font-bold mb-4">Easy Steps to Start Automating</h2>
-          <p className="text-neutral-gray dark:text-gray-300 max-w-2xl mx-auto">
+          <p className="text-[#4A5568] dark:text-gray-100 max-w-2xl mx-auto">
             We've simplified the process of implementing AI into your business operations.
           </p>
         </div>
@@ -18,7 +18,7 @@ const HowItWorksSection = () => {
               <MessageSquare className="h-10 w-10 text-cyan" aria-hidden="true" />
             </div>
             <h3 className="text-xl font-semibold mb-3">Tell Us Your Needs</h3>
-            <p className="text-sm md:text-base text-neutral-gray dark:text-gray-300">
+            <p className="text-sm md:text-base text-[#4A5568] dark:text-gray-100">
               Discuss your routine tasks and identify areas ready for AI automation.
             </p>
           </div>
@@ -36,7 +36,7 @@ const HowItWorksSection = () => {
               <FileText className="h-10 w-10 text-cyan" aria-hidden="true" />
             </div>
             <h3 className="text-xl font-semibold mb-3">Get a Custom Plan</h3>
-            <p className="text-sm md:text-base text-neutral-gray dark:text-gray-300">
+            <p className="text-sm md:text-base text-[#4A5568] dark:text-gray-100">
               Receive a simple, actionable AI workflow designed specifically for your tasks.
             </p>
           </div>
@@ -54,7 +54,7 @@ const HowItWorksSection = () => {
               <Rocket className="h-10 w-10 text-cyan" aria-hidden="true" />
             </div>
             <h3 className="text-xl font-semibold mb-3">Implement and Improve</h3>
-            <p className="text-sm md:text-base text-neutral-gray dark:text-gray-300">
+            <p className="text-sm md:text-base text-[#4A5568] dark:text-gray-100">
               Quickly start using your new automation and easily refine it for better results.
             </p>
           </div>

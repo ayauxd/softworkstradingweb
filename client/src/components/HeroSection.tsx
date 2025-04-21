@@ -30,14 +30,18 @@ const HeroSection = ({ onTalkToArchitect }: HeroSectionProps) => {
           <div className="flex flex-col sm:flex-row justify-center gap-4">
             <Button 
               onClick={scrollToContact}
-              className="bg-cyan hover:bg-cyan-light text-navy font-medium py-3 px-8 rounded-md transition-colors duration-300 transform hover:scale-105 h-auto"
+              className="bg-cyan hover:bg-cyan-light text-navy font-semibold text-sm md:text-base py-3 px-8 rounded-md transition-colors duration-300 transform hover:scale-105 h-auto"
             >
               Get Your Free AI Consultation
             </Button>
             <Button 
               onClick={onTalkToArchitect}
               variant="outline" 
-              className="border-2 border-soft-white hover:border-cyan hover:text-cyan text-soft-white font-medium py-3 px-8 rounded-md transition-all duration-300 transform hover:scale-105 h-auto"
+              className="bg-white dark:bg-transparent text-[#0A2A43] dark:text-white 
+                       border border-[#0A2A43] dark:border-white 
+                       hover:bg-[#E5F6FA] dark:hover:bg-[#004466] 
+                       font-semibold text-sm md:text-base py-3 px-8 rounded-md 
+                       transition-colors duration-300 transform hover:scale-105 h-auto"
             >
               Talk to an AI Workflow Expert
             </Button>

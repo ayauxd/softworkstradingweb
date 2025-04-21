@@ -77,8 +77,8 @@ const ContactSection = () => {
   };
 
   return (
-    <section id="contact" className="py-20 bg-navy dark:bg-navy-dark text-soft-white">
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+    <section id="contact" className="py-12 md:py-20 bg-[#0A2A43] dark:bg-navy-dark text-white transition-colors duration-300">
+      <div className="container max-w-screen-xl mx-auto px-6">
         <div className="max-w-3xl mx-auto">
           <div className="text-center mb-12">
             <h2 className="text-3xl md:text-4xl font-bold mb-4">Ready to Transform Your Operations?</h2>
@@ -87,7 +87,7 @@ const ContactSection = () => {
           
           <form onSubmit={handleSubmit} className="space-y-6">
             <div>
-              <Label htmlFor="fullName" className="text-gray-300">Full Name</Label>
+              <Label htmlFor="fullName" className="text-gray-100">Full Name</Label>
               <Input
                 type="text"
                 id="fullName"
@@ -95,7 +95,7 @@ const ContactSection = () => {
                 value={formData.fullName}
                 onChange={handleChange}
                 className={`w-full px-4 py-3 bg-navy-light border border-gray-600 rounded-md
-                          text-soft-white focus:ring-2 focus:ring-cyan ${formErrors.fullName ? 'border-red-500' : ''}`}
+                          text-white focus:ring-2 focus:ring-cyan ${formErrors.fullName ? 'border-red-500' : ''}`}
               />
               {formErrors.fullName && (
                 <p className="mt-1 text-sm text-red-400">{formErrors.fullName}</p>
@@ -163,8 +163,8 @@ const ContactSection = () => {
             <div className="flex justify-center">
               <Button 
                 type="submit" 
-                className="w-full bg-cyan hover:bg-cyan-light text-navy font-medium py-3 px-8 
-                         rounded-md transition-all duration-300 transform hover:scale-105 
+                className="w-full bg-cyan hover:bg-cyan-light text-navy font-semibold text-sm md:text-base py-3 px-8 
+                         rounded-md transition-colors duration-300 transform hover:scale-105 
                          flex items-center justify-center h-auto"
               >
                 Send Request
