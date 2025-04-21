@@ -66,7 +66,7 @@ const Header = () => {
               <a 
                 key={item}
                 href={`#${item}`} 
-                className="text-navy dark:text-soft-white hover:text-cyan dark:hover:text-cyan-light transition-colors"
+                className="text-navy dark:text-soft-white hover:text-cyan dark:hover:text-cyan-light font-medium transition-colors"
                 onClick={(e) => { e.preventDefault(); scrollToSection(item); }}
               >
                 {item.charAt(0).toUpperCase() + item.slice(1).replace(/-/g, " ")}
@@ -128,7 +128,7 @@ const Header = () => {
                 <a 
                   key={item}
                   href={`#${item}`} 
-                  className="text-navy dark:text-soft-white hover:text-cyan dark:hover:text-cyan-light transition-colors"
+                  className="text-navy dark:text-soft-white hover:text-cyan dark:hover:text-cyan-light font-medium transition-colors"
                   onClick={(e) => { e.preventDefault(); scrollToSection(item); }}
                 >
                   {item.charAt(0).toUpperCase() + item.slice(1).replace(/-/g, " ")}

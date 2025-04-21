@@ -203,15 +203,19 @@ const WorkflowArchitectModal = ({ onClose }: WorkflowArchitectModalProps) => {
         {activeTab === "call" && (
           <div className="mt-6">
             {!showCallbackForm ? (
-              <div className="py-8 flex flex-col items-center animate-pulse-custom">
-                <div className="rounded-full bg-cyan p-6 mb-4">
-                  <Phone className="h-12 w-12 text-navy" />
+              <div className="py-8 flex flex-col items-center">
+                <div className="rounded-full bg-cyan p-6 mb-4 relative">
+                  <Phone className="h-12 w-12 text-navy animate-pulse" />
+                  {/* Ripple effect */}
+                  <span className="absolute -inset-0.5 rounded-full bg-cyan opacity-75 animate-ping"></span>
+                  <span className="absolute -inset-2 rounded-full bg-cyan opacity-50 animate-ping" style={{ animationDelay: "0.3s" }}></span>
+                  <span className="absolute -inset-3.5 rounded-full bg-cyan opacity-25 animate-ping" style={{ animationDelay: "0.6s" }}></span>
                 </div>
                 <p className="text-navy dark:text-soft-white text-lg font-medium mb-2">
-                  Connecting you with an architect...
+                  Calling a workflow architect...
                 </p>
                 <p className="text-neutral-gray dark:text-gray-300">
-                  This typically takes 2-3 seconds
+                  They'll be with you in a moment
                 </p>
               </div>
             ) : (
