@@ -13,6 +13,7 @@ import InsightsSection from "./components/InsightsSection";
 import ContactSection from "./components/ContactSection";
 import Footer from "./components/Footer";
 import WorkflowArchitectModal from "./components/WorkflowArchitectModal";
+import ArticlePage from "./pages/ArticlePage";
 import { useState } from "react";
 
 function HomePage() {
@@ -51,6 +52,7 @@ function App() {
           <Toaster />
           <Switch>
             <Route path="/" component={HomePage} />
+            <Route path="/article/:id" component={ArticlePage} />
           </Switch>
         </TooltipProvider>
       </ThemeProvider>
