@@ -1,27 +1,23 @@
 import { Button } from "@/components/ui/button";
 import { GitGraph, Users, CheckCircle } from "lucide-react";
-import { Card, CardContent } from "@/components/ui/card";
-import { Link } from "wouter";
+import { Card, CardContent, CardHeader } from "@/components/ui/card";
 
 const InsightsSection = () => {
   const insights = [
     {
       title: "AI in Supply Chain",
       description: "Discover how agentic AI is reshaping logistics and streamlining operations.",
-      icon: <GitGraph className="h-6 w-6 text-cyan" />,
-      path: "/articles/ai-in-supply-chain"
+      icon: <GitGraph className="h-6 w-6 text-cyan" />
     },
     {
       title: "AI as Team Members",
       description: "See how teams leverage AI agents to enhance decision-making and productivity.",
-      icon: <Users className="h-6 w-6 text-cyan" />,
-      path: "/articles/ai-team-members"
+      icon: <Users className="h-6 w-6 text-cyan" />
     },
     {
       title: "Workflow Case Study",
       description: "Learn how we helped a Fortune 500 firm gain 40% efficiency with smart automation.",
-      icon: <CheckCircle className="h-6 w-6 text-cyan" />,
-      path: "/articles/workflow-case-study"
+      icon: <CheckCircle className="h-6 w-6 text-cyan" />
     }
   ];
   
@@ -39,20 +35,16 @@ const InsightsSection = () => {
         
         <div className="grid md:grid-cols-3 gap-8">
           {insights.map((insight, index) => (
-            <Link 
+            <a 
               key={index} 
-              href={insight.path}
+              href={`/article/${index + 1}`}
               className="block"
             >
               <Card 
                 className="bg-white dark:bg-navy-light border-none rounded-lg shadow-md overflow-hidden
                          transition-transform hover:scale-105 duration-300 flex flex-col h-full"
               >
-                <div className="h-48 bg-gray-200 dark:bg-navy-dark flex items-center justify-center">
-                  <div className="bg-navy dark:bg-cyan p-4 rounded-full">
-                    {insight.icon}
-                  </div>
-                </div>
+                <div className="h-48 bg-gray-200 dark:bg-navy-dark"></div>
                 <CardContent className="p-6 flex-grow">
                   <h3 className="text-xl font-semibold mb-2 text-navy dark:text-soft-white">
                     {insight.title}
@@ -62,7 +54,7 @@ const InsightsSection = () => {
                   </p>
                 </CardContent>
               </Card>
-            </Link>
+            </a>
           ))}
         </div>
         
@@ -72,7 +64,7 @@ const InsightsSection = () => {
             className="inline-block bg-navy dark:bg-cyan hover:bg-navy-light dark:hover:bg-cyan-light 
                      text-soft-white dark:text-navy font-medium py-2 px-6 rounded-md transition-colors duration-300"
           >
-            <Link href="/articles/ai-in-supply-chain">Explore Our Insights</Link>
+            <a href="/articles">View All Articles</a>
           </Button>
         </div>
       </div>
