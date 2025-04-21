@@ -1,0 +1,56 @@
+import { Switch, Route } from "wouter";
+import { QueryClientProvider } from "@tanstack/react-query";
+import { Toaster } from "@/components/ui/toaster";
+import { TooltipProvider } from "@/components/ui/tooltip";
+import { queryClient } from "./lib/queryClient";
+import Header from "./components/Header";
+import HeroSection from "./components/HeroSection";
+import ServicesSection from "./components/ServicesSection";
+import TestimonialsSection from "./components/TestimonialsSection";
+import InsightsSection from "./components/InsightsSection";
+import ContactSection from "./components/ContactSection";
+import Footer from "./components/Footer";
+import WorkflowArchitectModal from "./components/WorkflowArchitectModal";
+import { useState } from "react";
+
+function HomePage() {
+  const [showModal, setShowModal] = useState(false);
+  
+  const openModal = () => {
+    setShowModal(true);
+  };
+  
+  const closeModal = () => {
+    setShowModal(false);
+  };
+
+  return (
+    <div className="min-h-screen flex flex-col">
+      <Header />
+      <main className="pt-16 flex-grow">
+        <HeroSection onTalkToArchitect={openModal} />
+        <ServicesSection />
+        <TestimonialsSection />
+        <InsightsSection />
+        <ContactSection />
+      </main>
+      <Footer />
+      {showModal && <WorkflowArchitectModal onClose={closeModal} />}
+    </div>
+  );
+}
+
+function App() {
+  return (
+    <QueryClientProvider client={queryClient}>
+      <TooltipProvider>
+        <Toaster />
+        <Switch>
+          <Route path="/" component={HomePage} />
+        </Switch>
+      </TooltipProvider>
+    </QueryClientProvider>
+  );
+}
+
+export default App;
