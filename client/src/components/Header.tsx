@@ -7,8 +7,6 @@ import { Moon, Sun, Menu, X } from "lucide-react";
 const Header = () => {
   const { theme, setTheme } = useTheme();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const [scrolled, setScrolled] = useState(false);
-  
   const toggleTheme = () => {
     setTheme(theme === "dark" ? "light" : "dark");
   };
@@ -16,22 +14,6 @@ const Header = () => {
   const toggleMobileMenu = () => {
     setMobileMenuOpen(!mobileMenuOpen);
   };
-  
-  // Handle scroll event to add shadow to header when scrolled
-  useEffect(() => {
-    const handleScroll = () => {
-      if (window.scrollY > 10) {
-        setScrolled(true);
-      } else {
-        setScrolled(false);
-      }
-    };
-    
-    window.addEventListener("scroll", handleScroll);
-    return () => {
-      window.removeEventListener("scroll", handleScroll);
-    };
-  }, []);
   
   // Handle smooth scrolling
   const scrollToSection = (id: string) => {
@@ -48,25 +30,25 @@ const Header = () => {
 
   return (
     <header 
-      className={`fixed top-0 w-full bg-soft-white dark:bg-navy-dark z-50 transition-all duration-300 border-b border-neutral-300 dark:border-neutral-700 ${
-        scrolled ? "shadow-md" : ""
-      }`}
+      className="fixed top-0 w-full bg-white dark:bg-navy-dark z-50 transition-all duration-300 border-b border-neutral-200 dark:border-neutral-700 shadow-sm"
       role="banner"
     >
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex justify-between items-center py-4">
+        <div className="flex justify-between items-center w-full py-4">
           {/* Logo and Name - Left Side */}
-          <div className="flex items-center">
+          <div className="flex-none">
             <a 
               href="#home" 
               className="flex items-center group focus:outline-none focus-visible:ring-2 focus-visible:ring-cyan rounded-md" 
               onClick={(e) => { e.preventDefault(); scrollToSection("home"); }}
               aria-label="Softworks Home"
             >
-              <LogoIcon className="h-9 w-auto" />
-              <span className="ml-2 text-sm sm:text-base font-semibold text-navy dark:text-soft-white whitespace-nowrap">
-                Softworks
-              </span>
+              <div className="flex items-center">
+                <LogoIcon className="h-9 w-auto" />
+                <span className="ml-2 text-base font-semibold text-navy dark:text-soft-white">
+                  Softworks
+                </span>
+              </div>
             </a>
           </div>
           
