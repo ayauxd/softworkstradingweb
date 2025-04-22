@@ -4,7 +4,7 @@ interface ServicesSectionProps {
   onTalkToExpert?: () => void;
 }
 
-const ServicesSection = ({ onTalkToExpert: onTalkToArchitect }: ServicesSectionProps) => {
+const ServicesSection = ({ onTalkToExpert }: ServicesSectionProps) => {
   const services = [
     {
       title: "AI Setup Support",
@@ -64,7 +64,7 @@ const ServicesSection = ({ onTalkToExpert: onTalkToArchitect }: ServicesSectionP
         
         <div className="mt-12 text-center">
           <Button 
-            onClick={onTalkToArchitect}
+            onClick={onTalkToExpert}
             className="bg-cyan hover:bg-cyan-light text-navy font-semibold text-sm md:text-base py-3 px-8 rounded-md transition-all duration-300 transform hover:scale-105 h-auto shadow-lg shadow-cyan/20 hover:shadow-cyan/30"
           >
             Learn More
