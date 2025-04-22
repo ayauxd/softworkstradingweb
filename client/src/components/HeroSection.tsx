@@ -2,10 +2,10 @@ import { Button } from "@/components/ui/button";
 import neuralBackgroundSrc from "../assets/neural-background-prominent.svg";
 
 interface HeroSectionProps {
-  onTalkToExpert: () => void;
+  onTalkToAgent: () => void;
 }
 
-const HeroSection = ({ onTalkToExpert }: HeroSectionProps) => {
+const HeroSection = ({ onTalkToAgent }: HeroSectionProps) => {
   const scrollToContact = () => {
     const contactSection = document.getElementById("contact");
     if (contactSection) {
@@ -45,7 +45,7 @@ const HeroSection = ({ onTalkToExpert }: HeroSectionProps) => {
               Get Your Free AI Consultation
             </Button>
             <Button 
-              onClick={onTalkToExpert}
+              onClick={onTalkToAgent}
               variant="outline" 
               className="bg-transparent text-white
                        border border-white
