@@ -40,7 +40,9 @@ const HeroSection = ({ onTalkToAgent }: HeroSectionProps) => {
           <div className="flex flex-col sm:flex-row justify-center gap-5 animate-slideUp">
             <Button 
               onClick={scrollToContact}
-              className="bg-cyan hover:bg-cyan-light text-navy font-semibold text-sm md:text-base py-3 px-8 rounded-md transition-all duration-300 transform hover:scale-105 h-auto shadow-lg shadow-cyan/20 hover:shadow-cyan/30"
+              className="bg-cyan hover:bg-cyan-light text-navy font-semibold text-sm md:text-base py-3 px-8 rounded-md transition-all duration-300 transform hover:scale-105 h-auto shadow-lg shadow-cyan/20 hover:shadow-cyan/30 focus:ring-2 focus:ring-cyan focus:ring-offset-2 focus:ring-offset-navy active:translate-y-0.5"
+              aria-label="Get your free AI consultation by scrolling to contact form"
+              title="Fill out the contact form to get your free AI consultation"
             >
               Get Your Free AI Consultation
             </Button>
@@ -52,9 +54,12 @@ const HeroSection = ({ onTalkToAgent }: HeroSectionProps) => {
                        hover:bg-white hover:text-[#0A2A43] 
                        font-semibold text-sm md:text-base py-3 px-8 rounded-md 
                        transition-all duration-300 transform hover:scale-105 h-auto
-                       shadow-lg shadow-navy-light/10"
+                       shadow-lg shadow-navy-light/10 focus:ring-2 focus:ring-white 
+                       focus:ring-offset-2 focus:ring-offset-navy active:translate-y-0.5"
+              aria-label="Open dialog to talk with an AI Workflow Agent"
+              title="Speak with our Workflow Agent about your automation needs"
             >
-              Talk to an AI Workflow Agent
+              Talk to a Smart Workflow Assistant
             </Button>
           </div>
         </div>
