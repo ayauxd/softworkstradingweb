@@ -12,7 +12,7 @@ import TestimonialsSection from "./components/TestimonialsSection";
 import InsightsSection from "./components/InsightsSection";
 import ContactSection from "./components/ContactSection";
 import Footer from "./components/Footer";
-import WorkflowExpertModal from "./components/WorkflowExpertModal";
+import WorkflowAgentModal from "./components/WorkflowAgentModal";
 import ArticlePage from "./pages/ArticlePage";
 import { useState } from "react";
 
@@ -39,7 +39,7 @@ function HomePage() {
         <ContactSection />
       </main>
       <Footer />
-      {showModal && <WorkflowExpertModal onClose={closeModal} />}
+      {showModal && <WorkflowAgentModal onClose={closeModal} />}
     </div>
   );
 }

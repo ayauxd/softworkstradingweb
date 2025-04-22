@@ -96,7 +96,7 @@ const WorkflowAgentModal = ({ onClose }: WorkflowAgentModalProps) => {
     // Form is valid, show success message
     toast({
       title: "Callback Requested!",
-      description: "One of our workflow experts will call you shortly.",
+      description: "One of our workflow agents will call you shortly.",
     });
     
     // Close modal
@@ -221,7 +221,7 @@ const WorkflowAgentModal = ({ onClose }: WorkflowAgentModalProps) => {
             ) : (
               <div>
                 <p className="text-navy dark:text-soft-white text-center mb-4">
-                  Our experts are currently assisting other clients. Leave your details for a callback.
+                  Our agents are currently assisting other clients. Leave your details for a callback.
                 </p>
                 
                 <form onSubmit={handleCallbackFormSubmit} className="space-y-4">
