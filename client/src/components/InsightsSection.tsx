@@ -55,8 +55,11 @@ const InsightsSection = () => {
                   <h3 className="text-xl font-semibold mb-3 text-navy dark:text-soft-white">
                     {insight.title}
                   </h3>
-                  <p className="text-base text-neutral-gray dark:text-gray-300">
+                  <p className="text-base text-neutral-gray dark:text-gray-300 mb-3">
                     {insight.description}
+                  </p>
+                  <p className="text-cyan hover:text-cyan-light dark:text-cyan-light dark:hover:text-cyan transition-colors font-medium text-sm">
+                    Continue article...
                   </p>
                 </CardContent>
               </Card>

@@ -54,7 +54,7 @@ const HeroSection = ({ onTalkToAgent }: HeroSectionProps) => {
                        transition-all duration-300 transform hover:scale-105 h-auto
                        shadow-lg shadow-navy-light/10"
             >
-              Talk to an AI Workflow Expert
+              Talk to an AI Workflow Agent
             </Button>
           </div>
         </div>

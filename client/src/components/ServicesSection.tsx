@@ -1,10 +1,10 @@
 import { Button } from "@/components/ui/button";
 
 interface ServicesSectionProps {
-  onTalkToExpert?: () => void;
+  onTalkToAgent?: () => void;
 }
 
-const ServicesSection = ({ onTalkToExpert }: ServicesSectionProps) => {
+const ServicesSection = ({ onTalkToAgent }: ServicesSectionProps) => {
   const services = [
     {
       title: "AI Setup Support",
@@ -14,7 +14,7 @@ const ServicesSection = ({ onTalkToExpert }: ServicesSectionProps) => {
     {
       title: "Workflow Coaching for Founders",
       description: "Learn how to use tools like ChatGPT or Gemini to reduce daily bottlenecks.",
-      imageUrl: "https://images.unsplash.com/photo-1581089781785-603411fa81e5?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8OHx8ZGlnaXRhbCUyMHRyYW5zZm9ybWF0aW9ufGVufDB8fDB8fHww&auto=format&fit=crop&w=800&q=60"
+      imageUrl: "https://images.unsplash.com/photo-1542744173-8e7e53415bb0?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8OHx8YnVzaW5lc3MlMjBtZWV0aW5nfGVufDB8fDB8fHww&auto=format&fit=crop&w=800&q=60"
     },
     {
       title: "AI Strategy Session (No Code Required)",
@@ -64,7 +64,7 @@ const ServicesSection = ({ onTalkToExpert }: ServicesSectionProps) => {
         
         <div className="mt-12 text-center">
           <Button 
-            onClick={onTalkToExpert}
+            onClick={onTalkToAgent}
             className="bg-cyan hover:bg-cyan-light text-navy font-semibold text-sm md:text-base py-3 px-8 rounded-md transition-all duration-300 transform hover:scale-105 h-auto shadow-lg shadow-cyan/20 hover:shadow-cyan/30"
           >
             Learn More
