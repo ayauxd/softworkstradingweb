@@ -64,8 +64,9 @@ const Header = () => {
               aria-label="Softworks Trading Co Home"
             >
               <LogoIcon className="h-10 w-auto flex-shrink-0" />
-              <span className="ml-2 text-xs sm:text-base md:text-lg font-semibold text-navy dark:text-soft-white whitespace-nowrap">
-                Softworks Trading Co
+              <span className="ml-2 text-sm sm:text-base md:text-lg font-semibold text-navy dark:text-soft-white whitespace-nowrap">
+                <span className="inline">Softworks</span>
+                <span className="hidden sm:inline"> Trading Co</span>
               </span>
             </a>
           </div>
