@@ -5,7 +5,7 @@ interface HeroSectionProps {
   onTalkToExpert: () => void;
 }
 
-const HeroSection = ({ onTalkToExpert: onTalkToArchitect }: HeroSectionProps) => {
+const HeroSection = ({ onTalkToExpert }: HeroSectionProps) => {
   const scrollToContact = () => {
     const contactSection = document.getElementById("contact");
     if (contactSection) {
@@ -45,7 +45,7 @@ const HeroSection = ({ onTalkToExpert: onTalkToArchitect }: HeroSectionProps) =>
               Get Your Free AI Consultation
             </Button>
             <Button 
-              onClick={onTalkToArchitect}
+              onClick={onTalkToExpert}
               variant="outline" 
               className="bg-transparent text-white
                        border border-white
