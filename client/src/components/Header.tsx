@@ -33,28 +33,18 @@ const Header = () => {
       {/* Simple header for all screen sizes */}
       <div className="px-4">
         <div className="flex justify-between items-center h-16">
-          {/* Softworks text on left */}
+          {/* Logo and Softworks text on left */}
           <div>
             <a 
               href="#home" 
               onClick={(e) => { e.preventDefault(); scrollToSection("home"); }}
               className="flex items-center"
-            >
-              <span className="text-base font-semibold text-navy dark:text-white">
-                Softworks
-              </span>
-            </a>
-          </div>
-          
-          {/* Logo in middle */}
-          <div className="absolute left-1/2 transform -translate-x-1/2">
-            <a 
-              href="#home" 
-              onClick={(e) => { e.preventDefault(); scrollToSection("home"); }}
-              className="block"
-              aria-label="Home"
+              aria-label="Softworks Home"
             >
               <LogoIcon className="h-8 w-auto" />
+              <span className="ml-2 text-base font-semibold text-navy dark:text-white">
+                Softworks
+              </span>
             </a>
           </div>
           
