@@ -54,81 +54,86 @@ const Header = () => {
       role="banner"
     >
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex justify-between items-center py-4">
-          {/* Logo */}
-          <a 
-            href="#home" 
-            className="flex items-center group focus:outline-none focus-visible:ring-2 focus-visible:ring-cyan rounded-md" 
-            onClick={(e) => { e.preventDefault(); scrollToSection("home"); }}
-            aria-label="Softworks Trading Co Home"
-          >
-            <LogoIcon className="h-10 w-auto" aria-hidden="true" />
-            <span className="ml-2 text-sm sm:text-base md:text-lg font-semibold text-navy dark:text-soft-white group-hover:text-cyan dark:group-hover:text-cyan-light transition-colors truncate max-w-[150px] sm:max-w-none">
-              <span className="hidden xs:inline">Softworks</span> Trading Co
-            </span>
-          </a>
-          
-          {/* Desktop Navigation */}
-          <nav className="hidden md:flex items-center space-x-8" aria-label="Main Navigation">
-            {["home", "services", "how-it-works", "insights", "contact"].map((item) => (
-              <a 
-                key={item}
-                href={`#${item}`} 
-                className="text-navy dark:text-soft-white hover:text-cyan dark:hover:text-cyan-light font-medium transition-colors px-2 py-1 rounded-md focus:outline-none focus-visible:ring-2 focus-visible:ring-cyan"
-                onClick={(e) => { e.preventDefault(); scrollToSection(item); }}
-                aria-current={item === "home" ? "page" : undefined}
-              >
-                {item.charAt(0).toUpperCase() + item.slice(1).replace(/-/g, " ")}
-              </a>
-            ))}
-          </nav>
-          
-          {/* Right side controls */}
-          <div className="flex items-center space-x-4">
-            {/* Theme Toggle */}
-            <button 
-              onClick={toggleTheme} 
-              className="p-2 rounded-full hover:bg-gray-200 dark:hover:bg-navy-light transition-all duration-300 
-                        focus:outline-none focus-visible:ring-2 focus-visible:ring-cyan focus-visible:ring-offset-2 focus-visible:ring-offset-soft-white 
-                        dark:focus-visible:ring-offset-navy-dark active:scale-95"
-              aria-label={theme === "dark" ? "Switch to light mode" : "Switch to dark mode"}
-              title={theme === "dark" ? "Enable light theme" : "Enable dark theme"}
+        <div className="flex items-center py-4">
+          {/* Logo - Left Side */}
+          <div className="flex-1">
+            <a 
+              href="#home" 
+              className="flex items-center group focus:outline-none focus-visible:ring-2 focus-visible:ring-cyan rounded-md" 
+              onClick={(e) => { e.preventDefault(); scrollToSection("home"); }}
+              aria-label="Softworks Trading Co Home"
             >
-              {theme === "dark" ? (
-                <Sun className="h-5 w-5 text-soft-white" aria-hidden="true" />
-              ) : (
-                <Moon className="h-5 w-5 text-navy" aria-hidden="true" />
-              )}
-              <span className="sr-only">{theme === "dark" ? "Light mode" : "Dark mode"}</span>
-            </button>
+              <LogoIcon className="h-10 w-auto" aria-hidden="true" />
+              <span className="ml-2 text-sm sm:text-base md:text-lg font-semibold text-navy dark:text-soft-white group-hover:text-cyan dark:group-hover:text-cyan-light transition-colors truncate max-w-[150px] sm:max-w-none">
+                <span className="hidden xs:inline">Softworks</span> Trading Co
+              </span>
+            </a>
+          </div>
+          
+          {/* Right Side Content - Navigation and Controls */}
+          <div className="flex items-center">
+            {/* Desktop Navigation */}
+            <nav className="hidden md:flex items-center space-x-6 mr-6" aria-label="Main Navigation">
+              {["home", "services", "how-it-works", "insights", "contact"].map((item) => (
+                <a 
+                  key={item}
+                  href={`#${item}`} 
+                  className="text-navy dark:text-soft-white hover:text-cyan dark:hover:text-cyan-light font-medium transition-colors px-2 py-1 rounded-md focus:outline-none focus-visible:ring-2 focus-visible:ring-cyan"
+                  onClick={(e) => { e.preventDefault(); scrollToSection(item); }}
+                  aria-current={item === "home" ? "page" : undefined}
+                >
+                  {item.charAt(0).toUpperCase() + item.slice(1).replace(/-/g, " ")}
+                </a>
+              ))}
+            </nav>
             
-            {/* Mobile Menu Button - Increased size and tap area for mobile */}
-            <button
-              onClick={toggleMobileMenu}
-              className="p-3 md:hidden rounded-full hover:bg-gray-200 dark:hover:bg-navy-light transition-all duration-300
-                        focus:outline-none focus-visible:ring-2 focus-visible:ring-cyan focus-visible:ring-offset-2 focus-visible:ring-offset-soft-white 
-                        dark:focus-visible:ring-offset-navy-dark active:scale-95"
-              aria-label="Toggle navigation menu"
-              aria-expanded={mobileMenuOpen}
-              aria-controls="mobile-menu"
-              title={mobileMenuOpen ? "Close navigation menu" : "Open navigation menu"}
-            >
-              <div className="relative w-6 h-6 flex items-center justify-center">
-                <Menu 
-                  className={`absolute h-6 w-6 text-navy dark:text-soft-white transition-all duration-300 ${
-                    mobileMenuOpen ? "opacity-0 rotate-90 scale-0" : "opacity-100 rotate-0 scale-100"
-                  }`} 
-                  aria-hidden="true" 
-                />
-                <X 
-                  className={`absolute h-6 w-6 text-navy dark:text-soft-white transition-all duration-300 ${
-                    mobileMenuOpen ? "opacity-100 rotate-0 scale-100" : "opacity-0 rotate-90 scale-0"
-                  }`} 
-                  aria-hidden="true" 
-                />
-              </div>
-              <span className="sr-only">{mobileMenuOpen ? "Close menu" : "Open menu"}</span>
-            </button>
+            {/* Controls */}
+            <div className="flex items-center space-x-4">
+              {/* Theme Toggle */}
+              <button 
+                onClick={toggleTheme} 
+                className="p-2 rounded-full hover:bg-gray-200 dark:hover:bg-navy-light transition-all duration-300 
+                          focus:outline-none focus-visible:ring-2 focus-visible:ring-cyan focus-visible:ring-offset-2 focus-visible:ring-offset-soft-white 
+                          dark:focus-visible:ring-offset-navy-dark active:scale-95"
+                aria-label={theme === "dark" ? "Switch to light mode" : "Switch to dark mode"}
+                title={theme === "dark" ? "Enable light theme" : "Enable dark theme"}
+              >
+                {theme === "dark" ? (
+                  <Sun className="h-5 w-5 text-soft-white" aria-hidden="true" />
+                ) : (
+                  <Moon className="h-5 w-5 text-navy" aria-hidden="true" />
+                )}
+                <span className="sr-only">{theme === "dark" ? "Light mode" : "Dark mode"}</span>
+              </button>
+              
+              {/* Mobile Menu Button - Increased size and tap area for mobile */}
+              <button
+                onClick={toggleMobileMenu}
+                className="p-3 md:hidden rounded-full hover:bg-gray-200 dark:hover:bg-navy-light transition-all duration-300
+                          focus:outline-none focus-visible:ring-2 focus-visible:ring-cyan focus-visible:ring-offset-2 focus-visible:ring-offset-soft-white 
+                          dark:focus-visible:ring-offset-navy-dark active:scale-95"
+                aria-label="Toggle navigation menu"
+                aria-expanded={mobileMenuOpen}
+                aria-controls="mobile-menu"
+                title={mobileMenuOpen ? "Close navigation menu" : "Open navigation menu"}
+              >
+                <div className="relative w-6 h-6 flex items-center justify-center">
+                  <Menu 
+                    className={`absolute h-6 w-6 text-navy dark:text-soft-white transition-all duration-300 ${
+                      mobileMenuOpen ? "opacity-0 rotate-90 scale-0" : "opacity-100 rotate-0 scale-100"
+                    }`} 
+                    aria-hidden="true" 
+                  />
+                  <X 
+                    className={`absolute h-6 w-6 text-navy dark:text-soft-white transition-all duration-300 ${
+                      mobileMenuOpen ? "opacity-100 rotate-0 scale-100" : "opacity-0 rotate-90 scale-0"
+                    }`} 
+                    aria-hidden="true" 
+                  />
+                </div>
+                <span className="sr-only">{mobileMenuOpen ? "Close menu" : "Open menu"}</span>
+              </button>
+            </div>
           </div>
         </div>
         
