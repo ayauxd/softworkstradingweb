@@ -354,8 +354,8 @@ export default function ArticlePage() {
         <div className="container mx-auto px-4 h-full flex flex-col justify-end pb-10 relative z-10">
           <div className="max-w-4xl">
             <div className="flex items-center space-x-2 text-cyan mb-4">
-              <Link href="/#insights">
-                <a className="text-cyan hover:text-cyan-light transition">← Back to Insights</a>
+              <Link href="/#insights" className="text-cyan hover:text-cyan-light transition">
+                ← Back to Insights
               </Link>
             </div>
             <h1 className="text-4xl md:text-5xl font-bold text-white mb-4">{article.title}</h1>
@@ -404,19 +404,17 @@ export default function ArticlePage() {
               .filter(a => a.id !== articleId)
               .slice(0, 2)
               .map(relatedArticle => (
-                <Link key={relatedArticle.id} href={`/article/${relatedArticle.id}`}>
-                  <a className="block group">
-                    <div className="bg-white dark:bg-navy-light rounded-lg overflow-hidden shadow-md transition-transform group-hover:scale-105 duration-300">
-                      <div 
-                        className="h-48 bg-cover bg-center" 
-                        style={{ backgroundImage: `url(${relatedArticle.imageUrl})` }}
-                      ></div>
-                      <div className="p-6">
-                        <h4 className="text-lg font-bold text-navy dark:text-soft-white mb-2">{relatedArticle.title}</h4>
-                        <p className="text-gray-600 dark:text-gray-300">{relatedArticle.description}</p>
-                      </div>
+                <Link key={relatedArticle.id} href={`/article/${relatedArticle.id}`} className="block group">
+                  <div className="bg-white dark:bg-navy-light rounded-lg overflow-hidden shadow-md transition-transform group-hover:scale-105 duration-300">
+                    <div 
+                      className="h-48 bg-cover bg-center" 
+                      style={{ backgroundImage: `url(${relatedArticle.imageUrl})` }}
+                    ></div>
+                    <div className="p-6">
+                      <h4 className="text-lg font-bold text-navy dark:text-soft-white mb-2">{relatedArticle.title}</h4>
+                      <p className="text-gray-600 dark:text-gray-300">{relatedArticle.description}</p>
                     </div>
-                  </a>
+                  </div>
                 </Link>
               ))}
           </div>
