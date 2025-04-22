@@ -87,21 +87,13 @@ const TestimonialsSection = () => {
               <CarouselItem key={index}>
                 <Card className="bg-navy-light rounded-lg p-8 shadow-lg border-none">
                   <CardContent className="p-0">
-                    <div className="flex flex-col md:flex-row md:items-center">
-                      <div className="mb-6 md:mb-0 md:mr-8 flex-shrink-0 flex justify-center">
-                        <Avatar className="w-20 h-20 border-2 border-cyan overflow-hidden">
-                          <AvatarImage src={testimonial.imageUrl} alt={testimonial.name} />
-                          <AvatarFallback className="text-cyan bg-navy">
-                            {testimonial.name.split(' ').map(n => n[0]).join('')}
-                          </AvatarFallback>
-                        </Avatar>
-                      </div>
+                    <div className="flex flex-col items-center">
                       <div>
                         <svg className="h-12 w-12 text-cyan mb-4 opacity-50" fill="currentColor" viewBox="0 0 24 24">
                           <path d="M14.017 21v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151c-2.432.917-3.995 3.638-3.995 5.849h4v10h-9.983zm-14.017 0v-7.391c0-5.704 3.748-9.57 9-10.609l.996 2.151c-2.433.917-3.996 3.638-3.996 5.849h3.983v10h-9.983z" />
                         </svg>
                         <p className="text-lg mb-4 text-white">{testimonial.quote}</p>
-                        <div>
+                        <div className="text-center">
                           <h4 className="font-bold text-lg text-white">{testimonial.name}</h4>
                           <p className="text-gray-400">{testimonial.role}</p>
                         </div>
@@ -113,10 +105,8 @@ const TestimonialsSection = () => {
             ))}
           </CarouselContent>
           
-          <div className="flex justify-center gap-4 mt-6">
-            <CarouselPrevious className="relative static bg-cyan text-navy hover:bg-cyan-light" />
-            <CarouselNext className="relative static bg-cyan text-navy hover:bg-cyan-light" />
-          </div>
+          <CarouselPrevious className="absolute -left-10 top-1/2 -translate-y-1/2 bg-cyan text-navy hover:bg-cyan-light" />
+          <CarouselNext className="absolute -right-10 top-1/2 -translate-y-1/2 bg-cyan text-navy hover:bg-cyan-light" />
           
           <div className="flex justify-center gap-2 mt-4">
             {testimonials.map((_, index) => (
