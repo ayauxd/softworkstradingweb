@@ -1,0 +1,57 @@
+Review the current implementation of the Softworks Trading Company website.
+
+Apply industry-standard UI/UX heuristics based on Nielsen’s principles and modern web design best practices, while preserving the existing layout structure and styling. Do not break page flow or remove any sections.
+
+---
+
+🔍 Apply the following heuristics and corrections:
+
+### 1. **Visibility of System Status**
+- Add visual feedback to all interactive elements (buttons, forms, toggles).
+- Example: Use `hover`, `focus`, and `active` states on CTAs and chat prompts.
+
+### 2. **Match Between System & Real-World Language**
+- Simplify technical phrases for general users:
+  - “Agentic Workflow” → “Smart Workflow Assistant” (where appropriate)
+  - “Strategy Session” → “Planning Session” (unless intended as formal)
+
+### 3. **Consistency & Standards**
+- Use consistent spacing across all sections (e.g., padding between grids).
+- Normalize heading styles (`text-2xl` for sections, `text-lg` for cards).
+- Ensure light/dark mode text colors are properly inverted (`text-white`/`dark:text-white`).
+
+### 4. **Recognition Over Recall**
+- Use labels/icons on buttons where possible to reduce ambiguity.
+  - Add label to voice CTA icon (e.g., `aria-label="Start voice chat"`)
+  - Add `title` attribute on all external links (e.g., Learn More → “Learn more about automation”)
+
+### 5. **Error Prevention**
+- Validate form fields (email, name, message) with `required` attributes.
+- Add fallback states for testimonials and articles (empty state or “loading” state).
+
+### 6. **Aesthetic & Minimalist Design**
+- Audit all section paddings: ensure consistent top/bottom spacing (`py-16`, `py-24`).
+- Balance section contrasts (e.g., use alternating `bg-slate-100` or `bg-white` with consistent padding).
+- Ensure that no section is crowded or has awkward empty space.
+
+### 7. **Responsive Layout Enhancements**
+- Test each section at screen widths: 375px, 768px, 1024px, 1440px.
+- Fix any overlapping grid elements or cutoff text at smaller breakpoints.
+
+### 8. **Accessibility**
+- Ensure all inputs and buttons have:
+  - `aria-labels`
+  - Keyboard navigation support
+  - Sufficient contrast ratios for text/backgrounds (WCAG 2.1 AA)
+- Confirm all images have meaningful `alt` text.
+
+---
+
+🛠️ Apply improvements **without breaking any of the following:**
+- Section order and layout
+- Voice/chat CTA functionality
+- Testimonials slider
+- Article card grid
+- Footer layout and branding
+
+Once applied, test responsiveness and visual consistency in both **light and dark mode**.
