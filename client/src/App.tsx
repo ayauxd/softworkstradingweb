@@ -31,8 +31,8 @@ function HomePage() {
     <div className="min-h-screen flex flex-col bg-soft-white dark:bg-navy text-navy dark:text-soft-white transition-colors duration-300">
       <Header />
       <main className="pt-16 flex-grow">
-        <HeroSection onTalkToExpert={openModal} />
-        <ServicesSection onTalkToExpert={openModal} />
+        <HeroSection onTalkToAgent={openModal} />
+        <ServicesSection onTalkToAgent={openModal} />
         <HowItWorksSection />
         <TestimonialsSection />
         <InsightsSection />
