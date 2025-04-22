@@ -36,16 +36,20 @@ const ContactSection = () => {
     
     if (!formData.fullName.trim()) {
       errors.fullName = "Name is required";
+    } else if (formData.fullName.trim().length < 2) {
+      errors.fullName = "Name must be at least 2 characters";
     }
     
     if (!formData.email.trim()) {
       errors.email = "Email is required";
-    } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
-      errors.email = "Email is invalid";
+    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
+      errors.email = "Please enter a valid email address";
     }
     
     if (!formData.message.trim()) {
       errors.message = "Message is required";
+    } else if (formData.message.trim().length < 10) {
+      errors.message = "Please provide a more detailed message (at least 10 characters)";
     }
     
     return errors;
@@ -87,18 +91,31 @@ const ContactSection = () => {
           
           <form onSubmit={handleSubmit} className="space-y-6">
             <div>
-              <Label htmlFor="fullName" className="text-gray-100">Full Name</Label>
+              <Label htmlFor="fullName" className="text-gray-100 flex items-center">
+                Full Name <span className="text-red-400 ml-1">*</span>
+              </Label>
               <Input
                 type="text"
                 id="fullName"
                 name="fullName"
                 value={formData.fullName}
                 onChange={handleChange}
+                required
+                aria-required="true"
+                aria-invalid={!!formErrors.fullName}
+                aria-describedby={formErrors.fullName ? "fullName-error" : undefined}
+                placeholder="Enter your full name"
                 className={`w-full px-4 py-3 bg-navy-light border border-gray-600 rounded-md
-                          text-white focus:ring-2 focus:ring-cyan ${formErrors.fullName ? 'border-red-500' : ''}`}
+                          text-white focus:ring-2 focus:ring-cyan focus:border-cyan
+                          ${formErrors.fullName ? 'border-red-500 focus:ring-red-400' : ''}`}
               />
               {formErrors.fullName && (
-                <p className="mt-1 text-sm text-red-400">{formErrors.fullName}</p>
+                <p id="fullName-error" className="mt-1 text-sm text-red-400 flex items-center">
+                  <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+                  </svg>
+                  {formErrors.fullName}
+                </p>
               )}
             </div>
             
@@ -116,18 +133,31 @@ const ContactSection = () => {
               </div>
               
               <div>
-                <Label htmlFor="email" className="text-gray-100">Email</Label>
+                <Label htmlFor="email" className="text-gray-100 flex items-center">
+                  Email <span className="text-red-400 ml-1">*</span>
+                </Label>
                 <Input
                   type="email"
                   id="email"
                   name="email"
                   value={formData.email}
                   onChange={handleChange}
+                  required
+                  aria-required="true"
+                  aria-invalid={!!formErrors.email}
+                  aria-describedby={formErrors.email ? "email-error" : undefined}
+                  placeholder="your@email.com"
                   className={`w-full px-4 py-3 bg-navy-light border border-gray-600 rounded-md
-                            text-white focus:ring-2 focus:ring-cyan ${formErrors.email ? 'border-red-500' : ''}`}
+                            text-white focus:ring-2 focus:ring-cyan focus:border-cyan 
+                            ${formErrors.email ? 'border-red-500 focus:ring-red-400' : ''}`}
                 />
                 {formErrors.email && (
-                  <p className="mt-1 text-sm text-red-400">{formErrors.email}</p>
+                  <p id="email-error" className="mt-1 text-sm text-red-400 flex items-center">
+                    <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+                    </svg>
+                    {formErrors.email}
+                  </p>
                 )}
               </div>
             </div>
@@ -145,18 +175,31 @@ const ContactSection = () => {
             </div>
             
             <div>
-              <Label htmlFor="message" className="text-gray-100">Message</Label>
+              <Label htmlFor="message" className="text-gray-100 flex items-center">
+                Message <span className="text-red-400 ml-1">*</span>
+              </Label>
               <Textarea
                 id="message"
                 name="message"
                 rows={4}
                 value={formData.message}
                 onChange={handleChange}
+                required
+                aria-required="true"
+                aria-invalid={!!formErrors.message}
+                aria-describedby={formErrors.message ? "message-error" : undefined}
+                placeholder="Tell us how we can help with your workflow automation needs..."
                 className={`w-full px-4 py-3 bg-navy-light border border-gray-600 rounded-md
-                          text-white focus:ring-2 focus:ring-cyan resize-none ${formErrors.message ? 'border-red-500' : ''}`}
+                          text-white focus:ring-2 focus:ring-cyan focus:border-cyan 
+                          resize-none ${formErrors.message ? 'border-red-500 focus:ring-red-400' : ''}`}
               />
               {formErrors.message && (
-                <p className="mt-1 text-sm text-red-400">{formErrors.message}</p>
+                <p id="message-error" className="mt-1 text-sm text-red-400 flex items-center">
+                  <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+                  </svg>
+                  {formErrors.message}
+                </p>
               )}
             </div>
             
@@ -164,12 +207,26 @@ const ContactSection = () => {
               <Button 
                 type="submit" 
                 className="w-full bg-cyan hover:bg-cyan-light text-navy font-semibold text-sm md:text-base py-3 px-8 
-                         rounded-md transition-colors duration-300 transform hover:scale-105 
-                         flex items-center justify-center h-auto"
+                         rounded-md transition-all duration-300 transform hover:scale-105 
+                         flex items-center justify-center h-auto
+                         focus:ring-2 focus:ring-cyan-light focus:ring-offset-2 
+                         focus:ring-offset-navy focus:outline-none active:translate-y-0.5
+                         shadow-lg shadow-cyan/20 hover:shadow-cyan/30"
+                aria-label="Submit contact form"
+                title="Send your message to our team"
               >
                 Send Request
-                <ArrowRight className="h-5 w-5 ml-2" />
+                <ArrowRight className="h-5 w-5 ml-2" aria-hidden="true" />
               </Button>
+              
+              <div className="mt-4 text-center text-sm text-gray-300">
+                <p className="flex items-center justify-center">
+                  <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 mr-2 text-cyan" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                  </svg>
+                  Fields marked with <span className="text-red-400 mx-1">*</span> are required
+                </p>
+              </div>
             </div>
           </form>
         </div>
