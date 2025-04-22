@@ -136,13 +136,18 @@ const Footer = () => {
           </div>
         </div>
         
-        <div className="mt-10 pt-6 border-t border-gray-700">
-          <div className="flex flex-col md:flex-row justify-between items-center">
-            <div className="flex items-center mb-6 md:mb-0">
-              <LogoIcon className="h-8 w-auto" aria-hidden="true" />
-              <span className="ml-3 text-gray-300 text-sm">&copy; {new Date().getFullYear()} Softworks Trading Company. All rights reserved.</span>
+        <div className="mt-10 pt-8 border-t border-gray-700">
+          <div className="text-center mb-8">
+            <LogoIcon className="h-16 w-16 mx-auto" isWhite={true} aria-hidden="true" />
+          </div>
+          
+          <div className="flex flex-col items-center">
+            <div className="text-center mb-6">
+              <span className="text-gray-300 text-base">&copy; {new Date().getFullYear()} Softworks Trading Company.</span>
+              <div className="text-gray-300 mt-1">All rights reserved.</div>
             </div>
-            <div className="flex flex-wrap justify-center md:justify-end gap-6">
+            
+            <div className="flex flex-wrap justify-center gap-8 mb-6">
               {["Privacy Policy", "Terms of Service", "Cookie Policy"].map((policy) => (
                 <a key={policy} href="#" className="text-gray-300 hover:text-cyan transition-colors text-sm">
                   {policy}
