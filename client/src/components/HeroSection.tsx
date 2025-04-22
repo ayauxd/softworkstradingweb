@@ -2,10 +2,10 @@ import { Button } from "@/components/ui/button";
 import neuralBackgroundSrc from "../assets/neural-background-prominent.svg";
 
 interface HeroSectionProps {
-  onTalkToArchitect: () => void;
+  onTalkToExpert: () => void;
 }
 
-const HeroSection = ({ onTalkToArchitect }: HeroSectionProps) => {
+const HeroSection = ({ onTalkToExpert: onTalkToArchitect }: HeroSectionProps) => {
   const scrollToContact = () => {
     const contactSection = document.getElementById("contact");
     if (contactSection) {
