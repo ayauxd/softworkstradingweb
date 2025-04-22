@@ -48,7 +48,7 @@ const Header = () => {
 
   return (
     <header 
-      className={`fixed top-0 w-full bg-soft-white dark:bg-navy-dark z-50 transition-all transform duration-300 border-b border-neutral-300 dark:border-neutral-700 ${
+      className={`fixed top-0 w-full bg-soft-white dark:bg-navy-dark z-50 transition-all duration-300 border-b border-neutral-300 dark:border-neutral-700 ${
         scrolled ? "shadow-md" : ""
       }`}
       role="banner"
@@ -56,14 +56,14 @@ const Header = () => {
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center py-4">
           {/* Logo - Left Side */}
-          <div className="flex-shrink-0 mr-auto">
+          <div>
             <a 
               href="#home" 
               className="flex items-center group focus:outline-none focus-visible:ring-2 focus-visible:ring-cyan rounded-md" 
               onClick={(e) => { e.preventDefault(); scrollToSection("home"); }}
               aria-label="Softworks Trading Co Home"
             >
-              <LogoIcon className="h-10 w-auto" aria-hidden="true" />
+              <LogoIcon className="h-10 w-auto" />
               <span className="ml-2 text-sm sm:text-base md:text-lg font-semibold text-navy dark:text-soft-white group-hover:text-cyan dark:group-hover:text-cyan-light transition-colors truncate max-w-[150px] sm:max-w-none">
                 <span className="hidden xs:inline">Softworks</span> Trading Co
               </span>
@@ -71,7 +71,7 @@ const Header = () => {
           </div>
           
           {/* Right Side Content - Navigation and Controls */}
-          <div className="flex items-center">
+          <div className="flex items-center space-x-2">
             {/* Desktop Navigation */}
             <nav className="hidden md:flex items-center space-x-6 mr-6" aria-label="Main Navigation">
               {["home", "services", "how-it-works", "insights", "contact"].map((item) => (
@@ -87,44 +87,29 @@ const Header = () => {
               ))}
             </nav>
             
-            {/* Controls - Specifically removing any text nodes between buttons */}
-            <div className="flex items-center gap-2">
-              <button 
-                onClick={toggleTheme} 
-                className="p-2 rounded-full hover:bg-gray-200 dark:hover:bg-navy-light transition-all duration-300 
-                          focus:outline-none focus-visible:ring-2 focus-visible:ring-cyan focus-visible:ring-offset-2 focus-visible:ring-offset-soft-white 
-                          dark:focus-visible:ring-offset-navy-dark active:scale-95"
-                aria-label={theme === "dark" ? "Switch to light mode" : "Switch to dark mode"}
-              >
-                {theme === "dark" ? 
-                  <Sun className="h-5 w-5 text-soft-white" /> : 
-                  <Moon className="h-5 w-5 text-navy" />
-                }
-              </button>
-              
-              <button
-                onClick={toggleMobileMenu}
-                className="p-3 md:hidden rounded-full hover:bg-gray-200 dark:hover:bg-navy-light transition-all duration-300
-                          focus:outline-none focus-visible:ring-2 focus-visible:ring-cyan focus-visible:ring-offset-2 focus-visible:ring-offset-soft-white 
-                          dark:focus-visible:ring-offset-navy-dark active:scale-95"
-                aria-label="Toggle navigation menu"
-                aria-expanded={mobileMenuOpen}
-                aria-controls="mobile-menu"
-              >
-                <div className="relative w-6 h-6 flex items-center justify-center">
-                  <Menu 
-                    className={`absolute h-6 w-6 text-navy dark:text-soft-white transition-all duration-300 ${
-                      mobileMenuOpen ? "opacity-0 rotate-90 scale-0" : "opacity-100 rotate-0 scale-100"
-                    }`} 
-                  />
-                  <X 
-                    className={`absolute h-6 w-6 text-navy dark:text-soft-white transition-all duration-300 ${
-                      mobileMenuOpen ? "opacity-100 rotate-0 scale-100" : "opacity-0 rotate-90 scale-0"
-                    }`} 
-                  />
-                </div>
-              </button>
-            </div>
+            {/* Theme Toggle Button */}
+            <button 
+              onClick={toggleTheme} 
+              className="p-2 rounded-full hover:bg-gray-200 dark:hover:bg-navy-light transition-all duration-300 focus:outline-none"
+              aria-label={theme === "dark" ? "Switch to light mode" : "Switch to dark mode"}
+            >
+              {theme === "dark" ? (
+                <Sun className="h-5 w-5 text-soft-white" />
+              ) : (
+                <Moon className="h-5 w-5 text-navy" />
+              )}
+            </button>
+            
+            {/* Mobile Menu Button */}
+            <button
+              onClick={toggleMobileMenu}
+              className="p-2 md:hidden rounded-full hover:bg-gray-200 dark:hover:bg-navy-light transition-all duration-300 focus:outline-none"
+              aria-label="Toggle navigation menu"
+              aria-expanded={mobileMenuOpen}
+              aria-controls="mobile-menu"
+            >
+              <Menu className="h-6 w-6 text-navy dark:text-soft-white" />
+            </button>
           </div>
         </div>
         
@@ -134,7 +119,6 @@ const Header = () => {
           className={`md:hidden overflow-hidden transition-all duration-300 ease-in-out ${
             mobileMenuOpen ? "max-h-[300px] opacity-100 border-t border-gray-200 dark:border-navy-light" : "max-h-0 opacity-0 border-none"
           } bg-soft-white dark:bg-navy-dark`}
-          aria-hidden={!mobileMenuOpen}
         >
           <nav className="flex flex-col p-4" aria-label="Mobile Navigation">
             {["home", "services", "how-it-works", "insights", "contact"].map((item, index) => (
@@ -165,7 +149,6 @@ const Header = () => {
                   strokeLinecap="round" 
                   strokeLinejoin="round" 
                   className="text-cyan"
-                  aria-hidden="true"
                 >
                   <polyline points="9 18 15 12 9 6"></polyline>
                 </svg>
