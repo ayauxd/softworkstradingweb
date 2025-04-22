@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { useTheme } from "../hooks/use-theme-toggle";
 import LogoIcon from "./LogoIcon";
 import { Link } from "wouter";
-import { Moon, Sun, Linkedin, Mail, Menu, X } from "lucide-react";
+import { Moon, Sun, Menu, X } from "lucide-react";
 
 const Header = () => {
   const { theme, setTheme } = useTheme();
