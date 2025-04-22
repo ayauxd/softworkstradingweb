@@ -55,24 +55,23 @@ const Header = () => {
     >
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center py-4">
-          {/* Logo with text - Left Side */}
-          <div className="flex items-center flex-1">
+          {/* Logo and Name - Left Side */}
+          <div className="flex items-center">
             <a 
               href="#home" 
               className="flex items-center group focus:outline-none focus-visible:ring-2 focus-visible:ring-cyan rounded-md" 
               onClick={(e) => { e.preventDefault(); scrollToSection("home"); }}
-              aria-label="Softworks Trading Co Home"
+              aria-label="Softworks Home"
             >
-              <LogoIcon className="h-10 w-auto flex-shrink-0" />
-              <span className="ml-2 text-sm sm:text-base md:text-lg font-semibold text-navy dark:text-soft-white whitespace-nowrap">
-                <span className="inline">Softworks</span>
-                <span className="hidden sm:inline"> Trading Co</span>
+              <LogoIcon className="h-9 w-auto" />
+              <span className="ml-2 text-sm sm:text-base font-semibold text-navy dark:text-soft-white whitespace-nowrap">
+                Softworks
               </span>
             </a>
           </div>
           
           {/* Right Side Content - Controls */}
-          <div className="flex items-center space-x-2 sm:space-x-4 ml-2 flex-shrink-0">
+          <div className="flex items-center space-x-2 sm:space-x-4">
             {/* Desktop Navigation */}
             <nav className="hidden md:flex items-center space-x-6" aria-label="Main Navigation">
               {["home", "services", "how-it-works", "insights", "contact"].map((item) => (
