@@ -55,8 +55,8 @@ const Header = () => {
     >
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center py-4">
-          {/* Logo - Left Side */}
-          <div>
+          {/* Logo with text - Left Side */}
+          <div className="flex items-center">
             <a 
               href="#home" 
               className="flex items-center group focus:outline-none focus-visible:ring-2 focus-visible:ring-cyan rounded-md" 
@@ -64,17 +64,17 @@ const Header = () => {
               aria-label="Softworks Trading Co Home"
             >
               <LogoIcon className="h-10 w-auto" />
-              <span className="ml-2 text-sm sm:text-base md:text-lg font-semibold text-navy dark:text-soft-white group-hover:text-cyan dark:group-hover:text-cyan-light transition-colors">
-                <span className="hidden xs:inline">Softworks</span>
-                <span className="inline xs:inline">Trading Co</span>
-              </span>
+              <div className="ml-2 font-semibold text-navy dark:text-soft-white">
+                <div className="text-sm sm:text-base md:text-lg">Softworks</div>
+                <div className="text-xs sm:text-sm">Trading Co</div>
+              </div>
             </a>
           </div>
           
-          {/* Right Side Content - Navigation and Controls */}
-          <div className="flex items-center space-x-2">
+          {/* Right Side Content - Controls */}
+          <div className="flex items-center space-x-4">
             {/* Desktop Navigation */}
-            <nav className="hidden md:flex items-center space-x-6 mr-6" aria-label="Main Navigation">
+            <nav className="hidden md:flex items-center space-x-6" aria-label="Main Navigation">
               {["home", "services", "how-it-works", "insights", "contact"].map((item) => (
                 <a 
                   key={item}
