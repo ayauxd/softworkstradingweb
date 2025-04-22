@@ -1,10 +1,10 @@
 import { Button } from "@/components/ui/button";
 
 interface ServicesSectionProps {
-  onTalkToArchitect?: () => void;
+  onTalkToExpert?: () => void;
 }
 
-const ServicesSection = ({ onTalkToArchitect }: ServicesSectionProps) => {
+const ServicesSection = ({ onTalkToExpert: onTalkToArchitect }: ServicesSectionProps) => {
   const services = [
     {
       title: "AI Setup Support",
