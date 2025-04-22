@@ -18,7 +18,7 @@ const HeroSection = ({ onTalkToAgent }: HeroSectionProps) => {
   };
 
   return (
-    <section id="home" className="relative min-h-[90vh] bg-[#0D3456] dark:bg-[#051525] text-soft-white pt-24 pb-32 md:py-24 transition-colors duration-300 overflow-hidden flex items-center">
+    <section id="home" className="relative min-h-[90vh] bg-[#0D3456] dark:bg-[#051525] text-soft-white pt-20 pb-32 md:pt-24 md:pb-24 transition-colors duration-300 overflow-hidden flex items-center">
       {/* Pulsating Neural Background - Different overlay colors for light/dark modes */}
       <div className="absolute inset-0 z-0 bg-gradient-to-b from-[#0D3456]/80 to-[#0D3456]/60 dark:from-[#051525]/90 dark:to-[#051525]/70">
         <img 
