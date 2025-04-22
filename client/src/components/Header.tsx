@@ -1,11 +1,13 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useTheme } from "../hooks/use-theme-toggle";
 import LogoIcon from "./LogoIcon";
-import { Moon, Sun, Menu } from "lucide-react";
+import { Link } from "wouter";
+import { Moon, Sun, Menu, X } from "lucide-react";
 
 const Header = () => {
   const { theme, setTheme } = useTheme();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
   
   const toggleTheme = () => {
     setTheme(theme === "dark" ? "light" : "dark");
@@ -14,6 +16,22 @@ const Header = () => {
   const toggleMobileMenu = () => {
     setMobileMenuOpen(!mobileMenuOpen);
   };
+  
+  // Handle scroll event to add shadow to header when scrolled
+  useEffect(() => {
+    const handleScroll = () => {
+      if (window.scrollY > 10) {
+        setScrolled(true);
+      } else {
+        setScrolled(false);
+      }
+    };
+    
+    window.addEventListener("scroll", handleScroll);
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, []);
   
   // Handle smooth scrolling
   const scrollToSection = (id: string) => {
@@ -29,77 +47,118 @@ const Header = () => {
   };
 
   return (
-    <div className="fixed top-0 left-0 right-0 z-50 bg-white dark:bg-navy-dark shadow-md border-b border-gray-200 dark:border-gray-800">
-      {/* Simple header for all screen sizes */}
-      <div className="px-4">
-        <div className="flex justify-between items-center h-16">
-          {/* Logo and Softworks text on left */}
-          <div>
+    <header 
+      className={`fixed top-0 w-full bg-soft-white dark:bg-navy-dark z-50 transition-all duration-300 border-b border-neutral-300 dark:border-neutral-700 ${
+        scrolled ? "shadow-md" : ""
+      }`}
+      role="banner"
+    >
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="flex justify-between items-center py-4">
+          {/* Logo with text - Left Side */}
+          <div className="flex items-center flex-1">
             <a 
               href="#home" 
+              className="flex items-center group focus:outline-none focus-visible:ring-2 focus-visible:ring-cyan rounded-md" 
               onClick={(e) => { e.preventDefault(); scrollToSection("home"); }}
-              className="flex items-center"
-              aria-label="Softworks Home"
+              aria-label="Softworks Trading Co Home"
             >
-              <LogoIcon className="h-8 w-auto" />
-              <span className="ml-2 text-base font-semibold text-navy dark:text-white">
-                Softworks
+              <LogoIcon className="h-10 w-auto flex-shrink-0" />
+              <span className="ml-2 text-sm sm:text-base md:text-lg font-semibold text-navy dark:text-soft-white whitespace-nowrap">
+                <span className="inline">Softworks</span>
+                <span className="hidden sm:inline"> Trading Co</span>
               </span>
             </a>
           </div>
           
-          {/* Controls on right */}
-          <div className="flex items-center space-x-2">
-            {/* Theme toggle */}
-            <button 
-              onClick={toggleTheme}
-              className="p-2 rounded-md hover:bg-gray-100 dark:hover:bg-navy-light"
-              aria-label={theme === "dark" ? "Switch to light mode" : "Switch to dark mode"}
-            >
-              {theme === "dark" ? (
-                <Sun className="h-5 w-5 text-white" />
-              ) : (
-                <Moon className="h-5 w-5 text-navy" />
-              )}
-            </button>
-            
-            {/* Mobile menu button */}
-            <button
-              onClick={toggleMobileMenu}
-              className="p-2 rounded-md hover:bg-gray-100 dark:hover:bg-navy-light"
-              aria-label="Toggle menu"
-              aria-expanded={mobileMenuOpen}
-            >
-              <Menu className="h-5 w-5 text-navy dark:text-white" />
-            </button>
-          </div>
-        </div>
-      </div>
-      
-      {/* Mobile menu dropdown */}
-      {mobileMenuOpen && (
-        <div className="absolute top-16 left-0 right-0 bg-white dark:bg-navy-dark border-t border-gray-100 dark:border-gray-800 shadow-lg z-50">
-          <div className="px-4 py-2">
-            <nav>
-              {["home", "services", "how-it-works", "insights", "contact"].map((item, index) => (
-                <a
+          {/* Right Side Content - Controls */}
+          <div className="flex items-center space-x-2 sm:space-x-4 ml-2 flex-shrink-0">
+            {/* Desktop Navigation */}
+            <nav className="hidden md:flex items-center space-x-6" aria-label="Main Navigation">
+              {["home", "services", "how-it-works", "insights", "contact"].map((item) => (
+                <a 
                   key={item}
-                  href={`#${item}`}
-                  className="block py-4 text-base text-navy dark:text-white hover:text-cyan border-b border-gray-100 dark:border-gray-800 last:border-0 font-medium"
-                  onClick={(e) => {
-                    e.preventDefault();
-                    scrollToSection(item);
-                    toggleMobileMenu();
-                  }}
+                  href={`#${item}`} 
+                  className="text-navy dark:text-soft-white hover:text-cyan dark:hover:text-cyan-light font-medium transition-colors px-2 py-1 rounded-md focus:outline-none focus-visible:ring-2 focus-visible:ring-cyan"
+                  onClick={(e) => { e.preventDefault(); scrollToSection(item); }}
+                  aria-current={item === "home" ? "page" : undefined}
                 >
                   {item.charAt(0).toUpperCase() + item.slice(1).replace(/-/g, " ")}
                 </a>
               ))}
             </nav>
+            
+            {/* Theme Toggle Button */}
+            <button 
+              onClick={toggleTheme} 
+              className="p-2 rounded-full hover:bg-gray-200 dark:hover:bg-navy-light transition-all duration-300 focus:outline-none"
+              aria-label={theme === "dark" ? "Switch to light mode" : "Switch to dark mode"}
+            >
+              {theme === "dark" ? (
+                <Sun className="h-5 w-5 text-soft-white" />
+              ) : (
+                <Moon className="h-5 w-5 text-navy" />
+              )}
+            </button>
+            
+            {/* Mobile Menu Button */}
+            <button
+              onClick={toggleMobileMenu}
+              className="p-2 md:hidden rounded-full hover:bg-gray-200 dark:hover:bg-navy-light transition-all duration-300 focus:outline-none"
+              aria-label="Toggle navigation menu"
+              aria-expanded={mobileMenuOpen}
+              aria-controls="mobile-menu"
+            >
+              <Menu className="h-6 w-6 text-navy dark:text-soft-white" />
+            </button>
           </div>
         </div>
-      )}
-    </div>
+        
+        {/* Mobile Navigation Menu */}
+        <div 
+          id="mobile-menu"
+          className={`md:hidden overflow-hidden transition-all duration-300 ease-in-out ${
+            mobileMenuOpen ? "max-h-[300px] opacity-100 border-t border-gray-200 dark:border-navy-light" : "max-h-0 opacity-0 border-none"
+          } bg-soft-white dark:bg-navy-dark`}
+        >
+          <nav className="flex flex-col p-4" aria-label="Mobile Navigation">
+            {["home", "services", "how-it-works", "insights", "contact"].map((item, index) => (
+              <a 
+                key={item}
+                href={`#${item}`} 
+                className={`text-navy dark:text-soft-white hover:text-cyan dark:hover:text-cyan-light font-medium 
+                           transition-colors px-3 py-3 rounded-md focus:outline-none focus-visible:ring-2 focus-visible:ring-cyan
+                           flex items-center justify-between ${
+                             index < 4 ? "border-b border-gray-100 dark:border-navy-light" : ""
+                           }`}
+                onClick={(e) => { 
+                  e.preventDefault(); 
+                  scrollToSection(item);
+                  toggleMobileMenu(); // Close mobile menu when an item is clicked
+                }}
+                aria-current={item === "home" ? "page" : undefined}
+              >
+                <span>{item.charAt(0).toUpperCase() + item.slice(1).replace(/-/g, " ")}</span>
+                <svg 
+                  xmlns="http://www.w3.org/2000/svg" 
+                  width="16" 
+                  height="16" 
+                  viewBox="0 0 24 24" 
+                  fill="none" 
+                  stroke="currentColor" 
+                  strokeWidth="2" 
+                  strokeLinecap="round" 
+                  strokeLinejoin="round" 
+                  className="text-cyan"
+                >
+                  <polyline points="9 18 15 12 9 6"></polyline>
+                </svg>
+              </a>
+            ))}
+          </nav>
+        </div>
+      </div>
+    </header>
   );
 };
 
