@@ -30,7 +30,7 @@ const Header = () => {
 
   return (
     <header 
-      className="fixed top-0 w-full bg-white dark:bg-navy-dark z-50 transition-all duration-300 border-b border-neutral-200 dark:border-neutral-700 shadow-sm"
+      className="absolute top-0 left-0 right-0 w-full bg-white/90 dark:bg-navy-dark/95 backdrop-blur-sm z-[100] transition-colors duration-300 border-b border-neutral-200 dark:border-neutral-700 shadow-sm"
       role="banner"
     >
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
