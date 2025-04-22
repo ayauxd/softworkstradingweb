@@ -5,18 +5,18 @@ const HowItWorksSection = () => {
     <div>
       <section id="how-it-works" className="bg-slate-100 dark:bg-slate-800 text-slate-800 dark:text-white py-16 pb-24 transition-colors duration-300">
         <div className="max-w-screen-xl mx-auto px-4">
-          <h2 className="text-2xl font-semibold text-slate-800 dark:text-white text-center mb-10">
+          <h2 className="text-3xl md:text-4xl font-bold text-slate-800 dark:text-white text-center mb-10">
             Easy Steps to Start Automating
           </h2>
           
           <div className="max-w-5xl mx-auto flex flex-col md:flex-row gap-y-8 md:gap-x-12 text-center">
             {/* Step 1 */}
             <div className="flex-1 flex flex-col items-center">
-              <div className="bg-cyan/10 dark:bg-cyan/20 rounded-full p-5 mb-4">
+              <div className="bg-cyan/20 dark:bg-cyan/30 rounded-full p-5 mb-4 shadow-md">
                 <MessageSquare className="h-10 w-10 text-cyan" aria-hidden="true" />
               </div>
-              <h3 className="text-xl font-semibold mb-3 text-slate-800 dark:text-white">Tell Us Your Needs</h3>
-              <p className="text-sm md:text-base text-slate-600 dark:text-slate-300">
+              <h3 className="text-xl font-bold mb-3 text-slate-800 dark:text-white">Tell Us Your Needs</h3>
+              <p className="text-sm md:text-base text-slate-600 dark:text-slate-300 max-w-xs mx-auto">
                 Discuss your routine tasks and identify areas ready for AI automation.
               </p>
             </div>
@@ -30,11 +30,11 @@ const HowItWorksSection = () => {
             
             {/* Step 2 */}
             <div className="flex-1 flex flex-col items-center">
-              <div className="bg-cyan/10 dark:bg-cyan/20 rounded-full p-5 mb-4">
+              <div className="bg-cyan/20 dark:bg-cyan/30 rounded-full p-5 mb-4 shadow-md">
                 <FileText className="h-10 w-10 text-cyan" aria-hidden="true" />
               </div>
-              <h3 className="text-xl font-semibold mb-3 text-slate-800 dark:text-white">Get a Custom Plan</h3>
-              <p className="text-sm md:text-base text-slate-600 dark:text-slate-300">
+              <h3 className="text-xl font-bold mb-3 text-slate-800 dark:text-white">Get a Custom Plan</h3>
+              <p className="text-sm md:text-base text-slate-600 dark:text-slate-300 max-w-xs mx-auto">
                 Receive a simple, actionable AI workflow designed specifically for your tasks.
               </p>
             </div>
@@ -48,11 +48,11 @@ const HowItWorksSection = () => {
             
             {/* Step 3 */}
             <div className="flex-1 flex flex-col items-center">
-              <div className="bg-cyan/10 dark:bg-cyan/20 rounded-full p-5 mb-4">
+              <div className="bg-cyan/20 dark:bg-cyan/30 rounded-full p-5 mb-4 shadow-md">
                 <Rocket className="h-10 w-10 text-cyan" aria-hidden="true" />
               </div>
-              <h3 className="text-xl font-semibold mb-3 text-slate-800 dark:text-white">Implement and Improve</h3>
-              <p className="text-sm md:text-base text-slate-600 dark:text-slate-300">
+              <h3 className="text-xl font-bold mb-3 text-slate-800 dark:text-white">Implement and Improve</h3>
+              <p className="text-sm md:text-base text-slate-600 dark:text-slate-300 max-w-xs mx-auto">
                 Quickly start using your new automation and easily refine it for better results.
               </p>
             </div>
