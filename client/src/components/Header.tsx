@@ -79,23 +79,32 @@ const Header = () => {
             {/* Theme Toggle */}
             <button 
               onClick={toggleTheme} 
-              className="p-1 rounded-full hover:bg-gray-200 dark:hover:bg-navy-light transition-colors"
+              className="p-2 rounded-full hover:bg-gray-200 dark:hover:bg-navy-light transition-all duration-300 
+                        focus:outline-none focus:ring-2 focus:ring-cyan focus:ring-offset-2 focus:ring-offset-soft-white 
+                        dark:focus:ring-offset-navy-dark active:scale-95"
               aria-label={theme === "dark" ? "Switch to light mode" : "Switch to dark mode"}
+              title={theme === "dark" ? "Enable light theme" : "Enable dark theme"}
             >
               {theme === "dark" ? (
-                <Sun className="h-6 w-6 text-soft-white" />
+                <Sun className="h-5 w-5 text-soft-white" />
               ) : (
-                <Moon className="h-6 w-6 text-navy" />
+                <Moon className="h-5 w-5 text-navy" />
               )}
+              <span className="sr-only">{theme === "dark" ? "Light mode" : "Dark mode"}</span>
             </button>
             
             {/* Mobile Menu Button */}
             <button
               onClick={toggleMobileMenu}
-              className="p-1 md:hidden rounded-full hover:bg-gray-200 dark:hover:bg-navy-light transition-colors"
+              className="p-2 md:hidden rounded-full hover:bg-gray-200 dark:hover:bg-navy-light transition-all duration-300
+                        focus:outline-none focus:ring-2 focus:ring-cyan focus:ring-offset-2 focus:ring-offset-soft-white 
+                        dark:focus:ring-offset-navy-dark active:scale-95"
               aria-label="Toggle mobile menu"
+              aria-expanded={mobileMenuOpen}
+              title={mobileMenuOpen ? "Close navigation menu" : "Open navigation menu"}
             >
-              <Menu className="h-6 w-6 text-navy dark:text-soft-white" />
+              <Menu className="h-5 w-5 text-navy dark:text-soft-white" />
+              <span className="sr-only">{mobileMenuOpen ? "Close menu" : "Open menu"}</span>
             </button>
           </div>
         </div>

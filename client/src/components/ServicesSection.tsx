@@ -49,8 +49,9 @@ const ServicesSection = ({ onTalkToAgent }: ServicesSectionProps) => {
               <div className="h-48 bg-gray-200 dark:bg-navy-dark overflow-hidden">
                 <img 
                   src={service.imageUrl} 
-                  alt={service.title}
+                  alt={service.alt}
                   className="w-full h-full object-cover"
+                  loading="lazy"
                 />
               </div>
               <div className="p-6">
@@ -68,9 +69,11 @@ const ServicesSection = ({ onTalkToAgent }: ServicesSectionProps) => {
         <div className="mt-12 text-center">
           <Button 
             onClick={onTalkToAgent}
-            className="bg-cyan hover:bg-cyan-light text-navy font-semibold text-sm md:text-base py-3 px-8 rounded-md transition-all duration-300 transform hover:scale-105 h-auto shadow-lg shadow-cyan/20 hover:shadow-cyan/30"
+            className="bg-cyan hover:bg-cyan-light text-navy font-semibold text-sm md:text-base py-3 px-8 rounded-md transition-all duration-300 transform hover:scale-105 h-auto shadow-lg shadow-cyan/20 hover:shadow-cyan/30 focus:ring-2 focus:ring-cyan focus:ring-offset-2 focus:ring-offset-white dark:focus:ring-offset-navy active:translate-y-0.5"
+            aria-label="Talk to a representative about our services"
+            title="Find out more about our automation services"
           >
-            Learn More
+            Learn More About Our Services
           </Button>
         </div>
       </div>

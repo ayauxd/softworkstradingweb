@@ -58,8 +58,11 @@ const InsightsSection = () => {
                   <p className="text-base text-neutral-gray dark:text-gray-300 mb-3">
                     {insight.description}
                   </p>
-                  <p className="text-cyan hover:text-cyan-light dark:text-cyan-light dark:hover:text-cyan transition-colors font-medium text-sm">
-                    Continue article...
+                  <p className="text-cyan hover:text-cyan-light dark:text-cyan-light dark:hover:text-cyan transition-colors font-medium text-sm flex items-center">
+                    Continue article... <span className="sr-only">about {insight.title}</span>
+                    <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 ml-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                    </svg>
                   </p>
                 </CardContent>
               </Card>
@@ -71,9 +74,14 @@ const InsightsSection = () => {
           <Button 
             asChild
             className="inline-block bg-navy dark:bg-cyan hover:bg-navy-light dark:hover:bg-cyan-light 
-                     text-soft-white dark:text-navy font-medium py-2 px-6 rounded-md transition-colors duration-300"
+                     text-soft-white dark:text-navy font-medium py-2 px-6 rounded-md transition-colors duration-300
+                     focus:ring-2 focus:ring-navy-light dark:focus:ring-cyan-light focus:ring-offset-2 
+                     focus:ring-offset-soft-white dark:focus:ring-offset-navy active:translate-y-0.5 shadow-md"
           >
-            <a href="/articles">View All Articles</a>
+            <a href="/articles" aria-label="Browse all published articles and insights">
+              View All Articles
+              <span className="sr-only"> - Browse our complete publication archive</span>
+            </a>
           </Button>
         </div>
       </div>
