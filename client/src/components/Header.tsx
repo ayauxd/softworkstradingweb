@@ -54,9 +54,9 @@ const Header = () => {
       role="banner"
     >
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center py-4">
+        <div className="flex justify-between items-center py-4">
           {/* Logo - Left Side */}
-          <div className="flex-1">
+          <div>
             <a 
               href="#home" 
               className="flex items-center group focus:outline-none focus-visible:ring-2 focus-visible:ring-cyan rounded-md" 
@@ -88,7 +88,7 @@ const Header = () => {
             </nav>
             
             {/* Controls */}
-            <div className="flex items-center space-x-4">
+            <div className="flex items-center">
               {/* Theme Toggle */}
               <button 
                 onClick={toggleTheme} 
@@ -109,7 +109,7 @@ const Header = () => {
               {/* Mobile Menu Button - Increased size and tap area for mobile */}
               <button
                 onClick={toggleMobileMenu}
-                className="p-3 md:hidden rounded-full hover:bg-gray-200 dark:hover:bg-navy-light transition-all duration-300
+                className="p-3 ml-2 md:hidden rounded-full hover:bg-gray-200 dark:hover:bg-navy-light transition-all duration-300
                           focus:outline-none focus-visible:ring-2 focus-visible:ring-cyan focus-visible:ring-offset-2 focus-visible:ring-offset-soft-white 
                           dark:focus-visible:ring-offset-navy-dark active:scale-95"
                 aria-label="Toggle navigation menu"
