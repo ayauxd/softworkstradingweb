@@ -56,7 +56,7 @@ const Header = () => {
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center py-4">
           {/* Logo - Left Side */}
-          <div className="flex-shrink-0">
+          <div className="flex-shrink-0 mr-auto">
             <a 
               href="#home" 
               className="flex items-center group focus:outline-none focus-visible:ring-2 focus-visible:ring-cyan rounded-md" 
@@ -71,7 +71,7 @@ const Header = () => {
           </div>
           
           {/* Right Side Content - Navigation and Controls */}
-          <div className="flex items-center space-x-2">
+          <div className="flex items-center">
             {/* Desktop Navigation */}
             <nav className="hidden md:flex items-center space-x-6 mr-6" aria-label="Main Navigation">
               {["home", "services", "how-it-works", "insights", "contact"].map((item) => (
@@ -87,51 +87,42 @@ const Header = () => {
               ))}
             </nav>
             
-            {/* Controls */}
-            <div className="flex items-center">
-              {/* Theme Toggle - No text, just the icon */}
+            {/* Controls - Specifically removing any text nodes between buttons */}
+            <div className="flex items-center gap-2">
               <button 
                 onClick={toggleTheme} 
                 className="p-2 rounded-full hover:bg-gray-200 dark:hover:bg-navy-light transition-all duration-300 
                           focus:outline-none focus-visible:ring-2 focus-visible:ring-cyan focus-visible:ring-offset-2 focus-visible:ring-offset-soft-white 
                           dark:focus-visible:ring-offset-navy-dark active:scale-95"
                 aria-label={theme === "dark" ? "Switch to light mode" : "Switch to dark mode"}
-                title={theme === "dark" ? "Enable light theme" : "Enable dark theme"}
               >
-                {theme === "dark" ? (
-                  <Sun className="h-5 w-5 text-soft-white" aria-hidden="true" />
-                ) : (
-                  <Moon className="h-5 w-5 text-navy" aria-hidden="true" />
-                )}
-                <span className="sr-only">{theme === "dark" ? "Light mode" : "Dark mode"}</span>
+                {theme === "dark" ? 
+                  <Sun className="h-5 w-5 text-soft-white" /> : 
+                  <Moon className="h-5 w-5 text-navy" />
+                }
               </button>
               
-              {/* Mobile Menu Button - Increased size and tap area for mobile */}
               <button
                 onClick={toggleMobileMenu}
-                className="p-3 ml-2 md:hidden rounded-full hover:bg-gray-200 dark:hover:bg-navy-light transition-all duration-300
+                className="p-3 md:hidden rounded-full hover:bg-gray-200 dark:hover:bg-navy-light transition-all duration-300
                           focus:outline-none focus-visible:ring-2 focus-visible:ring-cyan focus-visible:ring-offset-2 focus-visible:ring-offset-soft-white 
                           dark:focus-visible:ring-offset-navy-dark active:scale-95"
                 aria-label="Toggle navigation menu"
                 aria-expanded={mobileMenuOpen}
                 aria-controls="mobile-menu"
-                title={mobileMenuOpen ? "Close navigation menu" : "Open navigation menu"}
               >
                 <div className="relative w-6 h-6 flex items-center justify-center">
                   <Menu 
                     className={`absolute h-6 w-6 text-navy dark:text-soft-white transition-all duration-300 ${
                       mobileMenuOpen ? "opacity-0 rotate-90 scale-0" : "opacity-100 rotate-0 scale-100"
                     }`} 
-                    aria-hidden="true" 
                   />
                   <X 
                     className={`absolute h-6 w-6 text-navy dark:text-soft-white transition-all duration-300 ${
                       mobileMenuOpen ? "opacity-100 rotate-0 scale-100" : "opacity-0 rotate-90 scale-0"
                     }`} 
-                    aria-hidden="true" 
                   />
                 </div>
-                <span className="sr-only">{mobileMenuOpen ? "Close menu" : "Open menu"}</span>
               </button>
             </div>
           </div>
