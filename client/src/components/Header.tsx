@@ -56,7 +56,7 @@ const Header = () => {
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center py-4">
           {/* Logo - Left Side */}
-          <div>
+          <div className="flex-shrink-0">
             <a 
               href="#home" 
               className="flex items-center group focus:outline-none focus-visible:ring-2 focus-visible:ring-cyan rounded-md" 
@@ -71,7 +71,7 @@ const Header = () => {
           </div>
           
           {/* Right Side Content - Navigation and Controls */}
-          <div className="flex items-center">
+          <div className="flex items-center space-x-2">
             {/* Desktop Navigation */}
             <nav className="hidden md:flex items-center space-x-6 mr-6" aria-label="Main Navigation">
               {["home", "services", "how-it-works", "insights", "contact"].map((item) => (
@@ -89,7 +89,7 @@ const Header = () => {
             
             {/* Controls */}
             <div className="flex items-center">
-              {/* Theme Toggle */}
+              {/* Theme Toggle - No text, just the icon */}
               <button 
                 onClick={toggleTheme} 
                 className="p-2 rounded-full hover:bg-gray-200 dark:hover:bg-navy-light transition-all duration-300 
