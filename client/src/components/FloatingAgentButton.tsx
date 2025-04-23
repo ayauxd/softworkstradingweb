@@ -69,22 +69,14 @@ const FloatingAgentButton = ({ defaultMode = "chat" }: FloatingAgentButtonProps)
         <MessageSquare className="h-6 w-6" />
       </Button>
       
-      {/* Floating Call Button with Animation */}
+      {/* Floating Call Button */}
       <Button
         onClick={() => handleOpenModal("call")}
-        className={`${buttonBaseClass} bottom-[calc(5rem+10px)] right-5 relative`}
+        className={`${buttonBaseClass} bottom-[calc(5rem+10px)] right-5`}
         aria-label="Call a workflow agent"
         tabIndex={0}
       >
-        <Phone className={`h-6 w-6 ${activeMode === 'call' && isModalOpen ? 'animate-pulse' : ''}`} />
-        {/* Ripple effect - only visible when call mode is active */}
-        {activeMode === 'call' && isModalOpen && (
-          <>
-            <span className="absolute inset-0 rounded-full bg-cyan opacity-75 animate-ping"></span>
-            <span className="absolute -inset-1 rounded-full bg-cyan opacity-50 animate-ping" style={{ animationDelay: "0.3s" }}></span>
-            <span className="absolute -inset-2 rounded-full bg-cyan opacity-25 animate-ping" style={{ animationDelay: "0.6s" }}></span>
-          </>
-        )}
+        <Phone className="h-6 w-6" />
       </Button>
       
       {/* Modal */}
