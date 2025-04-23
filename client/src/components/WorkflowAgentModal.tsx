@@ -94,18 +94,6 @@ const WorkflowAgentModal = ({
     }, 2000);
   };
   
-  // If initialMode is "call", automatically start the animation and show form after delay
-  useEffect(() => {
-    if (initialMode === "call" && activeTab === "call" && !showCallbackForm) {
-      // Simulate call animation for 2 seconds then show form
-      const timer = setTimeout(() => {
-        setShowCallbackForm(true);
-      }, 2000);
-      
-      return () => clearTimeout(timer);
-    }
-  }, [initialMode, activeTab]);
-  
   const handleSendMessage = () => {
     if (chatInput.trim()) {
       // Add user message
