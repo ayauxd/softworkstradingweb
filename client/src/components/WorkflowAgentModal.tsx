@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
-import { Send, X, Phone } from "lucide-react";
+import { Send, X, Phone, MessageSquare } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { cn } from "@/lib/utils";
 
@@ -214,8 +214,7 @@ const WorkflowAgentModal = ({
             <div className="mt-6">
               <div className="flex flex-col md:flex-row space-y-4 md:space-y-0 md:space-x-4">
                 <Button 
-                  onClick={handleChatClick} 
-                  variant="outline"
+                  onClick={handleChatClick}
                   className={cn(
                     "flex-1 bg-navy dark:bg-soft-white hover:bg-navy-light dark:hover:bg-gray-200",
                     "text-soft-white dark:text-navy font-medium py-3 px-4 rounded-md",
@@ -225,13 +224,12 @@ const WorkflowAgentModal = ({
                   aria-label="Chat with a workflow agent"
                 >
                   <span className="flex items-center">
-                    <span className="mr-2 text-xl" role="img" aria-hidden="true">💬</span> Chat with an Agent
+                    <MessageSquare className="h-5 w-5 mr-2" /> Chat with an Agent
                   </span>
                 </Button>
                 
                 <Button 
-                  onClick={handleCallClick} 
-                  variant="outline"
+                  onClick={handleCallClick}
                   className={cn(
                     "flex-1 bg-cyan hover:bg-cyan-light text-navy font-medium py-3 px-4",
                     "rounded-md transition-all duration-200 flex items-center justify-center hover:scale-[1.02]",
@@ -240,7 +238,7 @@ const WorkflowAgentModal = ({
                   aria-label="Call a workflow agent"
                 >
                   <span className="flex items-center">
-                    <span className="mr-2 text-xl" role="img" aria-hidden="true">📞</span> Call an Agent
+                    <Phone className="h-5 w-5 mr-2" /> Call an Agent
                   </span>
                 </Button>
               </div>
