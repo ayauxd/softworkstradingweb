@@ -1,0 +1,47 @@
+Please implement the following enhancements to improve accessibility, responsiveness, and interaction quality:
+
+---
+
+### 1. Floating Chat/Call Icon (Persistent on Page)
+
+**Functionality:**
+- Add a floating action button (FAB) in the **bottom-right corner** of every page (`fixed bottom-5 right-5 z-50`).
+- This FAB should allow users to reopen the "Talk to a Workflow Agent" modal at any time.
+- The default state should show a 💬 **chat icon**. After a user initiates a call, it may toggle to 📞 **call icon** for consistency.
+
+**Design Standards:**
+- Follow Material Design / iOS FAB standards:
+  - `rounded-full`, `shadow-md`, `hover:scale-105`, subtle transition (`transition-all duration-200`)
+  - Light Mode: `bg-white text-[#0A2A43]`
+  - Dark Mode: `bg-gray-800 text-white`
+- Mobile responsiveness:
+  - Ensure icon size is tappable (at least `48x48px`)
+  - Provide spacing (`mb-5`, `mr-5`) so it doesn't interfere with other mobile UI elements.
+
+---
+
+### 2. Modal Enhancements (Chat / Call)
+
+**Behavior:**
+- The modal opens when the FAB or hero CTA is clicked.
+- When either **chat** or **call** is selected, show **only the selected interface** (don’t display both toggles).
+- Modal should auto-size based on content but **remain scrollable on small screens**.
+
+**Mobile Optimization:**
+- Use `max-w-screen-sm` for modal width.
+- Ensure all text and buttons are touch-optimized (`text-base`, button height `min-h-[44px]`).
+- Allow **swipe-to-close** or include a visible **close (X)** button in the top-right with `aria-label="Close"`.
+- Animate modal opening/closing with subtle ease transitions.
+
+---
+
+### 3. Accessibility & UX
+
+- All interactive elements must be keyboard-navigable.
+- Add `aria-labels` for icons and close buttons.
+- On mobile, prevent background scroll when modal is open.
+- Consider visual feedback (highlight border or slight shake) if required fields in the call form are left empty on submit.
+
+---
+
+Let me know once complete so I can test the user flow on both desktop and mobile. ✅

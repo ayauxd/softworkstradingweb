@@ -1,11 +1,12 @@
 import { useState, useEffect, useRef } from "react";
-import { Dialog, DialogContent, DialogTitle, DialogDescription } from "@/components/ui/dialog";
+import { Dialog, DialogContent, DialogTitle, DialogDescription, DialogClose } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
-import { MessageSquare, Phone, Send } from "lucide-react";
+import { MessageSquare, Phone, Send, X } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
+import { cn } from "@/lib/utils";
 
 interface WorkflowAgentModalProps {
   onClose: () => void;
@@ -128,8 +129,19 @@ const WorkflowAgentModal = ({
 
   return (
     <Dialog open={true} onOpenChange={onClose}>
-      <DialogContent className="sm:max-w-lg">
-        <DialogTitle>Talk to a Workflow Agent</DialogTitle>
+      <DialogContent className="sm:max-w-screen-sm max-h-[85vh] overflow-y-auto">
+        <div className="flex justify-between items-center">
+          <DialogTitle className="text-lg sm:text-xl">Talk to a Workflow Agent</DialogTitle>
+          <DialogClose asChild>
+            <button 
+              className="rounded-full p-1 hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors focus:outline-none focus:ring-2 focus:ring-cyan"
+              aria-label="Close"
+              tabIndex={0}
+            >
+              <X className="h-5 w-5 text-gray-500" />
+            </button>
+          </DialogClose>
+        </div>
         
         {activeTab === "none" && (
           <>
@@ -194,13 +206,16 @@ const WorkflowAgentModal = ({
                 onChange={(e) => setChatInput(e.target.value)}
                 onKeyDown={handleChatInputKeyDown}
                 placeholder="How can I simplify my daily tasks with AI?"
+                aria-label="Chat message"
                 className="flex-1 px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-l-md 
-                         bg-white dark:bg-navy-dark text-navy dark:text-soft-white focus:ring-2 focus:ring-cyan"
+                         bg-white dark:bg-navy-dark text-navy dark:text-soft-white focus:ring-2 focus:ring-cyan
+                         text-base min-h-[44px]"
               />
               <Button
                 onClick={handleSendMessage}
+                aria-label="Send message"
                 className="bg-cyan hover:bg-cyan-light text-navy font-medium py-2 px-4 
-                         rounded-r-md transition-colors duration-300"
+                         rounded-r-md transition-all duration-200 min-h-[44px]"
               >
                 <Send className="h-5 w-5" />
               </Button>
@@ -248,8 +263,13 @@ const WorkflowAgentModal = ({
                       value={callbackForm.fullName}
                       onChange={handleCallbackFormChange}
                       required
-                      className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-md 
-                              bg-white dark:bg-navy-dark text-navy dark:text-soft-white focus:ring-2 focus:ring-cyan"
+                      className={cn(
+                        "w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-md",
+                        "bg-white dark:bg-navy-dark text-navy dark:text-soft-white", 
+                        "focus:ring-2 focus:ring-cyan text-base min-h-[44px]",
+                        "transition-all duration-200",
+                        !callbackForm.fullName && "focus:ring-2 focus:ring-red-400 focus:border-red-400"
+                      )}
                     />
                   </div>
                   
@@ -264,8 +284,13 @@ const WorkflowAgentModal = ({
                       value={callbackForm.workEmail}
                       onChange={handleCallbackFormChange}
                       required
-                      className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-md 
-                              bg-white dark:bg-navy-dark text-navy dark:text-soft-white focus:ring-2 focus:ring-cyan"
+                      className={cn(
+                        "w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-md",
+                        "bg-white dark:bg-navy-dark text-navy dark:text-soft-white", 
+                        "focus:ring-2 focus:ring-cyan text-base min-h-[44px]",
+                        "transition-all duration-200",
+                        !callbackForm.workEmail && "focus:ring-2 focus:ring-red-400 focus:border-red-400"
+                      )}
                     />
                   </div>
                   
@@ -279,8 +304,12 @@ const WorkflowAgentModal = ({
                       name="companyName"
                       value={callbackForm.companyName}
                       onChange={handleCallbackFormChange}
-                      className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-md 
-                              bg-white dark:bg-navy-dark text-navy dark:text-soft-white focus:ring-2 focus:ring-cyan"
+                      className={cn(
+                        "w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-md",
+                        "bg-white dark:bg-navy-dark text-navy dark:text-soft-white", 
+                        "focus:ring-2 focus:ring-cyan text-base min-h-[44px]",
+                        "transition-all duration-200"
+                      )}
                     />
                   </div>
                   
@@ -295,8 +324,13 @@ const WorkflowAgentModal = ({
                       value={callbackForm.message}
                       onChange={handleCallbackFormChange}
                       required
-                      className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-md 
-                               bg-white dark:bg-navy-dark text-navy dark:text-soft-white focus:ring-2 focus:ring-cyan resize-none"
+                      className={cn(
+                        "w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-md",
+                        "bg-white dark:bg-navy-dark text-navy dark:text-soft-white", 
+                        "focus:ring-2 focus:ring-cyan text-base",
+                        "transition-all duration-200 resize-none",
+                        !callbackForm.message && "focus:ring-2 focus:ring-red-400 focus:border-red-400"
+                      )}
                     />
                   </div>
                   
@@ -311,16 +345,24 @@ const WorkflowAgentModal = ({
                       value={callbackForm.callbackTime}
                       onChange={handleCallbackFormChange}
                       placeholder="e.g., Weekdays 2-5pm EST"
-                      className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-md 
-                              bg-white dark:bg-navy-dark text-navy dark:text-soft-white focus:ring-2 focus:ring-cyan"
+                      className={cn(
+                        "w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-md",
+                        "bg-white dark:bg-navy-dark text-navy dark:text-soft-white", 
+                        "focus:ring-2 focus:ring-cyan text-base min-h-[44px]",
+                        "transition-all duration-200"
+                      )}
                     />
                   </div>
                   
                   <div className="flex justify-center">
                     <Button
                       type="submit"
-                      className="bg-cyan hover:bg-cyan-light text-navy font-medium py-2 px-6 
-                              rounded-md transition-colors duration-300 flex items-center"
+                      className={cn(
+                        "bg-cyan hover:bg-cyan-light text-navy font-medium py-2 px-6", 
+                        "rounded-md transition-all duration-200 flex items-center",
+                        "min-h-[44px] hover:scale-[1.02]"
+                      )}
+                      aria-label="Submit callback request"
                     >
                       Request a Callback
                     </Button>
