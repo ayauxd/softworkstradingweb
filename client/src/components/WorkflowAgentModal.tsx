@@ -9,11 +9,17 @@ import { useToast } from "@/hooks/use-toast";
 
 interface WorkflowAgentModalProps {
   onClose: () => void;
+  initialMode?: "chat" | "call" | "none";
+  onModeChange?: (mode: "chat" | "call") => void;
 }
 
-const WorkflowAgentModal = ({ onClose }: WorkflowAgentModalProps) => {
+const WorkflowAgentModal = ({ 
+  onClose, 
+  initialMode = "none",
+  onModeChange 
+}: WorkflowAgentModalProps) => {
   const { toast } = useToast();
-  const [activeTab, setActiveTab] = useState<"none" | "chat" | "call">("none");
+  const [activeTab, setActiveTab] = useState<"none" | "chat" | "call">(initialMode);
   const [showCallbackForm, setShowCallbackForm] = useState(false);
   const [chatInput, setChatInput] = useState("");
   const [messages, setMessages] = useState<Array<{from: string, text: string}>>([
@@ -43,6 +49,13 @@ const WorkflowAgentModal = ({ onClose }: WorkflowAgentModalProps) => {
       messagesEndRef.current.scrollIntoView({ behavior: "smooth" });
     }
   }, [messages]);
+  
+  // Update parent component when mode changes
+  useEffect(() => {
+    if (activeTab !== "none" && onModeChange) {
+      onModeChange(activeTab as "chat" | "call");
+    }
+  }, [activeTab, onModeChange]);
   
   const handleChatClick = () => {
     setActiveTab("chat");
@@ -133,8 +146,9 @@ const WorkflowAgentModal = ({ onClose }: WorkflowAgentModalProps) => {
                           text-soft-white dark:text-navy font-medium py-3 px-4 rounded-md 
                           transition-colors duration-300 flex items-center justify-center"
                 >
-                  <MessageSquare className="h-5 w-5 mr-2" />
-                  Chat
+                  <span className="flex items-center">
+                    💬 Chat with an Agent
+                  </span>
                 </Button>
                 
                 <Button 
@@ -143,8 +157,9 @@ const WorkflowAgentModal = ({ onClose }: WorkflowAgentModalProps) => {
                   className="flex-1 bg-cyan hover:bg-cyan-light text-navy font-medium py-3 px-4 
                            rounded-md transition-colors duration-300 flex items-center justify-center"
                 >
-                  <Phone className="h-5 w-5 mr-2" />
-                  Call
+                  <span className="flex items-center">
+                    📞 Call an Agent
+                  </span>
                 </Button>
               </div>
             </div>

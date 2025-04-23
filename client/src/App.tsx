@@ -13,6 +13,7 @@ import InsightsSection from "./components/InsightsSection";
 import ContactSection from "./components/ContactSection";
 import Footer from "./components/Footer";
 import WorkflowAgentModal from "./components/WorkflowAgentModal";
+import FloatingAgentButton from "./components/FloatingAgentButton";
 import ArticlePage from "./pages/ArticlePage";
 import { useState } from "react";
 
@@ -54,6 +55,7 @@ function App() {
             <Route path="/" component={HomePage} />
             <Route path="/article/:id" component={ArticlePage} />
           </Switch>
+          <FloatingAgentButton defaultMode="chat" />
         </TooltipProvider>
       </ThemeProvider>
     </QueryClientProvider>
