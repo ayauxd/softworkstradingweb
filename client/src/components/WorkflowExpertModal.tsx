@@ -41,10 +41,10 @@ const WorkflowExpertModal = ({ onClose }: WorkflowExpertModalProps) => {
   const handleCallClick = () => {
     setActiveTab("call");
     
-    // Simulate call animation for 2 seconds then show form
+    // Ensure call animation lasts exactly 2 seconds then show form
     setTimeout(() => {
       setShowCallbackForm(true);
-    }, 2000);
+    }, 2000); // Already 2 seconds, keeping it consistent
   };
   
   const handleSendMessage = () => {
