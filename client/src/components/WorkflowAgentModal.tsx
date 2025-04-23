@@ -91,7 +91,7 @@ const WorkflowAgentModal = ({
     // Simulate call animation for 2 seconds then show form
     setTimeout(() => {
       setShowCallbackForm(true);
-    }, 2000);
+    }, 2000); // Already 2 seconds, keeping it consistent
   };
   
   const handleSendMessage = () => {
@@ -305,12 +305,12 @@ const WorkflowAgentModal = ({
               <div className="py-8 flex flex-col items-center">
                 <div className="rounded-full bg-cyan p-6 mb-4 relative">
                   <Phone className="h-12 w-12 text-navy animate-pulse" />
-                  {/* Ripple effect */}
-                  <span className="absolute -inset-0.5 rounded-full bg-cyan opacity-75 animate-ping"></span>
-                  <span className="absolute -inset-2 rounded-full bg-cyan opacity-50 animate-ping" style={{ animationDelay: "0.3s" }}></span>
-                  <span className="absolute -inset-3.5 rounded-full bg-cyan opacity-25 animate-ping" style={{ animationDelay: "0.6s" }}></span>
+                  {/* Intensified ripple effect with faster animations */}
+                  <span className="absolute -inset-0.5 rounded-full bg-cyan opacity-75 animate-ping" style={{ animationDuration: "0.8s" }}></span>
+                  <span className="absolute -inset-2 rounded-full bg-cyan opacity-50 animate-ping" style={{ animationDuration: "1s", animationDelay: "0.2s" }}></span>
+                  <span className="absolute -inset-3.5 rounded-full bg-cyan opacity-25 animate-ping" style={{ animationDuration: "1.2s", animationDelay: "0.4s" }}></span>
                 </div>
-                <p className="text-navy dark:text-soft-white text-lg font-medium mb-2">
+                <p className="text-navy dark:text-soft-white text-lg font-medium mb-2 animate-pulse">
                   Calling a workflow agent...
                 </p>
                 <p className="text-neutral-gray dark:text-gray-300">
