@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { MessageSquare, Phone } from 'lucide-react';
+import { MessageSquare, Phone, X } from 'lucide-react';
 import { Button } from "@/components/ui/button";
 import WorkflowAgentModal from './WorkflowAgentModal';
 
@@ -24,6 +24,19 @@ const FloatingAgentButton = ({ defaultMode = "chat" }: FloatingAgentButtonProps)
     localStorage.setItem('softworks-agent-last-mode', lastMode);
   }, [lastMode]);
   
+  // Prevent background scrolling when modal is open
+  useEffect(() => {
+    if (isModalOpen) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = '';
+    }
+    
+    return () => {
+      document.body.style.overflow = '';
+    };
+  }, [isModalOpen]);
+  
   const handleOpenModal = () => {
     setIsModalOpen(true);
   };
@@ -43,13 +56,16 @@ const FloatingAgentButton = ({ defaultMode = "chat" }: FloatingAgentButtonProps)
       {/* Floating Button */}
       <Button
         onClick={handleOpenModal}
-        className="fixed bottom-6 right-6 z-50 rounded-full shadow-md p-3 flex items-center justify-center bg-white dark:bg-gray-800 hover:bg-gray-100 dark:hover:bg-gray-700 transition-all duration-300 h-14 w-14"
-        aria-label={lastMode === "chat" ? "Chat with an agent" : "Call an agent"}
+        className="fixed bottom-5 right-5 z-50 rounded-full shadow-md flex items-center justify-center 
+                 bg-white dark:bg-gray-800 text-[#0A2A43] dark:text-white hover:scale-105 
+                 transition-all duration-200 h-12 w-12 sm:h-14 sm:w-14 mr-5 mb-5"
+        aria-label={lastMode === "chat" ? "Chat with a workflow agent" : "Call a workflow agent"}
+        tabIndex={0}
       >
         {lastMode === "chat" ? (
-          <span className="text-2xl">💬</span>
+          <span className="text-2xl" role="img" aria-hidden="true">💬</span>
         ) : (
-          <span className="text-2xl">📞</span>
+          <span className="text-2xl" role="img" aria-hidden="true">📞</span>
         )}
       </Button>
       
