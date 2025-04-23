@@ -59,14 +59,16 @@ const Header = () => {
           <div className="flex items-center flex-1">
             <a 
               href="#home" 
-              className="flex items-center group focus:outline-none focus-visible:ring-2 focus-visible:ring-cyan rounded-md" 
+              className="inline-flex items-center group focus:outline-none focus-visible:ring-2 focus-visible:ring-cyan rounded-md" 
               onClick={(e) => { e.preventDefault(); scrollToSection("home"); }}
               aria-label="Softworks Trading Co Home"
             >
-              <LogoIcon className="h-10 w-auto flex-shrink-0 hidden xs:inline-block" />
-              <span className="text-base sm:text-lg md:text-xl font-semibold text-navy dark:text-soft-white whitespace-nowrap ml-0 xs:ml-3">
-                Softworks Trading Co.
-              </span>
+              <div className="flex items-center">
+                <LogoIcon className="h-10 w-auto flex-shrink-0" />
+                <span className="text-base sm:text-lg md:text-xl font-semibold text-navy dark:text-soft-white whitespace-nowrap ml-0 xs:ml-3">
+                  Softworks Trading Co.
+                </span>
+              </div>
             </a>
           </div>
           
