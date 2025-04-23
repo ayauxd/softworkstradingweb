@@ -66,7 +66,7 @@ const FloatingAgentButton = ({ defaultMode = "chat" }: FloatingAgentButtonProps)
         aria-label="Chat with a workflow agent"
         tabIndex={0}
       >
-        <MessageSquare className="h-6 w-6" />
+        <span className="text-xl" role="img" aria-hidden="true">💬</span>
       </Button>
       
       {/* Floating Call Button */}
@@ -76,7 +76,7 @@ const FloatingAgentButton = ({ defaultMode = "chat" }: FloatingAgentButtonProps)
         aria-label="Call a workflow agent"
         tabIndex={0}
       >
-        <Phone className="h-6 w-6" />
+        <span className="text-xl" role="img" aria-hidden="true">📞</span>
       </Button>
       
       {/* Modal */}
