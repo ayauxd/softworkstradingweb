@@ -191,7 +191,10 @@ const WorkflowAgentModal = ({
 
   return (
     <Dialog open={true} onOpenChange={onClose}>
-      <DialogContent className="sm:max-w-screen-sm max-h-[85vh] overflow-y-auto [&>button]:hidden">
+      <DialogContent 
+        className="sm:max-w-screen-sm max-h-[85vh] overflow-y-auto [&>button]:hidden"
+        aria-describedby="workflow-agent-modal-description"
+      >
         <div className="flex justify-between items-center">
           <DialogTitle className="text-lg sm:text-xl">Talk to a Workflow Agent</DialogTitle>
           <DialogClose asChild>
@@ -204,6 +207,9 @@ const WorkflowAgentModal = ({
             </button>
           </DialogClose>
         </div>
+        <span id="workflow-agent-modal-description" className="sr-only">
+          Modal for connecting with a workflow agent through chat or call options
+        </span>
         
         {activeTab === "none" && (
           <>
