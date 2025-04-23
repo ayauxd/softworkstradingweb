@@ -91,8 +91,20 @@ const WorkflowAgentModal = ({
     // Simulate call animation for 2 seconds then show form
     setTimeout(() => {
       setShowCallbackForm(true);
-    }, 2000); // Already 2 seconds, keeping it consistent
+    }, 2000);
   };
+  
+  // If initialMode is "call", automatically start the animation and show form after delay
+  useEffect(() => {
+    if (initialMode === "call" && activeTab === "call" && !showCallbackForm) {
+      // Simulate call animation for 2 seconds then show form
+      const timer = setTimeout(() => {
+        setShowCallbackForm(true);
+      }, 2000);
+      
+      return () => clearTimeout(timer);
+    }
+  }, [initialMode, activeTab]);
   
   const handleSendMessage = () => {
     if (chatInput.trim()) {
@@ -191,10 +203,7 @@ const WorkflowAgentModal = ({
 
   return (
     <Dialog open={true} onOpenChange={onClose}>
-      <DialogContent 
-        className="sm:max-w-screen-sm max-h-[85vh] overflow-y-auto [&>button]:hidden"
-        aria-describedby="workflow-agent-modal-description"
-      >
+      <DialogContent className="sm:max-w-screen-sm max-h-[85vh] overflow-y-auto [&>button]:hidden">
         <div className="flex justify-between items-center">
           <DialogTitle className="text-lg sm:text-xl">Talk to a Workflow Agent</DialogTitle>
           <DialogClose asChild>
@@ -207,9 +216,6 @@ const WorkflowAgentModal = ({
             </button>
           </DialogClose>
         </div>
-        <span id="workflow-agent-modal-description" className="sr-only">
-          Modal for connecting with a workflow agent through chat or call options
-        </span>
         
         {activeTab === "none" && (
           <>
@@ -311,12 +317,12 @@ const WorkflowAgentModal = ({
               <div className="py-8 flex flex-col items-center">
                 <div className="rounded-full bg-cyan p-6 mb-4 relative">
                   <Phone className="h-12 w-12 text-navy animate-pulse" />
-                  {/* Intensified ripple effect with faster animations */}
-                  <span className="absolute -inset-0.5 rounded-full bg-cyan opacity-75 animate-ping" style={{ animationDuration: "0.8s" }}></span>
-                  <span className="absolute -inset-2 rounded-full bg-cyan opacity-50 animate-ping" style={{ animationDuration: "1s", animationDelay: "0.2s" }}></span>
-                  <span className="absolute -inset-3.5 rounded-full bg-cyan opacity-25 animate-ping" style={{ animationDuration: "1.2s", animationDelay: "0.4s" }}></span>
+                  {/* Ripple effect */}
+                  <span className="absolute -inset-0.5 rounded-full bg-cyan opacity-75 animate-ping"></span>
+                  <span className="absolute -inset-2 rounded-full bg-cyan opacity-50 animate-ping" style={{ animationDelay: "0.3s" }}></span>
+                  <span className="absolute -inset-3.5 rounded-full bg-cyan opacity-25 animate-ping" style={{ animationDelay: "0.6s" }}></span>
                 </div>
-                <p className="text-navy dark:text-soft-white text-lg font-medium mb-2 animate-pulse">
+                <p className="text-navy dark:text-soft-white text-lg font-medium mb-2">
                   Calling a workflow agent...
                 </p>
                 <p className="text-neutral-gray dark:text-gray-300">
