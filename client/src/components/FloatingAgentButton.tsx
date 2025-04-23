@@ -54,7 +54,7 @@ const FloatingAgentButton = ({ defaultMode = "chat" }: FloatingAgentButtonProps)
   
   // Common button styles
   const buttonBaseClass = "fixed z-50 rounded-full shadow-md flex items-center justify-center " +
-    "bg-white dark:bg-navy-dark text-navy dark:text-white hover:scale-105 " +
+    "bg-white dark:bg-gray-800 text-[#0A2A43] dark:text-white hover:scale-105 " +
     "transition-all duration-200 h-12 w-12 sm:h-14 sm:w-14";
   
   return (
@@ -66,7 +66,7 @@ const FloatingAgentButton = ({ defaultMode = "chat" }: FloatingAgentButtonProps)
         aria-label="Chat with a workflow agent"
         tabIndex={0}
       >
-        <span className="text-xl" role="img" aria-hidden="true">💬</span>
+        <MessageSquare className="h-6 w-6" />
       </Button>
       
       {/* Floating Call Button */}
@@ -76,7 +76,7 @@ const FloatingAgentButton = ({ defaultMode = "chat" }: FloatingAgentButtonProps)
         aria-label="Call a workflow agent"
         tabIndex={0}
       >
-        <span className="text-xl" role="img" aria-hidden="true">📞</span>
+        <Phone className="h-6 w-6" />
       </Button>
       
       {/* Modal */}
