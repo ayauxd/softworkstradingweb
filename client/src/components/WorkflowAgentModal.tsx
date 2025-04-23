@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
-import { Send, X, Phone } from "lucide-react";
+import { Send, X } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { cn } from "@/lib/utils";
 
@@ -218,7 +218,7 @@ const WorkflowAgentModal = ({
                   variant="outline"
                   className={cn(
                     "flex-1 bg-navy dark:bg-soft-white hover:bg-navy-light dark:hover:bg-gray-200",
-                    "text-soft-white dark:text-navy font-medium py-3 px-4 rounded-md",
+                    "text-white dark:text-navy font-medium py-3 px-4 rounded-md",
                     "transition-all duration-200 flex items-center justify-center hover:scale-[1.02]",
                     "min-h-[52px] text-base"
                   )}
@@ -306,7 +306,7 @@ const WorkflowAgentModal = ({
             {!showCallbackForm ? (
               <div className="py-8 flex flex-col items-center">
                 <div className="rounded-full bg-cyan p-6 mb-4 relative">
-                  <Phone className="h-12 w-12 text-navy animate-pulse" />
+                  <span className="text-3xl text-navy animate-pulse" role="img" aria-hidden="true">📞</span>
                   {/* Ripple effect */}
                   <span className="absolute -inset-0.5 rounded-full bg-cyan opacity-75 animate-ping"></span>
                   <span className="absolute -inset-2 rounded-full bg-cyan opacity-50 animate-ping" style={{ animationDelay: "0.3s" }}></span>
