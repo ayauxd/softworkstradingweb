@@ -1,7 +1,7 @@
 # 🧾 Softworks Trading Company – Project Overview
 
 ## 1. Project Purpose  
-This is a responsive AI consulting website built for SMEs and solo entrepreneurs to explore AI adoption. The goal is to simplify how users engage with AI automation through agentic workflows, consultations, and education.
+A sophisticated React-based landing page for Softworks, delivering an AI workflow automation platform with advanced interaction design and user-centric modal experiences. The website serves SMEs and solo entrepreneurs exploring AI adoption, simplifying how users engage with AI automation through agentic workflows, consultations, and education.
 
 ---
 
@@ -9,27 +9,35 @@ This is a responsive AI consulting website built for SMEs and solo entrepreneurs
 - Hero section with headline, subtext, and dual CTAs (consultation + chat)
 - Services section: 3 service cards (AI Setup, Coaching, Strategy Session)
 - Step-by-step explainer section: "Easy Steps to Start Automating"
-- "Talk to a Workflow Expert" modal with both chat and voice triggers
-- Testimonial carousel (3 rotating quotes with image and name)
-- Insights & Publications: 2 prominent article cards with larger layout for better readability
+- Enhanced "Talk to a Workflow Agent" modal with both chat and call options
+- Separate floating action buttons (chat and call) in bottom-right corner
+- Animated neural network visualization with stronger glow effects, brighter colors, and faster pulse timing
+- Testimonial carousel (3 rotating quotes with navigation arrows)
+- Insights & Publications: 3 prominent article cards with larger layout for better readability
 - Responsive layout for mobile and desktop
-- Light/dark mode toggle with color contrast handling
-- Scroll-activated floating CTA
+- Light/dark mode toggle with proper color contrast handling
+- Improved accessibility with semantic HTML, ARIA labels, and keyboard navigation
 - Footer with Quick Links, Contact Info, and Social Icons
+- Form validation with visual feedback and shake animation for errors
 
 ---
 
 ## 3. Current Dependencies  
 List of key packages and tools installed:
 
-- `react`, `vite` – Frontend framework
-- `tailwindcss`, `shadcn/ui` – UI styling and components
-- `react-icons`, `lucide-react` – Iconography
-- `wouter` – Routing
+- `react`, `vite` – Frontend framework and build tool
+- `tailwindcss`, `shadcn/ui` – UI styling system and component library
+- `lucide-react`, `react-icons` – SVG icon components
+- `wouter` – Lightweight routing library
 - `@tanstack/react-query` – Data fetching and state management
-- `zod` – Schema validation
+- `zod` – Schema validation for type safety
+- `class-variance-authority` – Conditional class composition
+- `next-themes` – Theme handling (light/dark mode)
+- `drizzle-orm`, `drizzle-zod` – Database ORM and schema validation
+- `react-hook-form` – Form handling with validation
+- `express`, `express-session` – Server framework and session management
 - `framer-motion` – Animation library
-- `react-hook-form` – Form handling
+- `embla-carousel-react` – Lightweight carousel component
 
 ---
 
@@ -47,22 +55,32 @@ Clearly list unfinished or pending features:
 
 - Add dynamic blog/article routing and real content
 - Add backend support for form submissions (e.g., via Supabase or webhook)
-- Connect voice CTA to actual call scheduling
-- Improve chatbot UI and link to real AI assistant
-- Accessibility audit and mobile optimization pass
+- Connect call CTA to actual call scheduling API
+- Implement real AI chat assistant with OpenAI integration 
+- Add analytics and tracking for user interactions
+- Improve mobile responsiveness for complex components
 - Replace placeholder images with branded assets
-- Optimize for SEO and metadata sharing
+- Optimize for SEO with proper metadata and structured data
+- Add end-to-end tests for critical user journeys
+- Implement content management system for non-technical updates
 
 ---
 
 ## 6. Developer Handoff Instructions  
 - Use `npm install` to install dependencies  
-- Run with `npm run dev`  
+- Run with `npm run dev` to start the development server
+- The application will be available at `http://localhost:5000` by default
 - All editable content lives in `/client/src/components` and `/client/src/pages`
-- Replace placeholder testimonials and article images  
-- For dark mode issues, see `tailwind.config.ts` and `theme.json` to ensure proper color contrast
-- Update contact details in `Footer.tsx`
-- Modify hero section neural network animation in `client/src/assets/neural-background-prominent.svg`
+- Main UI components:
+  - `WorkflowAgentModal.tsx` - Interactive chat and call request modal
+  - `FloatingAgentButton.tsx` - Fixed-position action buttons
+  - `HeroSection.tsx` - Main landing area with animations
+  - All section components in `/client/src/components/`
+- Replace placeholder testimonials and article images as needed
+- For theme customization, modify `theme.json` and `tailwind.config.ts`
+- UI components are built with Shadcn UI; customize in `/client/src/components/ui/`
+- For OpenAI integration, you'll need to set up the OPENAI_API_KEY environment variable
+- For analytics integration, modify `/client/src/lib/analytics.ts` (to be implemented)
 
 ---
 
@@ -96,17 +114,35 @@ Clearly list unfinished or pending features:
 
 ## 9. Development Notes
 
-- The site uses a custom-made neural network animation SVG in the hero section
-- Navigation links scroll smoothly to the appropriate sections
-- The color scheme follows brand styling with Deep Navy (#0A2A43) as primary and Cyan (#00BCD4) as accent
-- All components support both light and dark modes with proper contrast
-- The "Talk to a Workflow Expert" modal can be accessed from multiple entry points
-- Insights section displays only 2 articles in preview (out of all available articles) with increased spacing and larger card size for better readability, with complete article view pages for each insight
-- Service section CTA buttons use consistent styling across the site
-- Services display with actual images from Unsplash instead of icons for more visual impact
-- Insights cards feature relevant article images for better visual appeal
-- Testimonials carousel with real user photos and smooth auto-scrolling functionality
-- Article pages feature rich content with proper typography, responsive hero images, author information, and related article suggestions
+- **UI Components:**
+  - Enhanced neural network animation in hero section with stronger glow effects and faster pulse timing
+  - Separate floating action buttons for chat (💬) and call (📞) functionality in bottom-right corner
+  - Modal with consistent styling for calling and chatting with workflow agents
+  - Improved chat message interface with clean white backgrounds and soft shadows
+  - Form validation with visual error feedback and shake animation
+  - Body scroll lock when modal is open to prevent background scrolling
+
+- **Accessibility:**
+  - ARIA labels and roles for interactive elements
+  - Proper focus management for keyboard navigation
+  - Semantic HTML structure throughout the application
+  - Contrast ratios of 4.5:1 minimum for text elements
+  - Accessible form controls with validation messages
+  - Appropriate alt text for informative images
+
+- **User Experience:**
+  - Rotating placeholder suggestions in chat input (e.g., "How can I simplify my daily tasks with AI?")
+  - Smooth transitions and animations for interactive elements
+  - Responsive layout optimized for mobile, tablet, and desktop
+  - Consistent icon usage across the interface
+  - Testimonials carousel with navigation arrows on the sides
+  - Insights section displaying 3 articles with proper spacing and visual hierarchy
+
+- **Theming:**
+  - Brand colors: Deep Navy (#0A2A43) as primary, Cyan (#00BCD4) as accent
+  - Theme toggle with proper persistence and system preference detection
+  - Dark mode support with appropriate contrast ratios
+  - Consistent typography and spacing throughout the application
 
 ## 10. Design Philosophy
 
