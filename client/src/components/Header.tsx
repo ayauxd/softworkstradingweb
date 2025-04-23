@@ -53,18 +53,18 @@ const Header = () => {
       }`}
       role="banner"
     >
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex justify-between items-center py-4">
+      <div className="container mx-auto px-3 sm:px-6 lg:px-8">
+        <div className="flex justify-between items-center py-3 sm:py-4">
           {/* Logo with text - Left Side */}
-          <div className="flex items-center flex-1 overflow-hidden max-w-[70%] sm:max-w-none">
+          <div className="flex items-center flex-1 overflow-hidden max-w-[65%] sm:max-w-none">
             <a 
               href="#home" 
               className="flex items-center group focus:outline-none focus-visible:ring-2 focus-visible:ring-cyan rounded-md" 
               onClick={(e) => { e.preventDefault(); scrollToSection("home"); }}
               aria-label="Softworks Trading Co Home"
             >
-              <LogoIcon className="h-7 w-auto xs:h-10 flex-shrink-0" />
-              <span className="text-sm xs:text-base sm:text-lg md:text-xl font-semibold text-navy dark:text-soft-white whitespace-nowrap ml-2 xs:ml-3 truncate">
+              <LogoIcon className="h-5 w-auto xs:h-8 sm:h-10 flex-shrink-0" />
+              <span className="text-xs xs:text-sm sm:text-base md:text-lg lg:text-xl font-semibold text-navy dark:text-soft-white whitespace-nowrap ml-1.5 xs:ml-2 sm:ml-3 truncate">
                 Softworks Trading Co.
               </span>
             </a>
