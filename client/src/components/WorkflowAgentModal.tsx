@@ -191,12 +191,12 @@ const WorkflowAgentModal = ({
 
   return (
     <Dialog open={true} onOpenChange={onClose}>
-      <DialogContent className="sm:max-w-screen-sm max-h-[85vh] overflow-y-auto">
+      <DialogContent className="sm:max-w-screen-sm max-h-[85vh] overflow-y-auto [&>button]:hidden">
         <div className="flex justify-between items-center">
           <DialogTitle className="text-lg sm:text-xl">Talk to a Workflow Agent</DialogTitle>
           <DialogClose asChild>
             <button 
-              className="rounded-full p-1 hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors focus:outline-none focus:ring-2 focus:ring-cyan"
+              className="rounded-full p-2 hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors focus:outline-none focus:ring-2 focus:ring-cyan"
               aria-label="Close"
               tabIndex={0}
             >
