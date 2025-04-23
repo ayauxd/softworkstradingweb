@@ -102,6 +102,11 @@ const WorkflowAgentModal = ({
   const handleCallbackFormChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
     setCallbackForm(prev => ({ ...prev, [name]: value }));
+    
+    // Clear error for this field if it exists and has a value now
+    if (formErrors[name] && value.trim()) {
+      setFormErrors(prev => ({ ...prev, [name]: false }));
+    }
   };
   
   const [formErrors, setFormErrors] = useState<{[key: string]: boolean}>({});
@@ -312,42 +317,60 @@ const WorkflowAgentModal = ({
                     <Label htmlFor="fullName" className="text-navy dark:text-gray-300">
                       Full Name <span className="text-red-500">*</span>
                     </Label>
-                    <Input
-                      type="text"
-                      id="fullName"
-                      name="fullName"
-                      value={callbackForm.fullName}
-                      onChange={handleCallbackFormChange}
-                      required
-                      className={cn(
-                        "w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-md",
-                        "bg-white dark:bg-navy-dark text-navy dark:text-soft-white", 
-                        "focus:ring-2 focus:ring-cyan text-base min-h-[44px]",
-                        "transition-all duration-200",
-                        formErrors.fullName && "border-red-400 focus:ring-red-400 focus:border-red-400"
+                    <div className="relative">
+                      <Input
+                        type="text"
+                        id="fullName"
+                        name="fullName"
+                        value={callbackForm.fullName}
+                        onChange={handleCallbackFormChange}
+                        required
+                        aria-invalid={formErrors.fullName ? "true" : "false"}
+                        aria-describedby={formErrors.fullName ? "fullName-error" : undefined}
+                        className={cn(
+                          "w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-md",
+                          "bg-white dark:bg-navy-dark text-navy dark:text-soft-white", 
+                          "focus:ring-2 focus:ring-cyan text-base min-h-[44px]",
+                          "transition-all duration-200",
+                          formErrors.fullName && "border-red-400 focus:ring-red-400 focus:border-red-400"
+                        )}
+                      />
+                      {formErrors.fullName && (
+                        <p id="fullName-error" className="text-red-500 text-sm mt-1 absolute">
+                          Please enter your full name
+                        </p>
                       )}
-                    />
+                    </div>
                   </div>
                   
                   <div>
                     <Label htmlFor="workEmail" className="text-navy dark:text-gray-300">
                       Work Email <span className="text-red-500">*</span>
                     </Label>
-                    <Input
-                      type="email"
-                      id="workEmail"
-                      name="workEmail"
-                      value={callbackForm.workEmail}
-                      onChange={handleCallbackFormChange}
-                      required
-                      className={cn(
-                        "w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-md",
-                        "bg-white dark:bg-navy-dark text-navy dark:text-soft-white", 
-                        "focus:ring-2 focus:ring-cyan text-base min-h-[44px]",
-                        "transition-all duration-200",
-                        formErrors.workEmail && "border-red-400 focus:ring-red-400 focus:border-red-400"
+                    <div className="relative">
+                      <Input
+                        type="email"
+                        id="workEmail"
+                        name="workEmail"
+                        value={callbackForm.workEmail}
+                        onChange={handleCallbackFormChange}
+                        required
+                        aria-invalid={formErrors.workEmail ? "true" : "false"}
+                        aria-describedby={formErrors.workEmail ? "workEmail-error" : undefined}
+                        className={cn(
+                          "w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-md",
+                          "bg-white dark:bg-navy-dark text-navy dark:text-soft-white", 
+                          "focus:ring-2 focus:ring-cyan text-base min-h-[44px]",
+                          "transition-all duration-200",
+                          formErrors.workEmail && "border-red-400 focus:ring-red-400 focus:border-red-400"
+                        )}
+                      />
+                      {formErrors.workEmail && (
+                        <p id="workEmail-error" className="text-red-500 text-sm mt-1 absolute">
+                          Please enter a valid email address
+                        </p>
                       )}
-                    />
+                    </div>
                   </div>
                   
                   <div>
@@ -373,21 +396,30 @@ const WorkflowAgentModal = ({
                     <Label htmlFor="callbackMessage" className="text-navy dark:text-gray-300">
                       What do you need help with? <span className="text-red-500">*</span>
                     </Label>
-                    <Textarea
-                      id="callbackMessage"
-                      name="message"
-                      rows={3}
-                      value={callbackForm.message}
-                      onChange={handleCallbackFormChange}
-                      required
-                      className={cn(
-                        "w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-md",
-                        "bg-white dark:bg-navy-dark text-navy dark:text-soft-white", 
-                        "focus:ring-2 focus:ring-cyan text-base",
-                        "transition-all duration-200 resize-none",
-                        formErrors.message && "border-red-400 focus:ring-red-400 focus:border-red-400"
+                    <div className="relative">
+                      <Textarea
+                        id="callbackMessage"
+                        name="message"
+                        rows={3}
+                        value={callbackForm.message}
+                        onChange={handleCallbackFormChange}
+                        required
+                        aria-invalid={formErrors.message ? "true" : "false"}
+                        aria-describedby={formErrors.message ? "message-error" : undefined}
+                        className={cn(
+                          "w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-md",
+                          "bg-white dark:bg-navy-dark text-navy dark:text-soft-white", 
+                          "focus:ring-2 focus:ring-cyan text-base",
+                          "transition-all duration-200 resize-none",
+                          formErrors.message && "border-red-400 focus:ring-red-400 focus:border-red-400"
+                        )}
+                      />
+                      {formErrors.message && (
+                        <p id="message-error" className="text-red-500 text-sm mt-1 absolute">
+                          Please describe what you need help with
+                        </p>
                       )}
-                    />
+                    </div>
                   </div>
                   
                   <div>
