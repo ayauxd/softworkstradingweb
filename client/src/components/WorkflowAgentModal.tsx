@@ -20,12 +20,22 @@ const WorkflowAgentModal = ({ onClose }: WorkflowAgentModalProps) => {
     { from: "agent", text: "Hello! I'm here to help you automate your workflows. What specific process are you looking to improve?" }
   ]);
   const [callbackForm, setCallbackForm] = useState({
-    name: "",
-    phone: "",
-    message: ""
+    fullName: "",
+    workEmail: "",
+    companyName: "",
+    message: "",
+    callbackTime: ""
   });
   
   const messagesEndRef = useRef<HTMLDivElement>(null);
+  
+  // Reset the active tab when modal is closed
+  useEffect(() => {
+    return () => {
+      setActiveTab("none");
+      setShowCallbackForm(false);
+    };
+  }, []);
   
   // Scroll to bottom of chat when messages change
   useEffect(() => {
@@ -84,7 +94,7 @@ const WorkflowAgentModal = ({ onClose }: WorkflowAgentModalProps) => {
     e.preventDefault();
     
     // Validate form
-    if (!callbackForm.name || !callbackForm.phone) {
+    if (!callbackForm.fullName || !callbackForm.workEmail || !callbackForm.message) {
       toast({
         title: "Missing information",
         description: "Please fill in all required fields.",
@@ -96,7 +106,7 @@ const WorkflowAgentModal = ({ onClose }: WorkflowAgentModalProps) => {
     // Form is valid, show success message
     toast({
       title: "Callback Requested!",
-      description: "One of our workflow agents will call you shortly.",
+      description: "One of our workflow agents will contact you shortly.",
     });
     
     // Close modal
@@ -111,70 +121,66 @@ const WorkflowAgentModal = ({ onClose }: WorkflowAgentModalProps) => {
           How would you like to connect with us?
         </DialogDescription>
         
-        <div className="mt-6">
-          <div className="flex flex-col md:flex-row space-y-4 md:space-y-0 md:space-x-4">
-            <Button 
-              onClick={handleChatClick} 
-              variant={activeTab === "chat" ? "default" : "outline"}
-              className="flex-1 bg-navy dark:bg-soft-white hover:bg-navy-light dark:hover:bg-gray-200 
-                      text-soft-white dark:text-navy font-medium py-3 px-4 rounded-md 
-                      transition-colors duration-300 flex items-center justify-center"
-            >
-              <MessageSquare className="h-5 w-5 mr-2" />
-              Chat
-            </Button>
-            
-            <Button 
-              onClick={handleCallClick} 
-              variant={activeTab === "call" ? "default" : "outline"} 
-              className="flex-1 bg-cyan hover:bg-cyan-light text-navy font-medium py-3 px-4 
-                       rounded-md transition-colors duration-300 flex items-center justify-center"
-            >
-              <Phone className="h-5 w-5 mr-2" />
-              Call
-            </Button>
-          </div>
-        </div>
-        
-        {/* Chat Interface */}
-        {activeTab === "chat" && (
+        {activeTab === "none" && (
           <div className="mt-6">
-            <div className="bg-gray-100 dark:bg-navy-dark p-4 rounded-lg h-60 overflow-y-auto mb-4 text-left">
-              {messages.map((message, index) => (
-                <div key={index} className={`mb-4 ${message.from === "user" ? "text-right" : ""}`}>
-                  <div className="font-medium text-navy dark:text-soft-white">
-                    {message.from === "agent" ? "Workflow Agent" : "You"}
-                  </div>
-                  <div className={`
-                    ${message.from === "agent" 
-                      ? "bg-white dark:bg-navy p-3 rounded-lg inline-block max-w-[75%] mt-1 text-navy dark:text-soft-white" 
-                      : "bg-cyan bg-opacity-20 p-3 rounded-lg inline-block max-w-[75%] mt-1 text-navy dark:text-soft-white"}
-                  `}>
-                    {message.text}
-                  </div>
-                </div>
-              ))}
-              <div ref={messagesEndRef} />
+            <div className="flex flex-col md:flex-row space-y-4 md:space-y-0 md:space-x-4">
+              <Button 
+                onClick={handleChatClick} 
+                variant="outline"
+                className="flex-1 bg-navy dark:bg-soft-white hover:bg-navy-light dark:hover:bg-gray-200 
+                        text-soft-white dark:text-navy font-medium py-3 px-4 rounded-md 
+                        transition-colors duration-300 flex items-center justify-center"
+              >
+                <MessageSquare className="h-5 w-5 mr-2" />
+                Chat
+              </Button>
+              
+              <Button 
+                onClick={handleCallClick} 
+                variant="outline"
+                className="flex-1 bg-cyan hover:bg-cyan-light text-navy font-medium py-3 px-4 
+                         rounded-md transition-colors duration-300 flex items-center justify-center"
+              >
+                <Phone className="h-5 w-5 mr-2" />
+                Call
+              </Button>
+            </div>
+          </div>
+        )}
+        
+        {/* Chat Interface - Only show Chat button when Chat is active */}
+        {activeTab === "chat" && (
+          <>
+            <div className="mt-6">
+              <Button 
+                onClick={() => setActiveTab("none")}
+                variant="default"
+                className="w-full bg-navy dark:bg-soft-white hover:bg-navy-light dark:hover:bg-gray-200 
+                        text-soft-white dark:text-navy font-medium py-3 px-4 rounded-md 
+                        transition-colors duration-300 flex items-center justify-center"
+              >
+                <MessageSquare className="h-5 w-5 mr-2" />
+                Chat
+              </Button>
             </div>
             
-            <div className="flex flex-col space-y-3">
-              <div className="flex flex-wrap gap-2">
-                <Button
-                  variant="outline"
-                  onClick={() => setChatInput("How can AI help my customer service?")}
-                  className="text-xs px-3 py-2 rounded-full bg-gray-200 dark:bg-navy text-navy 
-                           dark:text-soft-white hover:bg-gray-300 dark:hover:bg-navy-light transition-colors"
-                >
-                  How can AI help my customer service?
-                </Button>
-                <Button
-                  variant="outline"
-                  onClick={() => setChatInput("Is my business a good fit for automation?")}
-                  className="text-xs px-3 py-2 rounded-full bg-gray-200 dark:bg-navy text-navy 
-                           dark:text-soft-white hover:bg-gray-300 dark:hover:bg-navy-light transition-colors"
-                >
-                  Is my business a good fit for automation?
-                </Button>
+            <div className="mt-4">
+              <div className="bg-gray-100 dark:bg-navy-dark p-4 rounded-lg h-60 overflow-y-auto mb-4 text-left">
+                {messages.map((message, index) => (
+                  <div key={index} className={`mb-4 ${message.from === "user" ? "text-right" : ""}`}>
+                    <div className="font-medium text-navy dark:text-soft-white">
+                      {message.from === "agent" ? "Workflow Agent" : "You"}
+                    </div>
+                    <div className={`
+                      ${message.from === "agent" 
+                        ? "bg-white dark:bg-navy p-3 rounded-lg inline-block max-w-[75%] mt-1 text-navy dark:text-soft-white" 
+                        : "bg-cyan bg-opacity-20 p-3 rounded-lg inline-block max-w-[75%] mt-1 text-navy dark:text-soft-white"}
+                    `}>
+                      {message.text}
+                    </div>
+                  </div>
+                ))}
+                <div ref={messagesEndRef} />
               </div>
               
               <div className="flex w-full">
@@ -183,7 +189,7 @@ const WorkflowAgentModal = ({ onClose }: WorkflowAgentModalProps) => {
                   value={chatInput}
                   onChange={(e) => setChatInput(e.target.value)}
                   onKeyDown={handleChatInputKeyDown}
-                  placeholder="Type your message..."
+                  placeholder="Type your question or describe your workflow..."
                   className="flex-1 px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-l-md 
                            bg-white dark:bg-navy-dark text-navy dark:text-soft-white focus:ring-2 focus:ring-cyan"
                 />
@@ -196,91 +202,147 @@ const WorkflowAgentModal = ({ onClose }: WorkflowAgentModalProps) => {
                 </Button>
               </div>
             </div>
-          </div>
+          </>
         )}
         
-        {/* Call Interface */}
+        {/* Call Interface - Only show Call button when Call is active */}
         {activeTab === "call" && (
-          <div className="mt-6">
-            {!showCallbackForm ? (
-              <div className="py-8 flex flex-col items-center">
-                <div className="rounded-full bg-cyan p-6 mb-4 relative">
-                  <Phone className="h-12 w-12 text-navy animate-pulse" />
-                  {/* Ripple effect */}
-                  <span className="absolute -inset-0.5 rounded-full bg-cyan opacity-75 animate-ping"></span>
-                  <span className="absolute -inset-2 rounded-full bg-cyan opacity-50 animate-ping" style={{ animationDelay: "0.3s" }}></span>
-                  <span className="absolute -inset-3.5 rounded-full bg-cyan opacity-25 animate-ping" style={{ animationDelay: "0.6s" }}></span>
+          <>
+            <div className="mt-6">
+              <Button 
+                onClick={() => {
+                  setActiveTab("none");
+                  setShowCallbackForm(false);
+                }}
+                variant="default"
+                className="w-full bg-cyan hover:bg-cyan-light text-navy font-medium py-3 px-4 
+                       rounded-md transition-colors duration-300 flex items-center justify-center"
+              >
+                <Phone className="h-5 w-5 mr-2" />
+                Call
+              </Button>
+            </div>
+            
+            <div className="mt-4">
+              {!showCallbackForm ? (
+                <div className="py-8 flex flex-col items-center">
+                  <div className="rounded-full bg-cyan p-6 mb-4 relative">
+                    <Phone className="h-12 w-12 text-navy animate-pulse" />
+                    {/* Ripple effect */}
+                    <span className="absolute -inset-0.5 rounded-full bg-cyan opacity-75 animate-ping"></span>
+                    <span className="absolute -inset-2 rounded-full bg-cyan opacity-50 animate-ping" style={{ animationDelay: "0.3s" }}></span>
+                    <span className="absolute -inset-3.5 rounded-full bg-cyan opacity-25 animate-ping" style={{ animationDelay: "0.6s" }}></span>
+                  </div>
+                  <p className="text-navy dark:text-soft-white text-lg font-medium mb-2">
+                    Calling a workflow agent...
+                  </p>
+                  <p className="text-neutral-gray dark:text-gray-300">
+                    They'll be with you in a moment
+                  </p>
                 </div>
-                <p className="text-navy dark:text-soft-white text-lg font-medium mb-2">
-                  Calling a workflow agent...
-                </p>
-                <p className="text-neutral-gray dark:text-gray-300">
-                  They'll be with you in a moment
-                </p>
-              </div>
-            ) : (
-              <div>
-                <p className="text-navy dark:text-soft-white text-center mb-4">
-                  Our agents are currently assisting other clients. Leave your details for a callback.
-                </p>
-                
-                <form onSubmit={handleCallbackFormSubmit} className="space-y-4">
-                  <div>
-                    <Label htmlFor="callbackName" className="text-navy dark:text-gray-300">Name</Label>
-                    <Input
-                      type="text"
-                      id="callbackName"
-                      name="name"
-                      value={callbackForm.name}
-                      onChange={handleCallbackFormChange}
-                      required
-                      className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-md 
-                              bg-white dark:bg-navy-dark text-navy dark:text-soft-white focus:ring-2 focus:ring-cyan"
-                    />
-                  </div>
+              ) : (
+                <div>
+                  <p className="text-navy dark:text-soft-white text-center mb-2">
+                    Our agents are currently assisting other clients. Leave your details for a callback.
+                  </p>
+                  <p className="text-neutral-gray dark:text-gray-300 text-center text-sm mb-4">
+                    Tell us a bit about your business needs so we can prepare for our call.
+                  </p>
                   
-                  <div>
-                    <Label htmlFor="callbackPhone" className="text-navy dark:text-gray-300">Phone</Label>
-                    <Input
-                      type="tel"
-                      id="callbackPhone"
-                      name="phone"
-                      value={callbackForm.phone}
-                      onChange={handleCallbackFormChange}
-                      required
-                      className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-md 
-                              bg-white dark:bg-navy-dark text-navy dark:text-soft-white focus:ring-2 focus:ring-cyan"
-                    />
-                  </div>
-                  
-                  <div>
-                    <Label htmlFor="callbackMessage" className="text-navy dark:text-gray-300">
-                      What do you want help with?
-                    </Label>
-                    <Textarea
-                      id="callbackMessage"
-                      name="message"
-                      rows={3}
-                      value={callbackForm.message}
-                      onChange={handleCallbackFormChange}
-                      className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-md 
-                               bg-white dark:bg-navy-dark text-navy dark:text-soft-white focus:ring-2 focus:ring-cyan resize-none"
-                    />
-                  </div>
-                  
-                  <div className="flex justify-center">
-                    <Button
-                      type="submit"
-                      className="bg-cyan hover:bg-cyan-light text-navy font-medium py-2 px-6 
-                              rounded-md transition-colors duration-300 flex items-center"
-                    >
-                      Request a Callback
-                    </Button>
-                  </div>
-                </form>
-              </div>
-            )}
-          </div>
+                  <form onSubmit={handleCallbackFormSubmit} className="space-y-4">
+                    <div>
+                      <Label htmlFor="fullName" className="text-navy dark:text-gray-300">
+                        Full Name <span className="text-red-500">*</span>
+                      </Label>
+                      <Input
+                        type="text"
+                        id="fullName"
+                        name="fullName"
+                        value={callbackForm.fullName}
+                        onChange={handleCallbackFormChange}
+                        required
+                        className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-md 
+                                bg-white dark:bg-navy-dark text-navy dark:text-soft-white focus:ring-2 focus:ring-cyan"
+                      />
+                    </div>
+                    
+                    <div>
+                      <Label htmlFor="workEmail" className="text-navy dark:text-gray-300">
+                        Work Email <span className="text-red-500">*</span>
+                      </Label>
+                      <Input
+                        type="email"
+                        id="workEmail"
+                        name="workEmail"
+                        value={callbackForm.workEmail}
+                        onChange={handleCallbackFormChange}
+                        required
+                        className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-md 
+                                bg-white dark:bg-navy-dark text-navy dark:text-soft-white focus:ring-2 focus:ring-cyan"
+                      />
+                    </div>
+                    
+                    <div>
+                      <Label htmlFor="companyName" className="text-navy dark:text-gray-300">
+                        Company Name <span className="text-gray-400 text-sm">(optional)</span>
+                      </Label>
+                      <Input
+                        type="text"
+                        id="companyName"
+                        name="companyName"
+                        value={callbackForm.companyName}
+                        onChange={handleCallbackFormChange}
+                        className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-md 
+                                bg-white dark:bg-navy-dark text-navy dark:text-soft-white focus:ring-2 focus:ring-cyan"
+                      />
+                    </div>
+                    
+                    <div>
+                      <Label htmlFor="callbackMessage" className="text-navy dark:text-gray-300">
+                        What do you need help with? <span className="text-red-500">*</span>
+                      </Label>
+                      <Textarea
+                        id="callbackMessage"
+                        name="message"
+                        rows={3}
+                        value={callbackForm.message}
+                        onChange={handleCallbackFormChange}
+                        required
+                        className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-md 
+                                 bg-white dark:bg-navy-dark text-navy dark:text-soft-white focus:ring-2 focus:ring-cyan resize-none"
+                      />
+                    </div>
+                    
+                    <div>
+                      <Label htmlFor="callbackTime" className="text-navy dark:text-gray-300">
+                        Preferred Callback Time <span className="text-gray-400 text-sm">(optional)</span>
+                      </Label>
+                      <Input
+                        type="text"
+                        id="callbackTime"
+                        name="callbackTime"
+                        value={callbackForm.callbackTime}
+                        onChange={handleCallbackFormChange}
+                        placeholder="e.g., Weekdays 2-5pm EST"
+                        className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-md 
+                                bg-white dark:bg-navy-dark text-navy dark:text-soft-white focus:ring-2 focus:ring-cyan"
+                      />
+                    </div>
+                    
+                    <div className="flex justify-center">
+                      <Button
+                        type="submit"
+                        className="bg-cyan hover:bg-cyan-light text-navy font-medium py-2 px-6 
+                                rounded-md transition-colors duration-300 flex items-center"
+                      >
+                        Request a Callback
+                      </Button>
+                    </div>
+                  </form>
+                </div>
+              )}
+            </div>
+          </>
         )}
       </DialogContent>
     </Dialog>
