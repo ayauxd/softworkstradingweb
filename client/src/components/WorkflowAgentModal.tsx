@@ -104,11 +104,45 @@ const WorkflowAgentModal = ({
     setCallbackForm(prev => ({ ...prev, [name]: value }));
   };
   
+  const [formErrors, setFormErrors] = useState<{[key: string]: boolean}>({});
+  const [formShakeEffect, setFormShakeEffect] = useState(false);
+  
   const handleCallbackFormSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     
-    // Validate form
-    if (!callbackForm.fullName || !callbackForm.workEmail || !callbackForm.message) {
+    // Reset error states
+    const newErrors: {[key: string]: boolean} = {};
+    let hasErrors = false;
+    
+    // Validate form fields
+    if (!callbackForm.fullName) {
+      newErrors.fullName = true;
+      hasErrors = true;
+    }
+    
+    if (!callbackForm.workEmail) {
+      newErrors.workEmail = true;
+      hasErrors = true;
+    } else if (!/^\S+@\S+\.\S+$/.test(callbackForm.workEmail)) {
+      // Simple email validation
+      newErrors.workEmail = true;
+      hasErrors = true;
+    }
+    
+    if (!callbackForm.message) {
+      newErrors.message = true;
+      hasErrors = true;
+    }
+    
+    // If there are errors, show error message and trigger shake effect
+    if (hasErrors) {
+      setFormErrors(newErrors);
+      setFormShakeEffect(true);
+      
+      setTimeout(() => {
+        setFormShakeEffect(false);
+      }, 500);
+      
       toast({
         title: "Missing information",
         description: "Please fill in all required fields.",
@@ -154,23 +188,31 @@ const WorkflowAgentModal = ({
                 <Button 
                   onClick={handleChatClick} 
                   variant="outline"
-                  className="flex-1 bg-navy dark:bg-soft-white hover:bg-navy-light dark:hover:bg-gray-200 
-                          text-soft-white dark:text-navy font-medium py-3 px-4 rounded-md 
-                          transition-colors duration-300 flex items-center justify-center"
+                  className={cn(
+                    "flex-1 bg-navy dark:bg-soft-white hover:bg-navy-light dark:hover:bg-gray-200",
+                    "text-soft-white dark:text-navy font-medium py-3 px-4 rounded-md",
+                    "transition-all duration-200 flex items-center justify-center hover:scale-[1.02]",
+                    "min-h-[52px] text-base"
+                  )}
+                  aria-label="Chat with a workflow agent"
                 >
                   <span className="flex items-center">
-                    💬 Chat with an Agent
+                    <span className="mr-2 text-xl" role="img" aria-hidden="true">💬</span> Chat with an Agent
                   </span>
                 </Button>
                 
                 <Button 
                   onClick={handleCallClick} 
                   variant="outline"
-                  className="flex-1 bg-cyan hover:bg-cyan-light text-navy font-medium py-3 px-4 
-                           rounded-md transition-colors duration-300 flex items-center justify-center"
+                  className={cn(
+                    "flex-1 bg-cyan hover:bg-cyan-light text-navy font-medium py-3 px-4",
+                    "rounded-md transition-all duration-200 flex items-center justify-center hover:scale-[1.02]",
+                    "min-h-[52px] text-base"
+                  )}
+                  aria-label="Call a workflow agent"
                 >
                   <span className="flex items-center">
-                    📞 Call an Agent
+                    <span className="mr-2 text-xl" role="img" aria-hidden="true">📞</span> Call an Agent
                   </span>
                 </Button>
               </div>
@@ -181,17 +223,24 @@ const WorkflowAgentModal = ({
         {/* Chat Interface - without any top buttons */}
         {activeTab === "chat" && (
           <div className="mt-2">
-            <div className="bg-gray-100 dark:bg-navy-dark p-4 rounded-lg h-60 overflow-y-auto mb-4 text-left">
+            <div 
+              className="bg-gray-100 dark:bg-navy-dark p-4 rounded-lg h-60 sm:h-72 overflow-y-auto mb-4 text-left"
+              role="log"
+              aria-live="polite"
+              aria-label="Chat conversation"
+            >
               {messages.map((message, index) => (
                 <div key={index} className={`mb-4 ${message.from === "user" ? "text-right" : ""}`}>
                   <div className="font-medium text-navy dark:text-soft-white">
                     {message.from === "agent" ? "Workflow Agent" : "You"}
                   </div>
-                  <div className={`
-                    ${message.from === "agent" 
-                      ? "bg-white dark:bg-navy p-3 rounded-lg inline-block max-w-[75%] mt-1 text-navy dark:text-soft-white" 
-                      : "bg-cyan bg-opacity-20 p-3 rounded-lg inline-block max-w-[75%] mt-1 text-navy dark:text-soft-white"}
-                  `}>
+                  <div className={cn(
+                    "p-3 rounded-lg inline-block max-w-[75%] mt-1 text-navy dark:text-soft-white shadow-sm",
+                    "transition-all duration-200 text-base",
+                    message.from === "agent" 
+                      ? "bg-white dark:bg-navy border-l-4 border-cyan" 
+                      : "bg-cyan bg-opacity-20"
+                  )}>
                     {message.text}
                   </div>
                 </div>
@@ -251,7 +300,14 @@ const WorkflowAgentModal = ({
                   Tell us a bit about your business needs so we can prepare for our call.
                 </p>
                 
-                <form onSubmit={handleCallbackFormSubmit} className="space-y-4">
+                <form 
+                  onSubmit={handleCallbackFormSubmit} 
+                  className={cn(
+                    "space-y-4",
+                    formShakeEffect && "animate-shake"
+                  )}
+                  noValidate // Disable browser validation to use our custom validation
+                >
                   <div>
                     <Label htmlFor="fullName" className="text-navy dark:text-gray-300">
                       Full Name <span className="text-red-500">*</span>
@@ -268,7 +324,7 @@ const WorkflowAgentModal = ({
                         "bg-white dark:bg-navy-dark text-navy dark:text-soft-white", 
                         "focus:ring-2 focus:ring-cyan text-base min-h-[44px]",
                         "transition-all duration-200",
-                        !callbackForm.fullName && "focus:ring-2 focus:ring-red-400 focus:border-red-400"
+                        formErrors.fullName && "border-red-400 focus:ring-red-400 focus:border-red-400"
                       )}
                     />
                   </div>
@@ -289,7 +345,7 @@ const WorkflowAgentModal = ({
                         "bg-white dark:bg-navy-dark text-navy dark:text-soft-white", 
                         "focus:ring-2 focus:ring-cyan text-base min-h-[44px]",
                         "transition-all duration-200",
-                        !callbackForm.workEmail && "focus:ring-2 focus:ring-red-400 focus:border-red-400"
+                        formErrors.workEmail && "border-red-400 focus:ring-red-400 focus:border-red-400"
                       )}
                     />
                   </div>
@@ -329,7 +385,7 @@ const WorkflowAgentModal = ({
                         "bg-white dark:bg-navy-dark text-navy dark:text-soft-white", 
                         "focus:ring-2 focus:ring-cyan text-base",
                         "transition-all duration-200 resize-none",
-                        !callbackForm.message && "focus:ring-2 focus:ring-red-400 focus:border-red-400"
+                        formErrors.message && "border-red-400 focus:ring-red-400 focus:border-red-400"
                       )}
                     />
                   </div>
