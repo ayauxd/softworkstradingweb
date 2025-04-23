@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { MessageSquare, Phone, X } from 'lucide-react';
+import { MessageSquare, Phone } from 'lucide-react';
 import { Button } from "@/components/ui/button";
 import WorkflowAgentModal from './WorkflowAgentModal';
 
@@ -9,20 +9,20 @@ interface FloatingAgentButtonProps {
 
 const FloatingAgentButton = ({ defaultMode = "chat" }: FloatingAgentButtonProps) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [lastMode, setLastMode] = useState<"chat" | "call">(defaultMode);
+  const [activeMode, setActiveMode] = useState<"chat" | "call">(defaultMode);
   
   // Get the last mode from localStorage on mount
   useEffect(() => {
     const savedMode = localStorage.getItem('softworks-agent-last-mode');
     if (savedMode === 'chat' || savedMode === 'call') {
-      setLastMode(savedMode);
+      setActiveMode(savedMode);
     }
   }, []);
   
   // Update localStorage when mode changes
   useEffect(() => {
-    localStorage.setItem('softworks-agent-last-mode', lastMode);
-  }, [lastMode]);
+    localStorage.setItem('softworks-agent-last-mode', activeMode);
+  }, [activeMode]);
   
   // Prevent background scrolling when modal is open
   useEffect(() => {
@@ -37,7 +37,8 @@ const FloatingAgentButton = ({ defaultMode = "chat" }: FloatingAgentButtonProps)
     };
   }, [isModalOpen]);
   
-  const handleOpenModal = () => {
+  const handleOpenModal = (mode: "chat" | "call") => {
+    setActiveMode(mode);
     setIsModalOpen(true);
   };
   
@@ -45,36 +46,45 @@ const FloatingAgentButton = ({ defaultMode = "chat" }: FloatingAgentButtonProps)
     setIsModalOpen(false);
   };
   
-  // When modal is closed, update the last mode (this would be set from WorkflowAgentModal)
+  // When modal is closed, update the active mode (this would be set from WorkflowAgentModal)
   const handleModalClosed = (mode: "chat" | "call") => {
-    setLastMode(mode);
+    setActiveMode(mode);
     handleCloseModal();
   };
   
+  // Common button styles
+  const buttonBaseClass = "fixed z-50 rounded-full shadow-md flex items-center justify-center " +
+    "bg-white dark:bg-gray-800 text-[#0A2A43] dark:text-white hover:scale-105 " +
+    "transition-all duration-200 h-12 w-12 sm:h-14 sm:w-14";
+  
   return (
     <>
-      {/* Floating Button */}
+      {/* Floating Chat Button */}
       <Button
-        onClick={handleOpenModal}
-        className="fixed bottom-5 right-5 z-50 rounded-full shadow-md flex items-center justify-center 
-                 bg-white dark:bg-gray-800 text-[#0A2A43] dark:text-white hover:scale-105 
-                 transition-all duration-200 h-12 w-12 sm:h-14 sm:w-14 mr-5 mb-5"
-        aria-label={lastMode === "chat" ? "Chat with a workflow agent" : "Call a workflow agent"}
+        onClick={() => handleOpenModal("chat")}
+        className={`${buttonBaseClass} bottom-5 right-5`}
+        aria-label="Chat with a workflow agent"
         tabIndex={0}
       >
-        {lastMode === "chat" ? (
-          <span className="text-2xl" role="img" aria-hidden="true">💬</span>
-        ) : (
-          <span className="text-2xl" role="img" aria-hidden="true">📞</span>
-        )}
+        <MessageSquare className="h-6 w-6" />
+      </Button>
+      
+      {/* Floating Call Button */}
+      <Button
+        onClick={() => handleOpenModal("call")}
+        className={`${buttonBaseClass} bottom-[calc(5rem+10px)] right-5`}
+        aria-label="Call a workflow agent"
+        tabIndex={0}
+      >
+        <Phone className="h-6 w-6" />
       </Button>
       
       {/* Modal */}
       {isModalOpen && (
         <WorkflowAgentModal 
           onClose={handleCloseModal} 
-          initialMode={lastMode}
-          onModeChange={setLastMode}
+          initialMode={activeMode}
+          onModeChange={setActiveMode}
         />
       )}
     </>

@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
-import { MessageSquare, Phone, Send, X } from "lucide-react";
+import { Send, X, Phone } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { cn } from "@/lib/utils";
 
@@ -33,6 +33,29 @@ const WorkflowAgentModal = ({
     message: "",
     callbackTime: ""
   });
+  
+  // Rotating placeholder suggestions for chat input
+  const placeholderSuggestions = [
+    "How can I simplify my daily tasks with AI?",
+    "How can I automate follow-ups from my inbox?",
+    "How can AI improve my client onboarding?",
+    "How can I connect AI to my spreadsheets?",
+    "How can I reduce repetitive admin work?"
+  ];
+  const [currentPlaceholderIndex, setCurrentPlaceholderIndex] = useState(0);
+  
+  // Rotate placeholders every 4 seconds when chat is active
+  useEffect(() => {
+    if (activeTab === "chat") {
+      const intervalId = setInterval(() => {
+        setCurrentPlaceholderIndex(prevIndex => 
+          (prevIndex + 1) % placeholderSuggestions.length
+        );
+      }, 4000);
+      
+      return () => clearInterval(intervalId);
+    }
+  }, [activeTab]);
   
   const messagesEndRef = useRef<HTMLDivElement>(null);
   
@@ -240,10 +263,10 @@ const WorkflowAgentModal = ({
                     {message.from === "agent" ? "Workflow Agent" : "You"}
                   </div>
                   <div className={cn(
-                    "p-3 rounded-lg inline-block max-w-[75%] mt-1 text-navy dark:text-soft-white shadow-sm",
+                    "p-3 rounded-lg inline-block max-w-[75%] mt-1 text-navy dark:text-soft-white",
                     "transition-all duration-200 text-base",
                     message.from === "agent" 
-                      ? "bg-white dark:bg-navy border-l-4 border-cyan" 
+                      ? "bg-white dark:bg-navy shadow-md" 
                       : "bg-cyan bg-opacity-20"
                   )}>
                     {message.text}
@@ -259,7 +282,7 @@ const WorkflowAgentModal = ({
                 value={chatInput}
                 onChange={(e) => setChatInput(e.target.value)}
                 onKeyDown={handleChatInputKeyDown}
-                placeholder="How can I simplify my daily tasks with AI?"
+                placeholder={placeholderSuggestions[currentPlaceholderIndex]}
                 aria-label="Chat message"
                 className="flex-1 px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-l-md 
                          bg-white dark:bg-navy-dark text-navy dark:text-soft-white focus:ring-2 focus:ring-cyan
