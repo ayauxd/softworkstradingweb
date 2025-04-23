@@ -41,10 +41,10 @@ const WorkflowExpertModal = ({ onClose }: WorkflowExpertModalProps) => {
   const handleCallClick = () => {
     setActiveTab("call");
     
-    // Ensure call animation lasts exactly 2 seconds then show form
+    // Simulate call animation for 2 seconds then show form
     setTimeout(() => {
       setShowCallbackForm(true);
-    }, 2000); // Already 2 seconds, keeping it consistent
+    }, 2000);
   };
   
   const handleSendMessage = () => {
@@ -105,14 +105,8 @@ const WorkflowExpertModal = ({ onClose }: WorkflowExpertModalProps) => {
 
   return (
     <Dialog open={true} onOpenChange={onClose}>
-      <DialogContent 
-        className="sm:max-w-lg [&>button]:hidden"
-        aria-describedby="workflow-expert-modal-description"
-      >
+      <DialogContent className="sm:max-w-lg">
         <DialogTitle>Talk to a Workflow Expert</DialogTitle>
-        <span id="workflow-expert-modal-description" className="sr-only">
-          Modal for connecting with a workflow expert through chat or call options
-        </span>
         <DialogDescription>
           How would you like to connect with us?
         </DialogDescription>
@@ -212,12 +206,12 @@ const WorkflowExpertModal = ({ onClose }: WorkflowExpertModalProps) => {
               <div className="py-8 flex flex-col items-center">
                 <div className="rounded-full bg-cyan p-6 mb-4 relative">
                   <Phone className="h-12 w-12 text-navy animate-pulse" />
-                  {/* Intensified ripple effect with faster animations */}
-                  <span className="absolute -inset-0.5 rounded-full bg-cyan opacity-75 animate-ping" style={{ animationDuration: "0.8s" }}></span>
-                  <span className="absolute -inset-2 rounded-full bg-cyan opacity-50 animate-ping" style={{ animationDuration: "1s", animationDelay: "0.2s" }}></span>
-                  <span className="absolute -inset-3.5 rounded-full bg-cyan opacity-25 animate-ping" style={{ animationDuration: "1.2s", animationDelay: "0.4s" }}></span>
+                  {/* Ripple effect */}
+                  <span className="absolute -inset-0.5 rounded-full bg-cyan opacity-75 animate-ping"></span>
+                  <span className="absolute -inset-2 rounded-full bg-cyan opacity-50 animate-ping" style={{ animationDelay: "0.3s" }}></span>
+                  <span className="absolute -inset-3.5 rounded-full bg-cyan opacity-25 animate-ping" style={{ animationDelay: "0.6s" }}></span>
                 </div>
-                <p className="text-navy dark:text-soft-white text-lg font-medium mb-2 animate-pulse">
+                <p className="text-navy dark:text-soft-white text-lg font-medium mb-2">
                   Calling a workflow expert...
                 </p>
                 <p className="text-neutral-gray dark:text-gray-300">
