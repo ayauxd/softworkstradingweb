@@ -54,9 +54,9 @@ const Header = () => {
       role="banner"
     >
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex justify-between items-center py-4">
+        <div className="flex items-center py-4">
           {/* Logo with text - Left Side */}
-          <div className="flex items-center justify-start">
+          <div className="flex items-center justify-start mr-auto">
             <a 
               href="#home" 
               className="flex items-center group focus:outline-none focus-visible:ring-2 focus-visible:ring-cyan rounded-md" 
