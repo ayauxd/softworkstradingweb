@@ -19,28 +19,36 @@ import { useState } from "react";
 
 function HomePage() {
   const [showModal, setShowModal] = useState(false);
+  const [modalMode, setModalMode] = useState<'chat' | 'call' | 'none'>('none');
   
-  const openModal = () => {
+  const openModal = (mode: 'chat' | 'call') => {
+    setModalMode(mode);
     setShowModal(true);
   };
   
   const closeModal = () => {
     setShowModal(false);
+    setModalMode('none');
   };
 
   return (
     <div className="min-h-screen flex flex-col bg-soft-white dark:bg-navy text-navy dark:text-soft-white transition-colors duration-300">
       <Header />
       <main className="pt-16 flex-grow">
-        <HeroSection onTalkToAgent={openModal} />
-        <ServicesSection onTalkToAgent={openModal} />
+        <HeroSection onTalkToAgent={() => openModal('call')} />
+        <ServicesSection onTalkToAgent={() => openModal('chat')} />
         <HowItWorksSection />
         <TestimonialsSection />
         <InsightsSection />
         <ContactSection />
       </main>
       <Footer />
-      {showModal && <WorkflowAgentModal onClose={closeModal} />}
+      {showModal && (
+        <WorkflowAgentModal 
+          onClose={closeModal} 
+          initialMode={modalMode} 
+        />
+      )}
     </div>
   );
 }

@@ -20,7 +20,7 @@ const WorkflowAgentModal = ({
   onModeChange 
 }: WorkflowAgentModalProps) => {
   const { toast } = useToast();
-  const [activeTab, setActiveTab] = useState<"none" | "chat" | "call">(initialMode);
+  const [activeTab, setActiveTab] = useState<"none" | "chat" | "call">(initialMode === 'none' ? 'none' : initialMode);
   const [showCallbackForm, setShowCallbackForm] = useState(false);
   const [chatInput, setChatInput] = useState("");
   const [messages, setMessages] = useState<Array<{from: string, text: string}>>([
@@ -83,15 +83,35 @@ const WorkflowAgentModal = ({
   
   const handleChatClick = () => {
     setActiveTab("chat");
+    if (onModeChange) onModeChange('chat');
   };
   
-  const handleCallClick = () => {
+  // Function to handle the 2-second call simulation
+  const simulateCallConnection = () => {
     setActiveTab("call");
-    
-    // Simulate call animation for 2 seconds then show form
-    setTimeout(() => {
+    setShowCallbackForm(false); // Ensure form is hidden during simulation
+    const timer = setTimeout(() => {
       setShowCallbackForm(true);
     }, 2000);
+    return () => clearTimeout(timer); // Return cleanup function
+  };
+
+  // Effect to trigger simulation if modal opens in 'call' mode
+  useEffect(() => {
+    let cleanup = () => {};
+    if (initialMode === 'call') {
+      cleanup = simulateCallConnection();
+    } 
+    // If initialMode is 'chat' or 'none', useState initialization handles it.
+    
+    return cleanup; // Cleanup timeout if component unmounts or initialMode changes
+  }, [initialMode]);
+
+  const handleCallClick = () => {
+    const cleanup = simulateCallConnection(); // Start simulation
+    // Store cleanup? Usually not needed for click, but good practice:
+    // const timeoutCleanupRef = useRef<() => void>(cleanup);
+    if (onModeChange) onModeChange('call');
   };
   
   const handleSendMessage = () => {
@@ -300,28 +320,24 @@ const WorkflowAgentModal = ({
         
         {/* Call Interface - without any top buttons */}
         {activeTab === "call" && (
-          <div className="mt-2">
+          <div className="min-h-[300px]"> {/* Ensure container has min height */}
             {!showCallbackForm ? (
-              <div className="py-8 flex flex-col items-center">
-                <div className="rounded-full bg-cyan p-6 mb-4 relative">
-                  <Phone className="h-12 w-12 text-navy animate-pulse" />
-                  {/* Ripple effect */}
-                  <span className="absolute -inset-0.5 rounded-full bg-cyan opacity-75 animate-ping"></span>
-                  <span className="absolute -inset-2 rounded-full bg-cyan opacity-50 animate-ping" style={{ animationDelay: "0.3s" }}></span>
-                  <span className="absolute -inset-3.5 rounded-full bg-cyan opacity-25 animate-ping" style={{ animationDelay: "0.6s" }}></span>
+              // Connecting State UI
+              <div className="flex flex-col items-center justify-center p-8 h-full">
+                <div className="flex space-x-1 mb-4">
+                  <span className="h-2 w-2 bg-cyan rounded-full animate-bounce [animation-delay:-0.3s]"></span>
+                  <span className="h-2 w-2 bg-cyan rounded-full animate-bounce [animation-delay:-0.15s]"></span>
+                  <span className="h-2 w-2 bg-cyan rounded-full animate-bounce"></span>
                 </div>
-                <p className="text-navy dark:text-soft-white text-lg font-medium mb-2">
-                  Calling a workflow agent...
-                </p>
-                <p className="text-neutral-gray dark:text-gray-300">
-                  They'll be with you in a moment
-                </p>
+                <p className="text-lg font-medium text-navy dark:text-soft-white">Connecting...</p>
+                <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">Please wait while we set up the call.</p>
               </div>
             ) : (
-              <div>
-                <p className="text-navy dark:text-soft-white text-center mb-2">
-                  Our agents are currently assisting other clients. Leave your details for a callback.
-                </p>
+              // Callback Form (Existing structure)
+              <div className="p-4 sm:p-6">
+                <h3 className="text-lg font-medium text-navy dark:text-soft-white mb-4 text-center">
+                  Request a Callback
+                </h3>
                 <p className="text-neutral-gray dark:text-gray-300 text-center text-sm mb-4">
                   Tell us a bit about your business needs so we can prepare for our call.
                 </p>
