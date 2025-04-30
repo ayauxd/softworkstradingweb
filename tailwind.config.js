@@ -6,6 +6,8 @@ module.exports = {
     extend: {
       // All theme extensions go here
       colors: {
+        background: "#FFFFFF",
+        foreground: "#1A1A1A",
         border: "hsl(var(--border, 214 32% 91%))",
         navy: {
           DEFAULT: "#0A2A43",
