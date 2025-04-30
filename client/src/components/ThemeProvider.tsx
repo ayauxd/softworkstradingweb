@@ -17,20 +17,14 @@ interface ThemeProviderProps {
 }
 
 export const ThemeProvider = ({ children }: ThemeProviderProps) => {
-  // Check for saved theme preference or use preferred color scheme
+  // Always use system preference
   const getInitialTheme = (): Theme => {
-    const savedTheme = localStorage.getItem("theme") as Theme | null;
-    
-    if (savedTheme === "dark" || savedTheme === "light") {
-      return savedTheme;
-    }
-    
-    // If no saved preference, use the system preference
+    // Use the system preference
     if (typeof window !== "undefined" && window.matchMedia) {
       return window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
     }
     
-    return "light"; // Default to light theme
+    return "light"; // Default to light theme if media query not supported
   };
 
   const [theme, setTheme] = useState<Theme>(getInitialTheme);
@@ -45,8 +39,7 @@ export const ThemeProvider = ({ children }: ThemeProviderProps) => {
     // Add new theme class
     root.classList.add(theme);
     
-    // Save preference
-    localStorage.setItem("theme", theme);
+    // We don't save preference to localStorage anymore since we always use system preference
   }, [theme]);
 
   // Listen for system preference changes
@@ -54,10 +47,8 @@ export const ThemeProvider = ({ children }: ThemeProviderProps) => {
     const mediaQuery = window.matchMedia("(prefers-color-scheme: dark)");
     
     const handleChange = () => {
-      // Only update if user hasn't set a preference already
-      if (!localStorage.getItem("theme")) {
-        setTheme(mediaQuery.matches ? "dark" : "light");
-      }
+      // Always update theme based on system preference
+      setTheme(mediaQuery.matches ? "dark" : "light");
     };
     
     mediaQuery.addEventListener("change", handleChange);

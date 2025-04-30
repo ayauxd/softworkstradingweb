@@ -14,9 +14,6 @@ const LogoIcon = ({ className = "", isWhite = false, showText = false }: LogoIco
         alt="Softworks Trading Company" 
         className={`w-full h-full object-contain ${isWhite ? 'brightness-0 invert' : ''}`}
       />
-      {showText && (
-        <span className="sr-only">Softworks Trading Company</span>
-      )}
     </div>
   );
 };
