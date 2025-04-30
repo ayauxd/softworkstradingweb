@@ -71,7 +71,7 @@ const Header = () => {
           </div>
           
           {/* Right Side Content - Controls */}
-          <div className="flex items-center space-x-2 sm:space-x-4 ml-2 flex-shrink-0">
+          <div className="flex items-center space-x-2 sm:space-x-4 flex-shrink-0">
             {/* Desktop Navigation */}
             <nav className="hidden md:flex items-center space-x-6" aria-label="Main Navigation">
               {["home", "services", "how-it-works", "insights", "contact"].map((item) => (
