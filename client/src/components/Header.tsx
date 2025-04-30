@@ -56,7 +56,7 @@ const Header = () => {
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center py-4">
           {/* Logo with text - Left Side */}
-          <div className="flex items-center flex-1">
+          <div className="flex items-center">
             <a 
               href="#home" 
               className="flex items-center group focus:outline-none focus-visible:ring-2 focus-visible:ring-cyan rounded-md" 
@@ -101,12 +101,15 @@ const Header = () => {
           </div>
         </div>
         
-        {/* Mobile Navigation Menu */}
+        {/* Mobile Navigation Menu - Refactored for transform/opacity animation */}
         <div 
           id="mobile-menu"
-          className={`md:hidden overflow-hidden transition-all duration-300 ease-in-out ${
-            mobileMenuOpen ? "max-h-[300px] opacity-100 border-t border-gray-200 dark:border-navy-light" : "max-h-0 opacity-0 border-none"
-          } bg-soft-white dark:bg-navy-dark`}
+          className={`md:hidden absolute left-0 right-0 top-full bg-soft-white dark:bg-navy-dark shadow-md z-40 
+                     transition-all duration-300 ease-in-out border-t border-gray-200 dark:border-navy-light ${ // Base styles
+            mobileMenuOpen 
+              ? "opacity-100 translate-y-0 pointer-events-auto" // Open state
+              : "opacity-0 -translate-y-4 pointer-events-none" // Closed state
+          }`}
         >
           <nav className="flex flex-col p-4" aria-label="Mobile Navigation">
             {["home", "services", "how-it-works", "insights", "contact"].map((item, index) => (
