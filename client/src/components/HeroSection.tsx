@@ -20,37 +20,25 @@ const HeroSection = ({ onTalkToAgent }: HeroSectionProps) => {
 
   return (
     <section id="home" className="relative min-h-[90vh] bg-[#0D3456] dark:bg-[#051525] text-soft-white py-32 md:py-20 transition-colors duration-300 overflow-hidden flex items-center">
-      {/* Neural Network Background - Animated SVG with organic motion and glowing effects */}
-      <div className="absolute inset-0 z-0 bg-gradient-to-b from-[#0D3456]/95 to-[#0D3456]/90 dark:from-[#051525]/98 dark:to-[#051525]/95">
-        {/* SVG based animated neural network - ONLY for md screens and up */}
-        <div className="absolute inset-0 overflow-hidden mix-blend-screen dark:mix-blend-lighten hidden md:block"> {/* Hide on small screens */}
+      {/* Background container: Static PNG for all, animated SVG overlay for desktop */}
+      <div 
+        className="absolute inset-0 z-0 bg-gradient-to-b from-[#0D3456]/95 to-[#0D3456]/90 dark:from-[#051525]/98 dark:to-[#051525]/95 bg-cover bg-center"
+        style={{ backgroundImage: `url(${neuralNetworkImageSrc})` }} // Apply static image here
+      >
+        {/* Animated SVG overlay - Now visible on all screens */}
+        <div className="absolute inset-0 overflow-hidden mix-blend-screen dark:mix-blend-lighten opacity-80 dark:opacity-90"> 
           <object
             type="image/svg+xml"
             data={animatedNeuralNetworkSrc}
             className="w-full h-full object-cover"
             aria-hidden="true"
           >
-            {/* Fallback to static image if SVG object doesn't load (also acts as initial placeholder) */}
-            <img 
-              src={neuralNetworkImageSrc} 
-              alt="" 
-              className="w-full h-full object-cover opacity-70"
-              aria-hidden="true"
-            />
+            {/* Minimal fallback inside object if needed, primary is now bg */}
+            <div className="w-full h-full bg-transparent"></div> 
           </object>
         </div>
-        
-        {/* Static Image Background - ONLY for screens smaller than md */}
-        <div className="absolute inset-0 z-0 block md:hidden"> {/* Show only on small screens */}
-          <img 
-            src={neuralNetworkImageSrc} 
-            alt="Neural network background" 
-            className="w-full h-full object-cover opacity-70 dark:opacity-60"
-            aria-hidden="true"
-          />
-        </div>
 
-        {/* Gradient overlays for depth and visual enhancement (apply over both backgrounds) */}
+        {/* Gradient overlays (apply over both backgrounds) */}
         <div className="absolute inset-0 bg-gradient-to-tr from-cyan/5 to-transparent dark:from-cyan/10 dark:to-transparent"></div>
         <div className="absolute inset-0 bg-[#0D3456]/10 dark:bg-[#000]/20 mix-blend-multiply"></div>
         
