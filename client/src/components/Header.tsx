@@ -64,7 +64,7 @@ const Header = () => {
               aria-label="Softworks Trading Company Home"
             >
               <LogoIcon 
-                className="h-8 w-auto sm:h-9 md:h-11 lg:h-12 flex-shrink-0 max-w-[200px] sm:max-w-[250px] md:max-w-[280px]" 
+                className="h-12 w-auto sm:h-14 md:h-16 lg:h-18 flex-shrink-0 max-w-[300px] sm:max-w-[350px] md:max-w-[400px] ml-0" 
                 showText={true} 
               />
             </a>
@@ -87,18 +87,6 @@ const Header = () => {
               ))}
             </nav>
             
-            {/* Theme Toggle Button */}
-            <button 
-              onClick={toggleTheme} 
-              className="p-2 rounded-full hover:bg-gray-200 dark:hover:bg-navy-light transition-all duration-300 focus:outline-none"
-              aria-label={theme === "dark" ? "Switch to light mode" : "Switch to dark mode"}
-            >
-              {theme === "dark" ? (
-                <Sun className="h-5 w-5 text-soft-white" />
-              ) : (
-                <Moon className="h-5 w-5 text-navy" />
-              )}
-            </button>
             
             {/* Mobile Menu Button */}
             <button
