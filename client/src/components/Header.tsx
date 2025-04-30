@@ -54,9 +54,10 @@ const Header = () => {
       role="banner"
     >
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center py-4">
-          {/* Logo with text - Left Side */}
-          <div className="flex items-center justify-start mr-auto">
+        {/* Make the parent relative for absolute positioning of children */}
+        <div className="relative flex justify-center md:justify-between items-center py-4"> 
+          {/* Logo container (will be centered on mobile due to parent justify-center) */}
+          <div className="flex items-center">
             <a 
               href="#home" 
               className="flex items-center group focus:outline-none focus-visible:ring-2 focus-visible:ring-cyan rounded-md" 
@@ -64,15 +65,15 @@ const Header = () => {
               aria-label="Softworks Trading Company Home"
             >
               <LogoIcon 
-                className="h-12 w-auto sm:h-14 md:h-16 lg:h-18 flex-shrink-0 max-w-[300px] sm:max-w-[350px] md:max-w-[400px]" 
+                className="h-10 w-auto sm:h-12 md:h-14 lg:h-16 flex-shrink-0 max-w-[250px] sm:max-w-[300px] md:max-w-[350px] lg:max-w-[400px]" // Reduced base height and max-width
                 showText={true} 
               />
             </a>
           </div>
           
-          {/* Right Side Content - Controls */}
-          <div className="flex items-center space-x-2 sm:space-x-4 flex-shrink-0">
-            {/* Desktop Navigation */}
+          {/* Right Side Controls Container - Absolute position on mobile */}
+          <div className="absolute right-4 top-1/2 -translate-y-1/2 md:relative md:right-auto md:top-auto md:translate-y-0 flex items-center space-x-2 sm:space-x-4 flex-shrink-0">
+            {/* Desktop Navigation (remains hidden on mobile) */}
             <nav className="hidden md:flex items-center space-x-6" aria-label="Main Navigation">
               {["home", "services", "how-it-works", "insights", "contact"].map((item) => (
                 <a 
@@ -87,8 +88,10 @@ const Header = () => {
               ))}
             </nav>
             
+            {/* Theme Toggle (Keep visible but adjust spacing if needed) */}
+            {/* <button onClick={toggleTheme} ...> ... </button> */}
             
-            {/* Mobile Menu Button */}
+            {/* Mobile Menu Button (remains visible only on mobile) */}
             <button
               onClick={toggleMobileMenu}
               className="p-2 md:hidden rounded-full hover:bg-gray-200 dark:hover:bg-navy-light transition-all duration-300 focus:outline-none"
