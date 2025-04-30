@@ -56,7 +56,7 @@ const Header = () => {
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center py-4">
           {/* Logo with text - Left Side */}
-          <div className="flex items-center">
+          <div className="flex items-center justify-start">
             <a 
               href="#home" 
               className="flex items-center group focus:outline-none focus-visible:ring-2 focus-visible:ring-cyan rounded-md" 
@@ -64,7 +64,7 @@ const Header = () => {
               aria-label="Softworks Trading Company Home"
             >
               <LogoIcon 
-                className="h-12 w-auto sm:h-14 md:h-16 lg:h-18 flex-shrink-0 max-w-[300px] sm:max-w-[350px] md:max-w-[400px] ml-0" 
+                className="h-12 w-auto sm:h-14 md:h-16 lg:h-18 flex-shrink-0 max-w-[300px] sm:max-w-[350px] md:max-w-[400px]" 
                 showText={true} 
               />
             </a>
