@@ -48,85 +48,105 @@
     <!-- Dark background -->
     <rect width="100%" height="100%" fill="#041626" />
     
-    <!-- Neural Connections - These are the lines connecting neurons with more spread out links -->
+    <!-- Neural Connections - These are the lines connecting neurons with more linear paths -->
     <g stroke="url(#connectionGradient)" stroke-width="1" fill="none">
-        <!-- Central to peripheral connections - more random and spread out -->
-        <path d="M600,400 C450,250 350,180 250,150" opacity="0.6">
+        <!-- Central to peripheral connections - more linear and direct -->
+        <path d="M600,400 L250,150" opacity="0.6">
             <animate attributeName="opacity" values="0.4;0.7;0.4" dur="7s" repeatCount="indefinite" begin="0s" />
         </path>
-        <path d="M600,400 C480,520 370,580 280,670" opacity="0.5">
+        <path d="M600,400 L280,670" opacity="0.5">
             <animate attributeName="opacity" values="0.3;0.6;0.3" dur="8s" repeatCount="indefinite" begin="1s" />
         </path>
-        <path d="M600,400 C700,300 850,220 950,150" opacity="0.6">
+        <path d="M600,400 L950,150" opacity="0.6">
             <animate attributeName="opacity" values="0.4;0.7;0.4" dur="9s" repeatCount="indefinite" begin="2s" />
         </path>
-        <path d="M600,400 C670,550 770,650 920,700" opacity="0.5">
+        <path d="M600,400 L920,700" opacity="0.5">
             <animate attributeName="opacity" values="0.3;0.6;0.3" dur="10s" repeatCount="indefinite" begin="3s" />
         </path>
-        <path d="M600,400 C450,410 300,390 180,320" opacity="0.7">
+        <path d="M600,400 L180,320" opacity="0.7">
             <animate attributeName="opacity" values="0.5;0.8;0.5" dur="8s" repeatCount="indefinite" begin="1.5s" />
         </path>
-        <path d="M600,400 C750,430 850,410 1000,380" opacity="0.6">
+        <path d="M600,400 L1000,380" opacity="0.6">
             <animate attributeName="opacity" values="0.4;0.7;0.4" dur="9s" repeatCount="indefinite" begin="2.5s" />
         </path>
-        <path d="M600,400 C580,250 550,120 480,50" opacity="0.5">
+        <path d="M600,400 L480,50" opacity="0.5">
             <animate attributeName="opacity" values="0.3;0.6;0.3" dur="11s" repeatCount="indefinite" begin="0.5s" />
         </path>
-        <path d="M600,400 C630,550 610,680 650,750" opacity="0.6">
+        <path d="M600,400 L650,750" opacity="0.6">
             <animate attributeName="opacity" values="0.4;0.7;0.4" dur="10s" repeatCount="indefinite" begin="1.8s" />
         </path>
-        <path d="M600,400 C500,300 400,250 350,120" opacity="0.5">
+        <path d="M600,400 L350,120" opacity="0.5">
             <animate attributeName="opacity" values="0.3;0.6;0.3" dur="7.5s" repeatCount="indefinite" begin="3.5s" />
         </path>
-        <path d="M600,400 C700,320 820,270 900,180" opacity="0.6">
+        <path d="M600,400 L900,180" opacity="0.6">
             <animate attributeName="opacity" values="0.4;0.7;0.4" dur="8.5s" repeatCount="indefinite" begin="2.7s" />
         </path>
         
-        <!-- Additional connections between peripheral neurons - more organic paths -->
-        <path d="M250,150 C350,200 400,170 480,50" opacity="0.4">
+        <!-- Additional connections between peripheral neurons - more linear paths -->
+        <path d="M250,150 L480,50" opacity="0.4">
             <animate attributeName="opacity" values="0.2;0.5;0.2" dur="12s" repeatCount="indefinite" begin="3.2s" />
         </path>
-        <path d="M280,670 C380,600 500,630 650,750" opacity="0.4">
+        <path d="M280,670 L650,750" opacity="0.4">
             <animate attributeName="opacity" values="0.2;0.5;0.2" dur="13s" repeatCount="indefinite" begin="2.7s" />
         </path>
-        <path d="M950,150 C820,210 750,300 800,380" opacity="0.3">
+        <path d="M950,150 L800,380" opacity="0.3">
             <animate attributeName="opacity" values="0.2;0.4;0.2" dur="14s" repeatCount="indefinite" begin="4.2s" />
         </path>
-        <path d="M920,700 C800,650 700,680 600,620" opacity="0.3">
+        <path d="M920,700 L600,620" opacity="0.3">
             <animate attributeName="opacity" values="0.2;0.4;0.2" dur="15s" repeatCount="indefinite" begin="3.7s" />
         </path>
-        <path d="M180,320 C280,350 340,320 380,250" opacity="0.4">
+        <path d="M180,320 L380,250" opacity="0.4">
             <animate attributeName="opacity" values="0.2;0.5;0.2" dur="11s" repeatCount="indefinite" begin="1.3s" />
         </path>
-        <path d="M1000,380 C910,400 850,370 800,460" opacity="0.4">
+        <path d="M1000,380 L800,460" opacity="0.4">
             <animate attributeName="opacity" values="0.2;0.5;0.2" dur="12s" repeatCount="indefinite" begin="2.1s" />
         </path>
-        <path d="M480,50 C500,150 520,180 570,220" opacity="0.3">
+        <path d="M480,50 L570,220" opacity="0.3">
             <animate attributeName="opacity" values="0.2;0.4;0.2" dur="13s" repeatCount="indefinite" begin="0.8s" />
         </path>
-        <path d="M650,750 C630,650 600,600 580,520" opacity="0.3">
+        <path d="M650,750 L580,520" opacity="0.3">
             <animate attributeName="opacity" values="0.2;0.4;0.2" dur="14s" repeatCount="indefinite" begin="1.6s" />
         </path>
-        <path d="M350,120 C420,180 500,150 570,220" opacity="0.4">
+        <path d="M350,120 L570,220" opacity="0.4">
             <animate attributeName="opacity" values="0.2;0.5;0.2" dur="10.5s" repeatCount="indefinite" begin="3.1s" />
         </path>
-        <path d="M900,180 C820,230 760,280 800,380" opacity="0.3">
+        <path d="M900,180 L800,380" opacity="0.3">
             <animate attributeName="opacity" values="0.2;0.4;0.2" dur="11.5s" repeatCount="indefinite" begin="2.3s" />
         </path>
-        <path d="M180,320 C260,400 300,450 380,520" opacity="0.3">
+        <path d="M180,320 L380,520" opacity="0.3">
             <animate attributeName="opacity" values="0.2;0.4;0.2" dur="12.5s" repeatCount="indefinite" begin="1.9s" />
         </path>
-        <path d="M1000,380 C900,420 840,480 800,520" opacity="0.3">
+        <path d="M1000,380 L800,520" opacity="0.3">
             <animate attributeName="opacity" values="0.2;0.4;0.2" dur="13.5s" repeatCount="indefinite" begin="0.7s" />
+        </path>
+        
+        <!-- Additional cross connections for a more complex network -->
+        <path d="M350,120 L250,150" opacity="0.3">
+            <animate attributeName="opacity" values="0.2;0.4;0.2" dur="15s" repeatCount="indefinite" begin="1.2s" />
+        </path>
+        <path d="M900,180 L950,150" opacity="0.3">
+            <animate attributeName="opacity" values="0.2;0.4;0.2" dur="14s" repeatCount="indefinite" begin="2.9s" />
+        </path>
+        <path d="M380,520 L280,670" opacity="0.3">
+            <animate attributeName="opacity" values="0.2;0.4;0.2" dur="13s" repeatCount="indefinite" begin="3.5s" />
+        </path>
+        <path d="M800,520 L920,700" opacity="0.3">
+            <animate attributeName="opacity" values="0.2;0.4;0.2" dur="12s" repeatCount="indefinite" begin="1.4s" />
+        </path>
+        <path d="M570,220 L800,380" opacity="0.3">
+            <animate attributeName="opacity" values="0.2;0.4;0.2" dur="11s" repeatCount="indefinite" begin="2.6s" />
+        </path>
+        <path d="M580,520 L380,520" opacity="0.3">
+            <animate attributeName="opacity" values="0.2;0.4;0.2" dur="16s" repeatCount="indefinite" begin="0.3s" />
         </path>
     </g>
     
-    <!-- Traveling particles along connections -->
+    <!-- Traveling particles along connections - updated with linear paths -->
     <g>
-        <!-- Path travelers with updated paths -->
+        <!-- Path travelers with linear paths -->
         <use xlink:href="#traveler">
             <animateMotion
-                path="M600,400 C450,250 350,180 250,150"
+                path="M600,400 L250,150"
                 dur="5s"
                 repeatCount="indefinite"
                 begin="1s"
@@ -134,7 +154,7 @@
         </use>
         <use xlink:href="#traveler">
             <animateMotion
-                path="M600,400 C480,520 370,580 280,670"
+                path="M600,400 L280,670"
                 dur="6s"
                 repeatCount="indefinite"
                 begin="0.5s"
@@ -142,7 +162,7 @@
         </use>
         <use xlink:href="#traveler">
             <animateMotion
-                path="M600,400 C700,300 850,220 950,150"
+                path="M600,400 L950,150"
                 dur="5.5s"
                 repeatCount="indefinite"
                 begin="2s"
@@ -150,7 +170,7 @@
         </use>
         <use xlink:href="#traveler">
             <animateMotion
-                path="M600,400 C670,550 770,650 920,700"
+                path="M600,400 L920,700"
                 dur="6.5s"
                 repeatCount="indefinite"
                 begin="2.5s"
@@ -158,7 +178,7 @@
         </use>
         <use xlink:href="#traveler">
             <animateMotion
-                path="M600,400 C450,410 300,390 180,320"
+                path="M600,400 L180,320"
                 dur="4.5s"
                 repeatCount="indefinite"
                 begin="0s"
@@ -166,7 +186,7 @@
         </use>
         <use xlink:href="#traveler">
             <animateMotion
-                path="M600,400 C750,430 850,410 1000,380"
+                path="M600,400 L1000,380"
                 dur="4.5s"
                 repeatCount="indefinite"
                 begin="3s"
@@ -174,7 +194,7 @@
         </use>
         <use xlink:href="#traveler">
             <animateMotion
-                path="M600,400 C580,250 550,120 480,50"
+                path="M600,400 L480,50"
                 dur="7s"
                 repeatCount="indefinite"
                 begin="1.2s"
@@ -182,7 +202,7 @@
         </use>
         <use xlink:href="#traveler">
             <animateMotion
-                path="M600,400 C630,550 610,680 650,750"
+                path="M600,400 L650,750"
                 dur="7s"
                 repeatCount="indefinite"
                 begin="2.8s"
@@ -190,7 +210,7 @@
         </use>
         <use xlink:href="#traveler">
             <animateMotion
-                path="M600,400 C500,300 400,250 350,120"
+                path="M600,400 L350,120"
                 dur="6s"
                 repeatCount="indefinite"
                 begin="1.8s"
@@ -198,16 +218,17 @@
         </use>
         <use xlink:href="#traveler">
             <animateMotion
-                path="M600,400 C700,320 820,270 900,180"
+                path="M600,400 L900,180"
                 dur="5.8s"
                 repeatCount="indefinite"
                 begin="3.3s"
             />
         </use>
+        
         <!-- Additional travelers on secondary connections -->
         <use xlink:href="#traveler">
             <animateMotion
-                path="M250,150 C350,200 400,170 480,50"
+                path="M250,150 L480,50"
                 dur="8s"
                 repeatCount="indefinite"
                 begin="4.2s"
@@ -215,10 +236,58 @@
         </use>
         <use xlink:href="#traveler">
             <animateMotion
-                path="M1000,380 C900,420 840,480 800,520"
+                path="M1000,380 L800,520"
                 dur="7.5s"
                 repeatCount="indefinite"
                 begin="2.1s"
+            />
+        </use>
+        <use xlink:href="#traveler">
+            <animateMotion
+                path="M180,320 L380,250"
+                dur="5.2s"
+                repeatCount="indefinite"
+                begin="3.7s"
+            />
+        </use>
+        <use xlink:href="#traveler">
+            <animateMotion
+                path="M900,180 L800,380"
+                dur="6.2s"
+                repeatCount="indefinite"
+                begin="1.7s"
+            />
+        </use>
+        <use xlink:href="#traveler">
+            <animateMotion
+                path="M280,670 L650,750"
+                dur="9s"
+                repeatCount="indefinite"
+                begin="0.8s"
+            />
+        </use>
+        <use xlink:href="#traveler">
+            <animateMotion
+                path="M950,150 L800,380"
+                dur="8s"
+                repeatCount="indefinite"
+                begin="2.6s"
+            />
+        </use>
+        <use xlink:href="#traveler">
+            <animateMotion
+                path="M570,220 L800,380"
+                dur="5s"
+                repeatCount="indefinite"
+                begin="1.5s"
+            />
+        </use>
+        <use xlink:href="#traveler">
+            <animateMotion
+                path="M580,520 L380,520"
+                dur="4.5s"
+                repeatCount="indefinite"
+                begin="3.2s"
             />
         </use>
     </g>
