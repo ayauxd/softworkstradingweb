@@ -38,106 +38,126 @@
             <animate attributeName="x2" from="100%" to="200%" dur="8s" repeatCount="indefinite" />
         </linearGradient>
         
-        <!-- Animated traveling dots along connections -->
-        <circle id="traveler" r="3" fill="#00BCD4" filter="url(#connectionGlow)">
-            <animate attributeName="r" values="2;4;2" dur="3s" repeatCount="indefinite" />
-            <animate attributeName="opacity" values="0.3;0.8;0.3" dur="3s" repeatCount="indefinite" />
+        <!-- Animated traveling dots along connections - less conspicuous -->
+        <circle id="traveler" r="2" fill="#00BCD4" filter="url(#connectionGlow)">
+            <animate attributeName="r" values="1.5;2.5;1.5" dur="8s" repeatCount="indefinite" />
+            <animate attributeName="opacity" values="0.15;0.3;0.15" dur="8s" repeatCount="indefinite" />
         </circle>
     </defs>
     
-    <!-- Dark background -->
+    <!-- Dark background with faint pulsating circles -->
     <rect width="100%" height="100%" fill="#041626" />
     
-    <!-- Neural Connections - These are the lines connecting neurons with more linear paths -->
-    <g stroke="url(#connectionGradient)" stroke-width="1" fill="none">
+    <!-- Very faint and spread out background pulsating circles -->
+    <g opacity="0.07">
+        <circle cx="300" cy="200" r="200" fill="url(#connectionGradient)">
+            <animate attributeName="opacity" values="0.04;0.07;0.04" dur="35s" repeatCount="indefinite" begin="0s" />
+            <animate attributeName="r" values="200;210;200" dur="35s" repeatCount="indefinite" begin="0s" />
+        </circle>
+        <circle cx="900" cy="600" r="250" fill="url(#connectionGradient)">
+            <animate attributeName="opacity" values="0.05;0.08;0.05" dur="40s" repeatCount="indefinite" begin="10s" />
+            <animate attributeName="r" values="250;260;250" dur="40s" repeatCount="indefinite" begin="10s" />
+        </circle>
+        <circle cx="800" cy="100" r="180" fill="url(#connectionGradient)">
+            <animate attributeName="opacity" values="0.03;0.06;0.03" dur="45s" repeatCount="indefinite" begin="5s" />
+            <animate attributeName="r" values="180;190;180" dur="45s" repeatCount="indefinite" begin="5s" />
+        </circle>
+        <circle cx="200" cy="650" r="220" fill="url(#connectionGradient)">
+            <animate attributeName="opacity" values="0.04;0.07;0.04" dur="38s" repeatCount="indefinite" begin="15s" />
+            <animate attributeName="r" values="220;230;220" dur="38s" repeatCount="indefinite" begin="15s" />
+        </circle>
+    </g>
+    
+    <!-- Neural Connections - These are the lines connecting neurons with more linear paths - reduced opacity -->
+    <g stroke="url(#connectionGradient)" stroke-width="0.8" fill="none" opacity="0.4">
         <!-- Central to peripheral connections - more linear and direct -->
-        <path d="M600,400 L240,140" opacity="0.6">
-            <animate attributeName="opacity" values="0.4;0.7;0.4" dur="7s" repeatCount="indefinite" begin="0s" />
+        <path d="M600,400 L240,140" opacity="0.3">
+            <animate attributeName="opacity" values="0.25;0.35;0.25" dur="20s" repeatCount="indefinite" begin="0s" />
         </path>
-        <path d="M600,400 L270,680" opacity="0.5">
-            <animate attributeName="opacity" values="0.3;0.6;0.3" dur="8s" repeatCount="indefinite" begin="1s" />
+        <path d="M600,400 L270,680" opacity="0.25">
+            <animate attributeName="opacity" values="0.2;0.3;0.2" dur="22s" repeatCount="indefinite" begin="1s" />
         </path>
-        <path d="M600,400 L960,140" opacity="0.6">
-            <animate attributeName="opacity" values="0.4;0.7;0.4" dur="9s" repeatCount="indefinite" begin="2s" />
+        <path d="M600,400 L960,140" opacity="0.3">
+            <animate attributeName="opacity" values="0.25;0.35;0.25" dur="21s" repeatCount="indefinite" begin="2s" />
         </path>
-        <path d="M600,400 L930,710" opacity="0.5">
-            <animate attributeName="opacity" values="0.3;0.6;0.3" dur="10s" repeatCount="indefinite" begin="3s" />
+        <path d="M600,400 L930,710" opacity="0.25">
+            <animate attributeName="opacity" values="0.2;0.3;0.2" dur="23s" repeatCount="indefinite" begin="3s" />
         </path>
-        <path d="M600,400 L170,310" opacity="0.7">
-            <animate attributeName="opacity" values="0.5;0.8;0.5" dur="8s" repeatCount="indefinite" begin="1.5s" />
+        <path d="M600,400 L170,310" opacity="0.35">
+            <animate attributeName="opacity" values="0.3;0.4;0.3" dur="20s" repeatCount="indefinite" begin="1.5s" />
         </path>
-        <path d="M600,400 L1020,370" opacity="0.6">
-            <animate attributeName="opacity" values="0.4;0.7;0.4" dur="9s" repeatCount="indefinite" begin="2.5s" />
+        <path d="M600,400 L1020,370" opacity="0.3">
+            <animate attributeName="opacity" values="0.25;0.35;0.25" dur="21s" repeatCount="indefinite" begin="2.5s" />
         </path>
-        <path d="M600,400 L470,40" opacity="0.5">
-            <animate attributeName="opacity" values="0.3;0.6;0.3" dur="11s" repeatCount="indefinite" begin="0.5s" />
+        <path d="M600,400 L470,40" opacity="0.25">
+            <animate attributeName="opacity" values="0.2;0.3;0.2" dur="24s" repeatCount="indefinite" begin="0.5s" />
         </path>
-        <path d="M600,400 L660,760" opacity="0.6">
-            <animate attributeName="opacity" values="0.4;0.7;0.4" dur="10s" repeatCount="indefinite" begin="1.8s" />
+        <path d="M600,400 L660,760" opacity="0.3">
+            <animate attributeName="opacity" values="0.25;0.35;0.25" dur="22s" repeatCount="indefinite" begin="1.8s" />
         </path>
-        <path d="M600,400 L340,110" opacity="0.5">
-            <animate attributeName="opacity" values="0.3;0.6;0.3" dur="7.5s" repeatCount="indefinite" begin="3.5s" />
+        <path d="M600,400 L340,110" opacity="0.25">
+            <animate attributeName="opacity" values="0.2;0.3;0.2" dur="19.5s" repeatCount="indefinite" begin="3.5s" />
         </path>
-        <path d="M600,400 L910,170" opacity="0.6">
-            <animate attributeName="opacity" values="0.4;0.7;0.4" dur="8.5s" repeatCount="indefinite" begin="2.7s" />
+        <path d="M600,400 L910,170" opacity="0.3">
+            <animate attributeName="opacity" values="0.25;0.35;0.25" dur="20.5s" repeatCount="indefinite" begin="2.7s" />
         </path>
         
         <!-- Additional connections between peripheral neurons - more linear paths -->
-        <path d="M240,140 L470,40" opacity="0.4">
-            <animate attributeName="opacity" values="0.2;0.5;0.2" dur="12s" repeatCount="indefinite" begin="3.2s" />
+        <path d="M240,140 L470,40" opacity="0.2">
+            <animate attributeName="opacity" values="0.15;0.25;0.15" dur="25s" repeatCount="indefinite" begin="3.2s" />
         </path>
-        <path d="M270,680 L660,760" opacity="0.4">
-            <animate attributeName="opacity" values="0.2;0.5;0.2" dur="13s" repeatCount="indefinite" begin="2.7s" />
+        <path d="M270,680 L660,760" opacity="0.2">
+            <animate attributeName="opacity" values="0.15;0.25;0.15" dur="26s" repeatCount="indefinite" begin="2.7s" />
         </path>
-        <path d="M960,140 L790,370" opacity="0.3">
-            <animate attributeName="opacity" values="0.2;0.4;0.2" dur="14s" repeatCount="indefinite" begin="4.2s" />
+        <path d="M960,140 L790,370" opacity="0.15">
+            <animate attributeName="opacity" values="0.1;0.2;0.1" dur="27s" repeatCount="indefinite" begin="4.2s" />
         </path>
-        <path d="M930,710 L610,630" opacity="0.3">
-            <animate attributeName="opacity" values="0.2;0.4;0.2" dur="15s" repeatCount="indefinite" begin="3.7s" />
+        <path d="M930,710 L610,630" opacity="0.15">
+            <animate attributeName="opacity" values="0.1;0.2;0.1" dur="28s" repeatCount="indefinite" begin="3.7s" />
         </path>
-        <path d="M170,310 L370,240" opacity="0.4">
-            <animate attributeName="opacity" values="0.2;0.5;0.2" dur="11s" repeatCount="indefinite" begin="1.3s" />
+        <path d="M170,310 L370,240" opacity="0.2">
+            <animate attributeName="opacity" values="0.15;0.25;0.15" dur="24s" repeatCount="indefinite" begin="1.3s" />
         </path>
-        <path d="M1020,370 L810,470" opacity="0.4">
-            <animate attributeName="opacity" values="0.2;0.5;0.2" dur="12s" repeatCount="indefinite" begin="2.1s" />
+        <path d="M1020,370 L810,470" opacity="0.2">
+            <animate attributeName="opacity" values="0.15;0.25;0.15" dur="25s" repeatCount="indefinite" begin="2.1s" />
         </path>
-        <path d="M470,40 L580,230" opacity="0.3">
-            <animate attributeName="opacity" values="0.2;0.4;0.2" dur="13s" repeatCount="indefinite" begin="0.8s" />
+        <path d="M470,40 L580,230" opacity="0.15">
+            <animate attributeName="opacity" values="0.1;0.2;0.1" dur="26s" repeatCount="indefinite" begin="0.8s" />
         </path>
-        <path d="M660,760 L590,530" opacity="0.3">
-            <animate attributeName="opacity" values="0.2;0.4;0.2" dur="14s" repeatCount="indefinite" begin="1.6s" />
+        <path d="M660,760 L590,530" opacity="0.15">
+            <animate attributeName="opacity" values="0.1;0.2;0.1" dur="27s" repeatCount="indefinite" begin="1.6s" />
         </path>
-        <path d="M340,110 L580,230" opacity="0.4">
-            <animate attributeName="opacity" values="0.2;0.5;0.2" dur="10.5s" repeatCount="indefinite" begin="3.1s" />
+        <path d="M340,110 L580,230" opacity="0.2">
+            <animate attributeName="opacity" values="0.15;0.25;0.15" dur="23.5s" repeatCount="indefinite" begin="3.1s" />
         </path>
-        <path d="M910,170 L790,370" opacity="0.3">
-            <animate attributeName="opacity" values="0.2;0.4;0.2" dur="11.5s" repeatCount="indefinite" begin="2.3s" />
+        <path d="M910,170 L790,370" opacity="0.15">
+            <animate attributeName="opacity" values="0.1;0.2;0.1" dur="24.5s" repeatCount="indefinite" begin="2.3s" />
         </path>
-        <path d="M170,310 L390,530" opacity="0.3">
-            <animate attributeName="opacity" values="0.2;0.4;0.2" dur="12.5s" repeatCount="indefinite" begin="1.9s" />
+        <path d="M170,310 L390,530" opacity="0.15">
+            <animate attributeName="opacity" values="0.1;0.2;0.1" dur="25.5s" repeatCount="indefinite" begin="1.9s" />
         </path>
-        <path d="M1020,370 L790,510" opacity="0.3">
-            <animate attributeName="opacity" values="0.2;0.4;0.2" dur="13.5s" repeatCount="indefinite" begin="0.7s" />
+        <path d="M1020,370 L790,510" opacity="0.15">
+            <animate attributeName="opacity" values="0.1;0.2;0.1" dur="26.5s" repeatCount="indefinite" begin="0.7s" />
         </path>
         
         <!-- Additional cross connections for a more complex network -->
-        <path d="M340,110 L240,140" opacity="0.3">
-            <animate attributeName="opacity" values="0.2;0.4;0.2" dur="15s" repeatCount="indefinite" begin="1.2s" />
+        <path d="M340,110 L240,140" opacity="0.15">
+            <animate attributeName="opacity" values="0.1;0.2;0.1" dur="28s" repeatCount="indefinite" begin="1.2s" />
         </path>
-        <path d="M910,170 L960,140" opacity="0.3">
-            <animate attributeName="opacity" values="0.2;0.4;0.2" dur="14s" repeatCount="indefinite" begin="2.9s" />
+        <path d="M910,170 L960,140" opacity="0.15">
+            <animate attributeName="opacity" values="0.1;0.2;0.1" dur="27s" repeatCount="indefinite" begin="2.9s" />
         </path>
-        <path d="M390,530 L270,680" opacity="0.3">
-            <animate attributeName="opacity" values="0.2;0.4;0.2" dur="13s" repeatCount="indefinite" begin="3.5s" />
+        <path d="M390,530 L270,680" opacity="0.15">
+            <animate attributeName="opacity" values="0.1;0.2;0.1" dur="26s" repeatCount="indefinite" begin="3.5s" />
         </path>
-        <path d="M790,510 L930,710" opacity="0.3">
-            <animate attributeName="opacity" values="0.2;0.4;0.2" dur="12s" repeatCount="indefinite" begin="1.4s" />
+        <path d="M790,510 L930,710" opacity="0.15">
+            <animate attributeName="opacity" values="0.1;0.2;0.1" dur="25s" repeatCount="indefinite" begin="1.4s" />
         </path>
-        <path d="M580,230 L790,370" opacity="0.3">
-            <animate attributeName="opacity" values="0.2;0.4;0.2" dur="11s" repeatCount="indefinite" begin="2.6s" />
+        <path d="M580,230 L790,370" opacity="0.15">
+            <animate attributeName="opacity" values="0.1;0.2;0.1" dur="24s" repeatCount="indefinite" begin="2.6s" />
         </path>
-        <path d="M590,530 L390,530" opacity="0.3">
-            <animate attributeName="opacity" values="0.2;0.4;0.2" dur="16s" repeatCount="indefinite" begin="0.3s" />
+        <path d="M590,530 L390,530" opacity="0.15">
+            <animate attributeName="opacity" values="0.1;0.2;0.1" dur="29s" repeatCount="indefinite" begin="0.3s" />
         </path>
     </g>
     
