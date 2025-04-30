@@ -1,5 +1,6 @@
 import { Button } from "@/components/ui/button";
-import neuralBackgroundSrc from "../assets/neural-background-prominent.svg";
+import animatedNeuralNetworkSrc from "../assets/animated-neural-network.svg";
+import neuralNetworkImageSrc from "../assets/neural-network-base.png";
 
 interface HeroSectionProps {
   onTalkToAgent: () => void;
@@ -19,37 +20,33 @@ const HeroSection = ({ onTalkToAgent }: HeroSectionProps) => {
 
   return (
     <section id="home" className="relative min-h-[90vh] bg-[#0D3456] dark:bg-[#051525] text-soft-white py-32 md:py-20 transition-colors duration-300 overflow-hidden flex items-center">
-      {/* Enhanced Neural Background with symmetric design and random animations */}
-      <div className="absolute inset-0 z-0 bg-gradient-to-b from-[#0D3456]/90 to-[#0D3456]/70 dark:from-[#051525]/95 dark:to-[#051525]/80">
-        <img 
-          src={neuralBackgroundSrc} 
-          alt="Animated Neural Workflow Background" 
-          className="w-full h-full object-cover mix-blend-screen dark:mix-blend-lighten opacity-85 dark:opacity-70"
-        />
-        
-        {/* Enhanced gradient overlays for better glow effects */}
-        <div className="absolute inset-0 bg-gradient-to-tr from-cyan/10 to-transparent dark:from-cyan/20 dark:to-transparent"></div>
-        <div className="absolute inset-0 bg-[#0D3456]/20 dark:bg-[#000]/40 mix-blend-multiply"></div>
-        
-        {/* Central radial glow effect */}
-        <div className="absolute inset-0 bg-gradient-radial opacity-80 dark:opacity-100" 
-             style={{ background: 'radial-gradient(circle at 50% 50%, rgba(0, 188, 212, 0.15), transparent 70%)' }}>
+      {/* Neural Network Background - Animated SVG with organic motion and glowing effects */}
+      <div className="absolute inset-0 z-0 bg-gradient-to-b from-[#0D3456]/95 to-[#0D3456]/90 dark:from-[#051525]/98 dark:to-[#051525]/95">
+        {/* SVG based animated neural network */}
+        <div className="absolute inset-0 overflow-hidden mix-blend-screen dark:mix-blend-lighten">
+          <object
+            type="image/svg+xml"
+            data={animatedNeuralNetworkSrc}
+            className="w-full h-full object-cover"
+            aria-hidden="true"
+          >
+            {/* Fallback to static image if SVG doesn't load */}
+            <img 
+              src={neuralNetworkImageSrc} 
+              alt="" 
+              className="w-full h-full object-cover opacity-70"
+              aria-hidden="true"
+            />
+          </object>
         </div>
         
-        {/* Additional animated glow points */}
-        <div className="absolute w-full h-full">
-          <div className="absolute w-20 h-20 rounded-full bg-cyan/10 blur-xl animate-pulse" 
-               style={{ top: '15%', left: '25%', animationDuration: '4s' }}></div>
-          <div className="absolute w-24 h-24 rounded-full bg-cyan/10 blur-xl animate-pulse" 
-               style={{ top: '65%', left: '75%', animationDuration: '5s', animationDelay: '0.7s' }}></div>
-          <div className="absolute w-16 h-16 rounded-full bg-cyan/10 blur-xl animate-pulse" 
-               style={{ top: '30%', left: '70%', animationDuration: '3.5s', animationDelay: '1.5s' }}></div>
-          <div className="absolute w-20 h-20 rounded-full bg-cyan/10 blur-xl animate-pulse" 
-               style={{ top: '75%', left: '30%', animationDuration: '4.5s', animationDelay: '1s' }}></div>
-          <div className="absolute w-24 h-24 rounded-full bg-cyan/10 blur-xl animate-pulse" 
-               style={{ top: '45%', left: '15%', animationDuration: '6s', animationDelay: '2s' }}></div>
-          <div className="absolute w-16 h-16 rounded-full bg-cyan/10 blur-xl animate-pulse" 
-               style={{ top: '40%', left: '85%', animationDuration: '5.5s', animationDelay: '0.5s' }}></div>
+        {/* Gradient overlays for depth and visual enhancement */}
+        <div className="absolute inset-0 bg-gradient-to-tr from-cyan/5 to-transparent dark:from-cyan/10 dark:to-transparent"></div>
+        <div className="absolute inset-0 bg-[#0D3456]/10 dark:bg-[#000]/20 mix-blend-multiply"></div>
+        
+        {/* Central radial glow effect */}
+        <div className="absolute inset-0 opacity-80 dark:opacity-90" 
+             style={{ background: 'radial-gradient(circle at 50% 50%, rgba(0, 188, 212, 0.12), transparent 70%)' }}>
         </div>
       </div>
       
