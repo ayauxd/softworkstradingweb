@@ -2,7 +2,9 @@ services:
   - type: web
     name: softworks-trading
     env: node
-    buildCommand: npm install && npm run build
+    runtime: node
+    nodeVersion: 18.20.7
+    buildCommand: npm ci && npm run build
     startCommand: npm run start
     envVars:
       - key: NODE_ENV
