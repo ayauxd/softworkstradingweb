@@ -1,18 +1,22 @@
-import logoImage from "../assets/logo.png";
-
 interface LogoIconProps {
   className?: string;
   isWhite?: boolean;
+  showText?: boolean;
 }
 
-const LogoIcon = ({ className = "", isWhite = false }: LogoIconProps) => {
+const LogoIcon = ({ className = "", isWhite = false, showText = false }: LogoIconProps) => {
+  const logoPath = "/assets/images/logo.png";
+
   return (
-    <div className={`${className} relative overflow-hidden rounded-full ${isWhite ? 'bg-white/10' : 'bg-transparent'} flex items-center justify-center`}>
+    <div className={`${className} relative flex items-center`}>
       <img 
-        src={logoImage} 
-        alt="Softworks Logo" 
-        className={`w-full h-full object-contain ${isWhite ? 'filter brightness-0 invert' : 'filter drop-shadow-md'}`}
+        src={logoPath} 
+        alt="Softworks Trading Company" 
+        className={`w-full h-full object-contain ${isWhite ? 'brightness-0 invert' : ''}`}
       />
+      {showText && (
+        <span className="sr-only">Softworks Trading Company</span>
+      )}
     </div>
   );
 };

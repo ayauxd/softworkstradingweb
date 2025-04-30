@@ -19,28 +19,37 @@ const HeroSection = ({ onTalkToAgent }: HeroSectionProps) => {
 
   return (
     <section id="home" className="relative min-h-[90vh] bg-[#0D3456] dark:bg-[#051525] text-soft-white py-32 md:py-20 transition-colors duration-300 overflow-hidden flex items-center">
-      {/* Pulsating Neural Background - Different overlay colors for light/dark modes */}
-      <div className="absolute inset-0 z-0 bg-gradient-to-b from-[#0D3456]/80 to-[#0D3456]/60 dark:from-[#051525]/90 dark:to-[#051525]/70">
+      {/* Enhanced Neural Background with symmetric design and random animations */}
+      <div className="absolute inset-0 z-0 bg-gradient-to-b from-[#0D3456]/90 to-[#0D3456]/70 dark:from-[#051525]/95 dark:to-[#051525]/80">
         <img 
           src={neuralBackgroundSrc} 
           alt="Animated Neural Workflow Background" 
-          className="w-full h-full object-cover animate-pulse-slow mix-blend-screen dark:mix-blend-lighten opacity-70 dark:opacity-50 animate-pulse-glow"
+          className="w-full h-full object-cover mix-blend-screen dark:mix-blend-lighten opacity-85 dark:opacity-70"
         />
-        {/* Additional light/dark mode specific elements */}
-        <div className="absolute inset-0 bg-gradient-to-tr from-cyan/5 to-transparent dark:from-cyan/15 dark:to-transparent"></div>
-        <div className="absolute inset-0 bg-[#0D3456]/30 dark:bg-[#000]/50 mix-blend-multiply"></div>
         
-        {/* Light mode specific elements */}
-        <div className="absolute inset-0 bg-gradient-radial from-cyan/5 via-transparent to-transparent opacity-75 dark:opacity-0" style={{ background: 'radial-gradient(circle at 50% 50%, rgba(0, 188, 212, 0.1), transparent 70%)' }}></div>
+        {/* Enhanced gradient overlays for better glow effects */}
+        <div className="absolute inset-0 bg-gradient-to-tr from-cyan/10 to-transparent dark:from-cyan/20 dark:to-transparent"></div>
+        <div className="absolute inset-0 bg-[#0D3456]/20 dark:bg-[#000]/40 mix-blend-multiply"></div>
         
-        {/* Dark mode specific elements */}
-        <div className="absolute inset-0 bg-gradient-radial from-cyan/10 via-transparent to-transparent opacity-0 dark:opacity-100" style={{ background: 'radial-gradient(circle at 50% 50%, rgba(0, 188, 212, 0.15), transparent 70%)' }}></div>
+        {/* Central radial glow effect */}
+        <div className="absolute inset-0 bg-gradient-radial opacity-80 dark:opacity-100" 
+             style={{ background: 'radial-gradient(circle at 50% 50%, rgba(0, 188, 212, 0.15), transparent 70%)' }}>
+        </div>
         
-        {/* Glowing points in dark mode */}
-        <div className="absolute w-full h-full opacity-0 dark:opacity-70">
-          <div className="absolute w-16 h-16 rounded-full bg-cyan/5 blur-xl animate-pulse-glow" style={{ top: '20%', left: '25%' }}></div>
-          <div className="absolute w-24 h-24 rounded-full bg-cyan/5 blur-xl animate-pulse-glow" style={{ top: '60%', left: '70%', animationDelay: '1s' }}></div>
-          <div className="absolute w-20 h-20 rounded-full bg-cyan/5 blur-xl animate-pulse-glow" style={{ top: '40%', left: '80%', animationDelay: '0.5s' }}></div>
+        {/* Additional animated glow points */}
+        <div className="absolute w-full h-full">
+          <div className="absolute w-20 h-20 rounded-full bg-cyan/10 blur-xl animate-pulse" 
+               style={{ top: '15%', left: '25%', animationDuration: '4s' }}></div>
+          <div className="absolute w-24 h-24 rounded-full bg-cyan/10 blur-xl animate-pulse" 
+               style={{ top: '65%', left: '75%', animationDuration: '5s', animationDelay: '0.7s' }}></div>
+          <div className="absolute w-16 h-16 rounded-full bg-cyan/10 blur-xl animate-pulse" 
+               style={{ top: '30%', left: '70%', animationDuration: '3.5s', animationDelay: '1.5s' }}></div>
+          <div className="absolute w-20 h-20 rounded-full bg-cyan/10 blur-xl animate-pulse" 
+               style={{ top: '75%', left: '30%', animationDuration: '4.5s', animationDelay: '1s' }}></div>
+          <div className="absolute w-24 h-24 rounded-full bg-cyan/10 blur-xl animate-pulse" 
+               style={{ top: '45%', left: '15%', animationDuration: '6s', animationDelay: '2s' }}></div>
+          <div className="absolute w-16 h-16 rounded-full bg-cyan/10 blur-xl animate-pulse" 
+               style={{ top: '40%', left: '85%', animationDuration: '5.5s', animationDelay: '0.5s' }}></div>
         </div>
       </div>
       
