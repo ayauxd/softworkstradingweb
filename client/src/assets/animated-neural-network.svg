@@ -48,138 +48,182 @@
     <!-- Dark background -->
     <rect width="100%" height="100%" fill="#041626" />
     
-    <!-- Neural Connections - These are the lines connecting neurons -->
+    <!-- Neural Connections - These are the lines connecting neurons with more spread out links -->
     <g stroke="url(#connectionGradient)" stroke-width="1" fill="none">
-        <!-- Central to peripheral connections -->
-        <path d="M600,400 C500,300 450,250 400,200" opacity="0.6">
+        <!-- Central to peripheral connections - more random and spread out -->
+        <path d="M600,400 C450,250 350,180 250,150" opacity="0.6">
             <animate attributeName="opacity" values="0.4;0.7;0.4" dur="7s" repeatCount="indefinite" begin="0s" />
         </path>
-        <path d="M600,400 C500,450 400,500 350,550" opacity="0.5">
+        <path d="M600,400 C480,520 370,580 280,670" opacity="0.5">
             <animate attributeName="opacity" values="0.3;0.6;0.3" dur="8s" repeatCount="indefinite" begin="1s" />
         </path>
-        <path d="M600,400 C650,300 700,250 800,200" opacity="0.6">
+        <path d="M600,400 C700,300 850,220 950,150" opacity="0.6">
             <animate attributeName="opacity" values="0.4;0.7;0.4" dur="9s" repeatCount="indefinite" begin="2s" />
         </path>
-        <path d="M600,400 C650,500 750,600 850,650" opacity="0.5">
+        <path d="M600,400 C670,550 770,650 920,700" opacity="0.5">
             <animate attributeName="opacity" values="0.3;0.6;0.3" dur="10s" repeatCount="indefinite" begin="3s" />
         </path>
-        <path d="M600,400 C500,380 400,370 300,350" opacity="0.7">
+        <path d="M600,400 C450,410 300,390 180,320" opacity="0.7">
             <animate attributeName="opacity" values="0.5;0.8;0.5" dur="8s" repeatCount="indefinite" begin="1.5s" />
         </path>
-        <path d="M600,400 C700,420 800,430 900,450" opacity="0.6">
+        <path d="M600,400 C750,430 850,410 1000,380" opacity="0.6">
             <animate attributeName="opacity" values="0.4;0.7;0.4" dur="9s" repeatCount="indefinite" begin="2.5s" />
         </path>
-        <path d="M600,400 C550,300 530,200 520,100" opacity="0.5">
+        <path d="M600,400 C580,250 550,120 480,50" opacity="0.5">
             <animate attributeName="opacity" values="0.3;0.6;0.3" dur="11s" repeatCount="indefinite" begin="0.5s" />
         </path>
-        <path d="M600,400 C630,500 650,600 620,700" opacity="0.6">
+        <path d="M600,400 C630,550 610,680 650,750" opacity="0.6">
             <animate attributeName="opacity" values="0.4;0.7;0.4" dur="10s" repeatCount="indefinite" begin="1.8s" />
         </path>
+        <path d="M600,400 C500,300 400,250 350,120" opacity="0.5">
+            <animate attributeName="opacity" values="0.3;0.6;0.3" dur="7.5s" repeatCount="indefinite" begin="3.5s" />
+        </path>
+        <path d="M600,400 C700,320 820,270 900,180" opacity="0.6">
+            <animate attributeName="opacity" values="0.4;0.7;0.4" dur="8.5s" repeatCount="indefinite" begin="2.7s" />
+        </path>
         
-        <!-- Additional connections between peripheral neurons -->
-        <path d="M400,200 C450,250 500,270 550,250" opacity="0.4">
+        <!-- Additional connections between peripheral neurons - more organic paths -->
+        <path d="M250,150 C350,200 400,170 480,50" opacity="0.4">
             <animate attributeName="opacity" values="0.2;0.5;0.2" dur="12s" repeatCount="indefinite" begin="3.2s" />
         </path>
-        <path d="M350,550 C450,500 550,480 650,500" opacity="0.4">
+        <path d="M280,670 C380,600 500,630 650,750" opacity="0.4">
             <animate attributeName="opacity" values="0.2;0.5;0.2" dur="13s" repeatCount="indefinite" begin="2.7s" />
         </path>
-        <path d="M800,200 C750,250 730,300 750,350" opacity="0.3">
+        <path d="M950,150 C820,210 750,300 800,380" opacity="0.3">
             <animate attributeName="opacity" values="0.2;0.4;0.2" dur="14s" repeatCount="indefinite" begin="4.2s" />
         </path>
-        <path d="M850,650 C750,600 700,580 650,600" opacity="0.3">
+        <path d="M920,700 C800,650 700,680 600,620" opacity="0.3">
             <animate attributeName="opacity" values="0.2;0.4;0.2" dur="15s" repeatCount="indefinite" begin="3.7s" />
         </path>
-        <path d="M300,350 C350,370 400,380 450,350" opacity="0.4">
+        <path d="M180,320 C280,350 340,320 380,250" opacity="0.4">
             <animate attributeName="opacity" values="0.2;0.5;0.2" dur="11s" repeatCount="indefinite" begin="1.3s" />
         </path>
-        <path d="M900,450 C850,430 800,420 750,450" opacity="0.4">
+        <path d="M1000,380 C910,400 850,370 800,460" opacity="0.4">
             <animate attributeName="opacity" values="0.2;0.5;0.2" dur="12s" repeatCount="indefinite" begin="2.1s" />
         </path>
-        <path d="M520,100 C540,150 560,200 550,250" opacity="0.3">
+        <path d="M480,50 C500,150 520,180 570,220" opacity="0.3">
             <animate attributeName="opacity" values="0.2;0.4;0.2" dur="13s" repeatCount="indefinite" begin="0.8s" />
         </path>
-        <path d="M620,700 C580,650 560,600 550,550" opacity="0.3">
+        <path d="M650,750 C630,650 600,600 580,520" opacity="0.3">
             <animate attributeName="opacity" values="0.2;0.4;0.2" dur="14s" repeatCount="indefinite" begin="1.6s" />
+        </path>
+        <path d="M350,120 C420,180 500,150 570,220" opacity="0.4">
+            <animate attributeName="opacity" values="0.2;0.5;0.2" dur="10.5s" repeatCount="indefinite" begin="3.1s" />
+        </path>
+        <path d="M900,180 C820,230 760,280 800,380" opacity="0.3">
+            <animate attributeName="opacity" values="0.2;0.4;0.2" dur="11.5s" repeatCount="indefinite" begin="2.3s" />
+        </path>
+        <path d="M180,320 C260,400 300,450 380,520" opacity="0.3">
+            <animate attributeName="opacity" values="0.2;0.4;0.2" dur="12.5s" repeatCount="indefinite" begin="1.9s" />
+        </path>
+        <path d="M1000,380 C900,420 840,480 800,520" opacity="0.3">
+            <animate attributeName="opacity" values="0.2;0.4;0.2" dur="13.5s" repeatCount="indefinite" begin="0.7s" />
         </path>
     </g>
     
     <!-- Traveling particles along connections -->
     <g>
-        <!-- Path 1 traveler -->
+        <!-- Path travelers with updated paths -->
         <use xlink:href="#traveler">
             <animateMotion
-                path="M600,400 C500,300 450,250 400,200"
+                path="M600,400 C450,250 350,180 250,150"
                 dur="5s"
                 repeatCount="indefinite"
                 begin="1s"
             />
         </use>
-        <!-- Path 2 traveler -->
         <use xlink:href="#traveler">
             <animateMotion
-                path="M600,400 C500,450 400,500 350,550"
+                path="M600,400 C480,520 370,580 280,670"
                 dur="6s"
                 repeatCount="indefinite"
                 begin="0.5s"
             />
         </use>
-        <!-- Path 3 traveler -->
         <use xlink:href="#traveler">
             <animateMotion
-                path="M600,400 C650,300 700,250 800,200"
+                path="M600,400 C700,300 850,220 950,150"
                 dur="5.5s"
                 repeatCount="indefinite"
                 begin="2s"
             />
         </use>
-        <!-- Path 4 traveler -->
         <use xlink:href="#traveler">
             <animateMotion
-                path="M600,400 C650,500 750,600 850,650"
+                path="M600,400 C670,550 770,650 920,700"
                 dur="6.5s"
                 repeatCount="indefinite"
                 begin="2.5s"
             />
         </use>
-        <!-- Path 5 traveler -->
         <use xlink:href="#traveler">
             <animateMotion
-                path="M600,400 C500,380 400,370 300,350"
+                path="M600,400 C450,410 300,390 180,320"
                 dur="4.5s"
                 repeatCount="indefinite"
                 begin="0s"
             />
         </use>
-        <!-- Path 6 traveler -->
         <use xlink:href="#traveler">
             <animateMotion
-                path="M600,400 C700,420 800,430 900,450"
+                path="M600,400 C750,430 850,410 1000,380"
                 dur="4.5s"
                 repeatCount="indefinite"
                 begin="3s"
             />
         </use>
-        <!-- Path 7 traveler -->
         <use xlink:href="#traveler">
             <animateMotion
-                path="M600,400 C550,300 530,200 520,100"
+                path="M600,400 C580,250 550,120 480,50"
                 dur="7s"
                 repeatCount="indefinite"
                 begin="1.2s"
             />
         </use>
-        <!-- Path 8 traveler -->
         <use xlink:href="#traveler">
             <animateMotion
-                path="M600,400 C630,500 650,600 620,700"
+                path="M600,400 C630,550 610,680 650,750"
                 dur="7s"
                 repeatCount="indefinite"
                 begin="2.8s"
             />
         </use>
+        <use xlink:href="#traveler">
+            <animateMotion
+                path="M600,400 C500,300 400,250 350,120"
+                dur="6s"
+                repeatCount="indefinite"
+                begin="1.8s"
+            />
+        </use>
+        <use xlink:href="#traveler">
+            <animateMotion
+                path="M600,400 C700,320 820,270 900,180"
+                dur="5.8s"
+                repeatCount="indefinite"
+                begin="3.3s"
+            />
+        </use>
+        <!-- Additional travelers on secondary connections -->
+        <use xlink:href="#traveler">
+            <animateMotion
+                path="M250,150 C350,200 400,170 480,50"
+                dur="8s"
+                repeatCount="indefinite"
+                begin="4.2s"
+            />
+        </use>
+        <use xlink:href="#traveler">
+            <animateMotion
+                path="M1000,380 C900,420 840,480 800,520"
+                dur="7.5s"
+                repeatCount="indefinite"
+                begin="2.1s"
+            />
+        </use>
     </g>
     
-    <!-- Neurons - These are the circles -->
+    <!-- Neurons - These are the circles, positioned more randomly -->
     <g id="neurons" fill="#00BCD4" filter="url(#neuronGlow)">
         <!-- Central neuron -->
         <circle cx="600" cy="400" r="20" opacity="0.9">
@@ -187,90 +231,130 @@
             <animate attributeName="opacity" values="0.9;0.7;0.9" dur="5s" repeatCount="indefinite" />
         </circle>
         
-        <!-- Peripheral neurons -->
-        <circle cx="400" cy="200" r="12" opacity="0.8">
-            <animate attributeName="r" values="12;15;12" dur="6s" repeatCount="indefinite" begin="0.5s" />
+        <!-- Peripheral neurons - positioned more randomly -->
+        <circle cx="250" cy="150" r="14" opacity="0.8">
+            <animate attributeName="r" values="14;17;14" dur="6s" repeatCount="indefinite" begin="0.5s" />
             <animate attributeName="opacity" values="0.8;0.6;0.8" dur="6s" repeatCount="indefinite" begin="0.5s" />
         </circle>
-        <circle cx="350" cy="550" r="10" opacity="0.7">
-            <animate attributeName="r" values="10;13;10" dur="7s" repeatCount="indefinite" begin="1.5s" />
+        <circle cx="280" cy="670" r="12" opacity="0.7">
+            <animate attributeName="r" values="12;15;12" dur="7s" repeatCount="indefinite" begin="1.5s" />
             <animate attributeName="opacity" values="0.7;0.5;0.7" dur="7s" repeatCount="indefinite" begin="1.5s" />
         </circle>
-        <circle cx="800" cy="200" r="14" opacity="0.8">
-            <animate attributeName="r" values="14;17;14" dur="5.5s" repeatCount="indefinite" begin="1s" />
+        <circle cx="950" cy="150" r="15" opacity="0.8">
+            <animate attributeName="r" values="15;18;15" dur="5.5s" repeatCount="indefinite" begin="1s" />
             <animate attributeName="opacity" values="0.8;0.6;0.8" dur="5.5s" repeatCount="indefinite" begin="1s" />
         </circle>
-        <circle cx="850" cy="650" r="12" opacity="0.7">
-            <animate attributeName="r" values="12;15;12" dur="6.5s" repeatCount="indefinite" begin="2s" />
+        <circle cx="920" cy="700" r="13" opacity="0.7">
+            <animate attributeName="r" values="13;16;13" dur="6.5s" repeatCount="indefinite" begin="2s" />
             <animate attributeName="opacity" values="0.7;0.5;0.7" dur="6.5s" repeatCount="indefinite" begin="2s" />
         </circle>
-        <circle cx="300" cy="350" r="11" opacity="0.8">
+        <circle cx="180" cy="320" r="11" opacity="0.8">
             <animate attributeName="r" values="11;14;11" dur="6s" repeatCount="indefinite" begin="0.7s" />
             <animate attributeName="opacity" values="0.8;0.6;0.8" dur="6s" repeatCount="indefinite" begin="0.7s" />
         </circle>
-        <circle cx="900" cy="450" r="11" opacity="0.7">
-            <animate attributeName="r" values="11;14;11" dur="7s" repeatCount="indefinite" begin="1.7s" />
+        <circle cx="1000" cy="380" r="12" opacity="0.7">
+            <animate attributeName="r" values="12;15;12" dur="7s" repeatCount="indefinite" begin="1.7s" />
             <animate attributeName="opacity" values="0.7;0.5;0.7" dur="7s" repeatCount="indefinite" begin="1.7s" />
         </circle>
-        <circle cx="520" cy="100" r="9" opacity="0.8">
-            <animate attributeName="r" values="9;12;9" dur="7.5s" repeatCount="indefinite" begin="1.2s" />
+        <circle cx="480" cy="50" r="10" opacity="0.8">
+            <animate attributeName="r" values="10;13;10" dur="7.5s" repeatCount="indefinite" begin="1.2s" />
             <animate attributeName="opacity" values="0.8;0.6;0.8" dur="7.5s" repeatCount="indefinite" begin="1.2s" />
         </circle>
-        <circle cx="620" cy="700" r="10" opacity="0.7">
-            <animate attributeName="r" values="10;13;10" dur="8s" repeatCount="indefinite" begin="0.2s" />
+        <circle cx="650" cy="750" r="11" opacity="0.7">
+            <animate attributeName="r" values="11;14;11" dur="8s" repeatCount="indefinite" begin="0.2s" />
             <animate attributeName="opacity" values="0.7;0.5;0.7" dur="8s" repeatCount="indefinite" begin="0.2s" />
         </circle>
+        <circle cx="350" cy="120" r="9" opacity="0.8">
+            <animate attributeName="r" values="9;12;9" dur="6.8s" repeatCount="indefinite" begin="3.2s" />
+            <animate attributeName="opacity" values="0.8;0.6;0.8" dur="6.8s" repeatCount="indefinite" begin="3.2s" />
+        </circle>
+        <circle cx="900" cy="180" r="10" opacity="0.7">
+            <animate attributeName="r" values="10;13;10" dur="7.2s" repeatCount="indefinite" begin="2.7s" />
+            <animate attributeName="opacity" values="0.7;0.5;0.7" dur="7.2s" repeatCount="indefinite" begin="2.7s" />
+        </circle>
         
-        <!-- Secondary neurons -->
-        <circle cx="550" cy="250" r="8" opacity="0.6">
+        <!-- Secondary neurons - more random positioning -->
+        <circle cx="570" cy="220" r="8" opacity="0.6">
             <animate attributeName="r" values="8;10;8" dur="8.5s" repeatCount="indefinite" begin="2.3s" />
             <animate attributeName="opacity" values="0.6;0.4;0.6" dur="8.5s" repeatCount="indefinite" begin="2.3s" />
         </circle>
-        <circle cx="650" cy="500" r="7" opacity="0.6">
+        <circle cx="580" cy="520" r="7" opacity="0.6">
             <animate attributeName="r" values="7;9;7" dur="9s" repeatCount="indefinite" begin="3.3s" />
             <animate attributeName="opacity" values="0.6;0.4;0.6" dur="9s" repeatCount="indefinite" begin="3.3s" />
         </circle>
-        <circle cx="750" cy="350" r="8" opacity="0.6">
-            <animate attributeName="r" values="8;10;8" dur="7.5s" repeatCount="indefinite" begin="1.3s" />
+        <circle cx="800" cy="380" r="9" opacity="0.6">
+            <animate attributeName="r" values="9;11;9" dur="7.5s" repeatCount="indefinite" begin="1.3s" />
             <animate attributeName="opacity" values="0.6;0.4;0.6" dur="7.5s" repeatCount="indefinite" begin="1.3s" />
         </circle>
-        <circle cx="450" cy="350" r="7" opacity="0.6">
+        <circle cx="380" cy="250" r="7" opacity="0.6">
             <animate attributeName="r" values="7;9;7" dur="8s" repeatCount="indefinite" begin="0.3s" />
             <animate attributeName="opacity" values="0.6;0.4;0.6" dur="8s" repeatCount="indefinite" begin="0.3s" />
         </circle>
-        <circle cx="750" cy="450" r="8" opacity="0.6">
+        <circle cx="800" cy="460" r="8" opacity="0.6">
             <animate attributeName="r" values="8;10;8" dur="8.5s" repeatCount="indefinite" begin="2.8s" />
             <animate attributeName="opacity" values="0.6;0.4;0.6" dur="8.5s" repeatCount="indefinite" begin="2.8s" />
         </circle>
-        <circle cx="550" cy="550" r="7" opacity="0.6">
+        <circle cx="600" cy="620" r="7" opacity="0.6">
             <animate attributeName="r" values="7;9;7" dur="9s" repeatCount="indefinite" begin="1.8s" />
             <animate attributeName="opacity" values="0.6;0.4;0.6" dur="9s" repeatCount="indefinite" begin="1.8s" />
         </circle>
+        <circle cx="800" cy="520" r="9" opacity="0.6">
+            <animate attributeName="r" values="9;11;9" dur="7.8s" repeatCount="indefinite" begin="0.9s" />
+            <animate attributeName="opacity" values="0.6;0.4;0.6" dur="7.8s" repeatCount="indefinite" begin="0.9s" />
+        </circle>
+        <circle cx="380" cy="520" r="8" opacity="0.6">
+            <animate attributeName="r" values="8;10;8" dur="8.2s" repeatCount="indefinite" begin="2.5s" />
+            <animate attributeName="opacity" values="0.6;0.4;0.6" dur="8.2s" repeatCount="indefinite" begin="2.5s" />
+        </circle>
         
-        <!-- Small tertiary neurons -->
-        <circle cx="480" cy="150" r="5" opacity="0.5">
+        <!-- Small tertiary neurons - more randomly placed -->
+        <circle cx="420" cy="120" r="5" opacity="0.5">
             <animate attributeName="r" values="5;7;5" dur="10s" repeatCount="indefinite" begin="0.8s" />
             <animate attributeName="opacity" values="0.5;0.3;0.5" dur="10s" repeatCount="indefinite" begin="0.8s" />
         </circle>
-        <circle cx="380" cy="450" r="4" opacity="0.5">
+        <circle cx="320" cy="480" r="4" opacity="0.5">
             <animate attributeName="r" values="4;6;4" dur="9.5s" repeatCount="indefinite" begin="1.8s" />
             <animate attributeName="opacity" values="0.5;0.3;0.5" dur="9.5s" repeatCount="indefinite" begin="1.8s" />
         </circle>
-        <circle cx="720" cy="150" r="5" opacity="0.5">
+        <circle cx="780" cy="110" r="5" opacity="0.5">
             <animate attributeName="r" values="5;7;5" dur="10.5s" repeatCount="indefinite" begin="2.8s" />
             <animate attributeName="opacity" values="0.5;0.3;0.5" dur="10.5s" repeatCount="indefinite" begin="2.8s" />
         </circle>
-        <circle cx="820" cy="450" r="4" opacity="0.5">
+        <circle cx="880" cy="520" r="4" opacity="0.5">
             <animate attributeName="r" values="4;6;4" dur="9s" repeatCount="indefinite" begin="3.8s" />
             <animate attributeName="opacity" values="0.5;0.3;0.5" dur="9s" repeatCount="indefinite" begin="3.8s" />
         </circle>
-        <circle cx="400" cy="650" r="5" opacity="0.5">
+        <circle cx="460" cy="710" r="5" opacity="0.5">
             <animate attributeName="r" values="5;7;5" dur="11s" repeatCount="indefinite" begin="0.3s" />
             <animate attributeName="opacity" values="0.5;0.3;0.5" dur="11s" repeatCount="indefinite" begin="0.3s" />
         </circle>
-        <circle cx="800" cy="650" r="4" opacity="0.5">
+        <circle cx="850" cy="620" r="4" opacity="0.5">
             <animate attributeName="r" values="4;6;4" dur="10s" repeatCount="indefinite" begin="1.3s" />
             <animate attributeName="opacity" values="0.5;0.3;0.5" dur="10s" repeatCount="indefinite" begin="1.3s" />
+        </circle>
+        <circle cx="150" cy="250" r="4" opacity="0.5">
+            <animate attributeName="r" values="4;6;4" dur="9.2s" repeatCount="indefinite" begin="2.4s" />
+            <animate attributeName="opacity" values="0.5;0.3;0.5" dur="9.2s" repeatCount="indefinite" begin="2.4s" />
+        </circle>
+        <circle cx="1050" cy="320" r="5" opacity="0.5">
+            <animate attributeName="r" values="5;7;5" dur="10.2s" repeatCount="indefinite" begin="3.4s" />
+            <animate attributeName="opacity" values="0.5;0.3;0.5" dur="10.2s" repeatCount="indefinite" begin="3.4s" />
+        </circle>
+        <circle cx="530" cy="190" r="4" opacity="0.5">
+            <animate attributeName="r" values="4;6;4" dur="8.5s" repeatCount="indefinite" begin="1.7s" />
+            <animate attributeName="opacity" values="0.5;0.3;0.5" dur="8.5s" repeatCount="indefinite" begin="1.7s" />
+        </circle>
+        <circle cx="710" cy="570" r="5" opacity="0.5">
+            <animate attributeName="r" values="5;7;5" dur="9.8s" repeatCount="indefinite" begin="0.6s" />
+            <animate attributeName="opacity" values="0.5;0.3;0.5" dur="9.8s" repeatCount="indefinite" begin="0.6s" />
+        </circle>
+        <circle cx="370" cy="380" r="4" opacity="0.5">
+            <animate attributeName="r" values="4;6;4" dur="10.7s" repeatCount="indefinite" begin="2.2s" />
+            <animate attributeName="opacity" values="0.5;0.3;0.5" dur="10.7s" repeatCount="indefinite" begin="2.2s" />
+        </circle>
+        <circle cx="680" cy="280" r="5" opacity="0.5">
+            <animate attributeName="r" values="5;7;5" dur="11.2s" repeatCount="indefinite" begin="3.1s" />
+            <animate attributeName="opacity" values="0.5;0.3;0.5" dur="11.2s" repeatCount="indefinite" begin="3.1s" />
         </circle>
     </g>
 </svg>
