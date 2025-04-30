@@ -1,3 +1,5 @@
+import logoImage from "../assets/logo.png";
+
 interface LogoIconProps {
   className?: string;
   isWhite?: boolean;
@@ -5,12 +7,10 @@ interface LogoIconProps {
 }
 
 const LogoIcon = ({ className = "", isWhite = false, showText = false }: LogoIconProps) => {
-  const logoPath = "/assets/images/logo.png";
-
   return (
     <div className={`${className} relative flex items-center`}>
       <img 
-        src={logoPath} 
+        src={logoImage} 
         alt="Softworks Trading Company" 
         className={`w-full h-full object-contain ${isWhite ? 'brightness-0 invert' : ''}`}
       />
