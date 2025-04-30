@@ -55,8 +55,8 @@ const Header = () => {
     >
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center py-4">
-          {/* Logo with text - Left Side (becomes Centered on Mobile) */}
-          <div className="flex items-center flex-1 justify-center md:justify-start">
+          {/* Logo with text - Left Side */}
+          <div className="flex items-center">
             <a 
               href="#home" 
               className="flex items-center group focus:outline-none focus-visible:ring-2 focus-visible:ring-cyan rounded-md" 
