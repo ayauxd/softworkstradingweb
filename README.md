@@ -6,19 +6,20 @@ A sophisticated React-based landing page for Softworks, delivering an AI workflo
 ---
 
 ## 2. Core Features Implemented  
-- Hero section with headline, subtext, and dual CTAs (consultation + chat)
-- Services section: 3 service cards (AI Setup, Coaching, Strategy Session)
+- Hero section with updated headline "Automate Your Business With Practical AI Solutions" and CTA
+- Services section: 3 service cards (Rapid Automation Deployment, Founders' Workflow Coaching, AI Strategy Consultation)
 - Step-by-step explainer section: "Easy Steps to Start Automating"
-- Enhanced "Talk to a Workflow Agent" modal with both chat and call options
+- Enhanced "Talk to a Workflow Agent" modal with both chat and call options (fixed circular dependency bug)
 - Separate floating action buttons (chat and call) in bottom-right corner
 - Animated neural network visualization with stronger glow effects, brighter colors, and faster pulse timing
 - Testimonial carousel (3 rotating quotes with navigation arrows)
-- Insights & Publications: 3 prominent article cards with larger layout for better readability
+- Publications section: 3 prominent article cards with larger layout for better readability
 - Responsive layout for mobile and desktop
 - Light/dark mode toggle with proper color contrast handling
 - Improved accessibility with semantic HTML, ARIA labels, and keyboard navigation
-- Footer with Quick Links, Contact Info, and Social Icons
+- Footer with Quick Links, Contact Info, and Social Media Icons (LinkedIn, X, Facebook, Instagram)
 - Form validation with visual feedback and shake animation for errors
+- Error boundary for better error handling and recovery
 
 ---
 
@@ -63,6 +64,8 @@ Clearly list unfinished or pending features:
 - Optimize for SEO with proper metadata and structured data
 - Add end-to-end tests for critical user journeys
 - Implement content management system for non-technical updates
+- Set up proper environment variables (.env) for different deployment environments
+- Configure CORS policy for API requests in production
 
 ---
 
@@ -81,13 +84,13 @@ Clearly list unfinished or pending features:
 - UI components are built with Shadcn UI; customize in `/client/src/components/ui/`
 - For OpenAI integration, you'll need to set up the OPENAI_API_KEY environment variable
 - For analytics integration, modify `/client/src/lib/analytics.ts` (to be implemented)
+- Error handling is configured with ErrorBoundary component in `/client/src/components/ErrorBoundary.tsx`
+- Toast notifications for user feedback are configured in `/client/src/hooks/use-toast.ts`
 
 ---
 
 ## 7. Contacts  
-- 📧 `workflow@softworkstrading.com`  
-- 📍 301 SW 1st Avenue, Fort Lauderdale, FL 33301  
-- ☎️ (971) 238-3860  
+- 📧 `agent@softworkstrading.com`  
 
 ---
 
