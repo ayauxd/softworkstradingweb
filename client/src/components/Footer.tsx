@@ -57,9 +57,9 @@ const Footer = () => {
             <h3 className="text-lg font-semibold mb-4 text-cyan-light">Services</h3>
             <ul className="space-y-2">
               {[
-                "AI Setup Support", 
-                "Workflow Coaching for Founders", 
-                "AI Strategy Session", 
+                "Rapid Automation Deployment", 
+                "Founders' Workflow Coaching", 
+                "AI Strategy Consultation", 
                 "Process Optimization", 
                 "AI Implementation"
               ].map((service) => (
@@ -97,41 +97,42 @@ const Footer = () => {
             <ul className="space-y-4">
               <li className="flex items-center">
                 <Mail className="h-5 w-5 mr-3 text-cyan" aria-hidden="true" />
-                <a href="mailto:workflow@softworkstrading.com" className="text-gray-300 hover:text-cyan transition-colors">
-                  workflow@softworkstrading.com
+                <a href="mailto:agent@softworkstrading.com" className="text-gray-300 hover:text-cyan transition-colors">
+                  agent@softworkstrading.com
                 </a>
-              </li>
-              <li className="flex items-center">
-                <Phone className="h-5 w-5 mr-3 text-cyan" aria-hidden="true" />
-                <a href="tel:+19712383860" className="text-gray-300 hover:text-cyan transition-colors">
-                  (971) 238-3860
-                </a>
-              </li>
-              <li className="flex items-start">
-                <MapPin className="h-5 w-5 mr-3 mt-1 text-cyan" aria-hidden="true" />
-                <span className="text-gray-300">
-                  301 SW 1st Avenue<br />Fort Lauderdale, Florida 33301
-                </span>
               </li>
             </ul>
             
             {/* Social Media Icons */}
-            <div className="mt-6 flex space-x-5">
-              {[
-                { icon: <Linkedin className="h-6 w-6" />, url: "#", label: "LinkedIn" },
-                { icon: <Facebook className="h-6 w-6" />, url: "#", label: "Facebook" },
-                { icon: <SiX className="h-5 w-5" />, url: "#", label: "X (Twitter)" },
-                { icon: <Instagram className="h-6 w-6" />, url: "#", label: "Instagram" }
-              ].map((social, index) => (
-                <a 
-                  key={index} 
-                  href={social.url} 
-                  className="text-gray-300 hover:text-cyan transition-colors bg-navy-light p-2 rounded-full"
-                  aria-label={social.label}
-                >
-                  {social.icon}
-                </a>
-              ))}
+            <div className="mt-6 flex space-x-4">
+              <a 
+                href="#" 
+                className="text-gray-300 hover:text-cyan transition-colors bg-navy-light p-2 rounded-full"
+                aria-label="LinkedIn"
+              >
+                <Linkedin className="h-5 w-5" />
+              </a>
+              <a 
+                href="#" 
+                className="text-gray-300 hover:text-cyan transition-colors bg-navy-light p-2 rounded-full"
+                aria-label="X (Twitter)"
+              >
+                <SiX className="h-4 w-4" />
+              </a>
+              <a 
+                href="#" 
+                className="text-gray-300 hover:text-cyan transition-colors bg-navy-light p-2 rounded-full"
+                aria-label="Facebook"
+              >
+                <Facebook className="h-5 w-5" />
+              </a>
+              <a 
+                href="#" 
+                className="text-gray-300 hover:text-cyan transition-colors bg-navy-light p-2 rounded-full"
+                aria-label="Instagram"
+              >
+                <Instagram className="h-5 w-5" />
+              </a>
             </div>
           </div>
         </div>
