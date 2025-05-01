@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useCallback, useMemo, memo } from "react";
 import { Dialog, DialogContent, DialogTitle, DialogDescription, DialogClose } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -13,6 +13,31 @@ interface WorkflowAgentModalProps {
   initialMode?: "chat" | "call" | "none";
   onModeChange?: (mode: "chat" | "call") => void;
 }
+
+// Memoized chat message component to avoid unnecessary re-renders
+interface ChatMessageProps {
+  from: string;
+  text: string;
+}
+
+const ChatMessage = memo(({ from, text }: ChatMessageProps) => {
+  return (
+    <div className={`mb-4 ${from === "user" ? "text-right" : ""}`}>
+      <div className="font-medium text-navy dark:text-soft-white">
+        {from === "agent" ? "Workflow Agent" : "You"}
+      </div>
+      <div className={cn(
+        "p-3 rounded-lg inline-block max-w-[75%] mt-1 text-navy dark:text-soft-white",
+        "transition-all duration-200 text-base",
+        from === "agent" 
+          ? "bg-white dark:bg-navy shadow-md" 
+          : "bg-cyan bg-opacity-20"
+      )}>
+        {text}
+      </div>
+    </div>
+  );
+});
 
 const WorkflowAgentModal = ({ 
   onClose, 
@@ -81,20 +106,20 @@ const WorkflowAgentModal = ({
     }
   }, [activeTab, onModeChange]);
   
-  const handleChatClick = () => {
+  const handleChatClick = useCallback(() => {
     setActiveTab("chat");
     if (onModeChange) onModeChange('chat');
-  };
+  }, [onModeChange]);
   
   // Function to handle the 2-second call simulation
-  const simulateCallConnection = () => {
+  const simulateCallConnection = useCallback(() => {
     setActiveTab("call");
     setShowCallbackForm(false); // Ensure form is hidden during simulation
     const timer = setTimeout(() => {
       setShowCallbackForm(true);
     }, 2000);
     return () => clearTimeout(timer); // Return cleanup function
-  };
+  }, []);
 
   // Effect to trigger simulation if modal opens in 'call' mode
   useEffect(() => {
@@ -105,16 +130,14 @@ const WorkflowAgentModal = ({
     // If initialMode is 'chat' or 'none', useState initialization handles it.
     
     return cleanup; // Cleanup timeout if component unmounts or initialMode changes
-  }, [initialMode]);
+  }, [initialMode, simulateCallConnection]);
 
-  const handleCallClick = () => {
+  const handleCallClick = useCallback(() => {
     const cleanup = simulateCallConnection(); // Start simulation
-    // Store cleanup? Usually not needed for click, but good practice:
-    // const timeoutCleanupRef = useRef<() => void>(cleanup);
     if (onModeChange) onModeChange('call');
-  };
+  }, [simulateCallConnection, onModeChange]);
   
-  const handleSendMessage = () => {
+  const handleSendMessage = useCallback(() => {
     if (chatInput.trim()) {
       // Add user message
       setMessages(prev => [...prev, { from: "user", text: chatInput }]);
@@ -133,16 +156,19 @@ const WorkflowAgentModal = ({
         ]);
       }, 1000);
     }
-  };
+  }, [chatInput]);
   
-  const handleChatInputKeyDown = (e: React.KeyboardEvent) => {
+  const handleChatInputKeyDown = useCallback((e: React.KeyboardEvent) => {
     if (e.key === "Enter") {
       e.preventDefault();
       handleSendMessage();
     }
-  };
+  }, [handleSendMessage]);
   
-  const handleCallbackFormChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+  const [formErrors, setFormErrors] = useState<{[key: string]: boolean}>({});
+  const [formShakeEffect, setFormShakeEffect] = useState(false);
+  
+  const handleCallbackFormChange = useCallback((e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
     setCallbackForm(prev => ({ ...prev, [name]: value }));
     
@@ -150,12 +176,15 @@ const WorkflowAgentModal = ({
     if (formErrors[name] && value.trim()) {
       setFormErrors(prev => ({ ...prev, [name]: false }));
     }
-  };
+  }, [formErrors]);
   
-  const [formErrors, setFormErrors] = useState<{[key: string]: boolean}>({});
-  const [formShakeEffect, setFormShakeEffect] = useState(false);
+  // Validate emails using useMemo to avoid re-computation
+  const isValidEmail = useMemo(() => {
+    const emailRegex = /^\S+@\S+\.\S+$/;
+    return (email: string) => emailRegex.test(email);
+  }, []);
   
-  const handleCallbackFormSubmit = (e: React.FormEvent) => {
+  const handleCallbackFormSubmit = useCallback((e: React.FormEvent) => {
     e.preventDefault();
     
     // Reset error states
@@ -171,8 +200,8 @@ const WorkflowAgentModal = ({
     if (!callbackForm.workEmail) {
       newErrors.workEmail = true;
       hasErrors = true;
-    } else if (!/^\S+@\S+\.\S+$/.test(callbackForm.workEmail)) {
-      // Simple email validation
+    } else if (!isValidEmail(callbackForm.workEmail)) {
+      // Email validation
       newErrors.workEmail = true;
       hasErrors = true;
     }
@@ -207,7 +236,7 @@ const WorkflowAgentModal = ({
     
     // Close modal
     onClose();
-  };
+  }, [callbackForm, isValidEmail, toast, onClose]);
 
   return (
     <Dialog open={true} onOpenChange={onClose}>
@@ -276,20 +305,11 @@ const WorkflowAgentModal = ({
               aria-label="Chat conversation"
             >
               {messages.map((message, index) => (
-                <div key={index} className={`mb-4 ${message.from === "user" ? "text-right" : ""}`}>
-                  <div className="font-medium text-navy dark:text-soft-white">
-                    {message.from === "agent" ? "Workflow Agent" : "You"}
-                  </div>
-                  <div className={cn(
-                    "p-3 rounded-lg inline-block max-w-[75%] mt-1 text-navy dark:text-soft-white",
-                    "transition-all duration-200 text-base",
-                    message.from === "agent" 
-                      ? "bg-white dark:bg-navy shadow-md" 
-                      : "bg-cyan bg-opacity-20"
-                  )}>
-                    {message.text}
-                  </div>
-                </div>
+                <ChatMessage 
+                  key={index} 
+                  from={message.from} 
+                  text={message.text} 
+                />
               ))}
               <div ref={messagesEndRef} />
             </div>
@@ -502,4 +522,5 @@ const WorkflowAgentModal = ({
   );
 };
 
-export default WorkflowAgentModal;
+// Export a memoized version of the component to prevent unnecessary re-renders
+export default memo(WorkflowAgentModal);
