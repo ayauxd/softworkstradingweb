@@ -15,9 +15,9 @@ const InsightsSection = () => {
       imageUrl: "https://images.unsplash.com/photo-1556155092-490a1ba16284?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NXx8YWklMjBjb2xsYWJvcmF0aW9ufGVufDB8fDB8fHww&auto=format&fit=crop&w=800&q=60"
     },
     {
-      title: "Workflow Case Study",
-      description: "Learn how we helped a Fortune 500 firm gain 40% efficiency with smart automation.",
-      imageUrl: "https://images.unsplash.com/photo-1453906971074-ce568cccbc63?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTZ8fGNhc2UlMjBzdHVkeXxlbnwwfHwwfHx8MA%3D%3D&auto=format&fit=crop&w=800&q=60"
+      title: "AI Prompting Best Practices",
+      description: "Learn essential techniques for crafting effective prompts to get the best results from AI language models.",
+      imageUrl: "https://images.unsplash.com/photo-1526378800651-c32d170fe6f8?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTZ8fGFydGlmaWNpYWwlMjBpbnRlbGxpZ2VuY2V8ZW58MHx8MHx8fDA%3D&auto=format&fit=crop&w=800&q=60"
     }
   ];
   

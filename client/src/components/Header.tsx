@@ -75,8 +75,8 @@ const Header = () => {
       >
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           {/* Make the parent relative for absolute positioning of children */}
-          <div className="relative flex justify-center md:justify-between items-center py-4"> 
-            {/* Logo container (will be centered on mobile due to parent justify-center) */}
+          <div className="relative flex justify-start md:justify-between items-center py-4">
+            {/* Logo container (now left-aligned on all screen sizes) */}
             <div className="flex items-center">
               <a 
                 href="#home" 
