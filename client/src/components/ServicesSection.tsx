@@ -9,8 +9,8 @@ const ServicesSection = ({ onTalkToAgent }: ServicesSectionProps) => {
     {
       title: "Rapid Automation Deployment",
       description: "Implement efficient automation solutions tailored to your business needs.",
-      imageUrl: "https://images.unsplash.com/photo-1533750516457-a7f992034fec?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTZ8fGF1dG9tYXRpb258ZW58MHx8MHx8fDA%3D&auto=format&fit=crop&w=800&q=60",
-      alt: "Automation equipment in a modern factory setting"
+      imageUrl: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1650&q=80",
+      alt: "Digital workflow automation with computer dashboard"
     },
     {
       title: "Founders' Workflow Coaching",

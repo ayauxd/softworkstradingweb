@@ -222,7 +222,7 @@ const articles = [
     description:
       'Learn essential techniques for crafting effective prompts to get the best results from AI language models.',
     imageUrl:
-      'https://images.unsplash.com/photo-1555421689-d68471e189f2?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1650&q=80',
+      'https://images.unsplash.com/photo-1673192573079-39212df5792f?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1650&q=80',
     author: 'Frederick A',
     date: 'March 28, 2025',
     readTime: '7 min read',
