@@ -1,10 +1,74 @@
-import express, { type Request, Response, NextFunction } from "express";
-import { registerRoutes } from "./routes";
-import { setupVite, serveStatic, log } from "./vite";
+import express, { type Request, Response, NextFunction } from 'express';
+import { registerRoutes } from './routes';
+import { setupVite, serveStatic, log } from './vite';
+import { serverConfig } from './config';
+import helmet from 'helmet';
 
 const app = express();
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
+
+// Security headers with Helmet - including CSP
+app.use(
+  helmet({
+    contentSecurityPolicy: {
+      directives: {
+        defaultSrc: ["'self'"],
+        scriptSrc: ["'self'", "'unsafe-inline'", "'unsafe-eval'", 'https://fonts.googleapis.com'],
+        styleSrc: ["'self'", "'unsafe-inline'", 'https://fonts.googleapis.com'],
+        imgSrc: [
+          "'self'",
+          'data:',
+          'https://*.softworkstrading.com',
+          'https://images.unsplash.com',
+        ],
+        fontSrc: ["'self'", 'https://fonts.gstatic.com'],
+        connectSrc: ["'self'", 'https://*.softworkstrading.com'],
+        frameSrc: ["'self'"],
+        objectSrc: ["'self'"], // Allow SVG objects from same origin
+        upgradeInsecureRequests: [],
+      },
+    },
+    // Enable HSTS with a long max-age
+    strictTransportSecurity: {
+      maxAge: 63072000, // 2 years
+      includeSubDomains: true,
+      preload: true,
+    },
+    // Prevent click-jacking
+    frameguard: {
+      action: 'deny',
+    },
+    // Set X-XSS-Protection header
+    xssFilter: true,
+    // Disable X-Powered-By header
+    hidePoweredBy: true,
+    // Set X-Content-Type-Options to nosniff
+    noSniff: true,
+    // Set Referrer-Policy
+    referrerPolicy: {
+      policy: 'strict-origin-when-cross-origin',
+    },
+  })
+);
+
+// Helper function to sanitize sensitive data
+function sanitizeLogData(data: Record<string, any>): Record<string, any> {
+  if (!data || typeof data !== 'object') return data;
+
+  const sensitiveFields = ['password', 'token', 'apiKey', 'secret', 'email', 'authentication'];
+  const sanitized = { ...data };
+
+  Object.keys(sanitized).forEach(key => {
+    if (sensitiveFields.some(field => key.toLowerCase().includes(field.toLowerCase()))) {
+      sanitized[key] = '***REDACTED***';
+    } else if (typeof sanitized[key] === 'object' && sanitized[key] !== null) {
+      sanitized[key] = sanitizeLogData(sanitized[key]);
+    }
+  });
+
+  return sanitized;
+}
 
 app.use((req, res, next) => {
   const start = Date.now();
@@ -17,16 +81,18 @@ app.use((req, res, next) => {
     return originalResJson.apply(res, [bodyJson, ...args]);
   };
 
-  res.on("finish", () => {
+  res.on('finish', () => {
     const duration = Date.now() - start;
-    if (path.startsWith("/api")) {
+    if (path.startsWith('/api')) {
       let logLine = `${req.method} ${path} ${res.statusCode} in ${duration}ms`;
       if (capturedJsonResponse) {
-        logLine += ` :: ${JSON.stringify(capturedJsonResponse)}`;
+        // Sanitize sensitive data before logging
+        const sanitizedResponse = sanitizeLogData(capturedJsonResponse);
+        logLine += ` :: ${JSON.stringify(sanitizedResponse)}`;
       }
 
       if (logLine.length > 80) {
-        logLine = logLine.slice(0, 79) + "…";
+        logLine = logLine.slice(0, 79) + '…';
       }
 
       log(logLine);
@@ -41,30 +107,53 @@ app.use((req, res, next) => {
 
   app.use((err: any, _req: Request, res: Response, _next: NextFunction) => {
     const status = err.status || err.statusCode || 500;
-    const message = err.message || "Internal Server Error";
+    const isProduction = process.env.NODE_ENV === 'production';
 
-    res.status(status).json({ message });
-    throw err;
+    // In production, don't expose detailed error messages
+    const message =
+      isProduction && status === 500
+        ? 'Internal Server Error'
+        : err.message || 'Internal Server Error';
+
+    // Log the full error for debugging, but don't expose it to the client
+    console.error(`[ERROR] ${err.stack || err}`);
+
+    res.status(status).json({
+      message,
+      // Only include error code/type in production, not full stack traces
+      ...(isProduction
+        ? {}
+        : {
+            code: err.code,
+            type: err.name || err.constructor.name,
+          }),
+    });
+
+    // Don't throw the error again, as it will crash the server
+    // Just log it and let the middleware handle the response
   });
 
   // importantly only setup vite in development and after
   // setting up all the other routes so the catch-all route
   // doesn't interfere with the other routes
-  if (app.get("env") === "development") {
+  if (serverConfig.isDevelopment) {
     await setupVite(app, server);
   } else {
     serveStatic(app);
   }
 
-  // ALWAYS serve the app on port 5000
-  // this serves both the API and the client.
-  // It is the only port that is not firewalled.
-  const port = 5000;
-  server.listen({
-    port,
-    host: "0.0.0.0",
-    reusePort: true,
-  }, () => {
-    log(`serving on port ${port}`);
-  });
+  // Use config values for port and host
+  server.listen(
+    {
+      port: serverConfig.port,
+      host: serverConfig.host,
+      reusePort: true,
+    },
+    () => {
+      log(`Server running in ${serverConfig.nodeEnv} mode`);
+      log(
+        `Listening on http://${serverConfig.host === '0.0.0.0' ? 'localhost' : serverConfig.host}:${serverConfig.port}`
+      );
+    }
+  );
 })();

@@ -4,18 +4,21 @@ import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { queryClient } from "./lib/queryClient";
 import { ThemeProvider } from "./components/ThemeProvider";
+import { lazy, Suspense, useState } from "react";
 import Header from "./components/Header";
 import HeroSection from "./components/HeroSection";
 import ServicesSection from "./components/ServicesSection";
-import HowItWorksSection from "./components/HowItWorksSection";
-import TestimonialsSection from "./components/TestimonialsSection";
-import InsightsSection from "./components/InsightsSection";
-import ContactSection from "./components/ContactSection";
 import Footer from "./components/Footer";
-import WorkflowAgentModal from "./components/WorkflowAgentModal";
 import FloatingAgentButton from "./components/FloatingAgentButton";
-import ArticlePage from "./pages/ArticlePage";
-import { useState } from "react";
+import ErrorBoundary from "./components/ErrorBoundary";
+
+// Lazily loaded components for code splitting
+const HowItWorksSection = lazy(() => import("./components/HowItWorksSection"));
+const TestimonialsSection = lazy(() => import("./components/TestimonialsSection"));
+const InsightsSection = lazy(() => import("./components/InsightsSection"));
+const ContactSection = lazy(() => import("./components/ContactSection"));
+const WorkflowAgentModal = lazy(() => import("./components/WorkflowAgentModal"));
+const ArticlePage = lazy(() => import("./pages/ArticlePage"));
 
 function HomePage() {
   const [showModal, setShowModal] = useState(false);
@@ -31,42 +34,105 @@ function HomePage() {
     setModalMode('none');
   };
 
+  // Loading fallback for lazy components
+  const SectionFallback = () => (
+    <div className="w-full flex justify-center items-center py-24 bg-soft-white dark:bg-navy">
+      <div className="flex space-x-2 justify-center items-center">
+        <div className="h-3 w-3 bg-cyan rounded-full animate-bounce"></div>
+        <div className="h-3 w-3 bg-cyan rounded-full animate-bounce [animation-delay:-.15s]"></div>
+        <div className="h-3 w-3 bg-cyan rounded-full animate-bounce [animation-delay:-.3s]"></div>
+      </div>
+    </div>
+  );
+
   return (
     <div className="min-h-screen flex flex-col bg-soft-white dark:bg-navy text-navy dark:text-soft-white transition-colors duration-300">
       <Header />
-      <main className="pt-16 flex-grow">
+      <main id="main-content" className="pt-16 flex-grow">
+        {/* Critical path components loaded eagerly for better LCP */}
         <HeroSection onTalkToAgent={() => openModal('call')} />
         <ServicesSection onTalkToAgent={() => openModal('chat')} />
-        <HowItWorksSection />
-        <TestimonialsSection />
-        <InsightsSection />
-        <ContactSection />
+        
+        {/* Non-critical components lazily loaded with suspense boundaries */}
+        <Suspense fallback={<SectionFallback />}>
+          <HowItWorksSection />
+        </Suspense>
+        
+        <Suspense fallback={<SectionFallback />}>
+          <TestimonialsSection />
+        </Suspense>
+        
+        <Suspense fallback={<SectionFallback />}>
+          <InsightsSection />
+        </Suspense>
+        
+        <Suspense fallback={<SectionFallback />}>
+          <ContactSection />
+        </Suspense>
       </main>
       <Footer />
+      
+      {/* Modal loaded on demand */}
       {showModal && (
-        <WorkflowAgentModal 
-          onClose={closeModal} 
-          initialMode={modalMode} 
-        />
+        <Suspense fallback={
+          <div className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center">
+            <div className="bg-white dark:bg-navy-dark p-8 rounded-lg shadow-xl">
+              <SectionFallback />
+            </div>
+          </div>
+        }>
+          <WorkflowAgentModal 
+            onClose={closeModal} 
+            initialMode={modalMode} 
+          />
+        </Suspense>
       )}
     </div>
   );
 }
 
 function App() {
+  // Event logging for errors in production
+  const handleError = (error: Error, errorInfo: React.ErrorInfo) => {
+    // In a production app, you would send this to an error tracking service like Sentry
+    console.error('Application error:', error);
+    console.error('Error info:', errorInfo);
+  };
+
   return (
-    <QueryClientProvider client={queryClient}>
-      <ThemeProvider>
-        <TooltipProvider>
-          <Toaster />
-          <Switch>
-            <Route path="/" component={HomePage} />
-            <Route path="/article/:id" component={ArticlePage} />
-          </Switch>
-          <FloatingAgentButton defaultMode="chat" />
-        </TooltipProvider>
-      </ThemeProvider>
-    </QueryClientProvider>
+    <ErrorBoundary onError={handleError}>
+      <QueryClientProvider client={queryClient}>
+        <ThemeProvider>
+          <TooltipProvider>
+            <Toaster />
+            <Switch>
+              <Route path="/">
+                <ErrorBoundary>
+                  <HomePage />
+                </ErrorBoundary>
+              </Route>
+              <Route path="/article/:id">
+                <ErrorBoundary>
+                  <Suspense fallback={
+                    <div className="min-h-screen flex flex-col items-center justify-center bg-soft-white dark:bg-navy p-4">
+                      <div className="flex space-x-2 justify-center items-center">
+                        <div className="h-4 w-4 bg-cyan rounded-full animate-bounce"></div>
+                        <div className="h-4 w-4 bg-cyan rounded-full animate-bounce [animation-delay:-.15s]"></div>
+                        <div className="h-4 w-4 bg-cyan rounded-full animate-bounce [animation-delay:-.3s]"></div>
+                      </div>
+                      <p className="text-navy dark:text-soft-white mt-4">Loading article...</p>
+                    </div>
+                  }>
+                    <ArticlePage />
+                  </Suspense>
+                </ErrorBoundary>
+              </Route>
+            </Switch>
+            <FloatingAgentButton defaultMode="chat" />
+          </TooltipProvider>
+        </ThemeProvider>
+      </QueryClientProvider>
+    </ErrorBoundary>
   );
 }
 

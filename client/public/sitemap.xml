@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9
+        http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">
+  <!-- Main Page -->
+  <url>
+    <loc>https://www.softworkstrading.com/</loc>
+    <lastmod>2025-03-05T00:00:00+00:00</lastmod>
+    <priority>1.00</priority>
+    <changefreq>weekly</changefreq>
+  </url>
+  
+  <!-- Specific Sections (using hash anchors) -->
+  <url>
+    <loc>https://www.softworkstrading.com/#services</loc>
+    <lastmod>2025-03-05T00:00:00+00:00</lastmod>
+    <priority>0.80</priority>
+    <changefreq>monthly</changefreq>
+  </url>
+  
+  <url>
+    <loc>https://www.softworkstrading.com/#how-it-works</loc>
+    <lastmod>2025-03-05T00:00:00+00:00</lastmod>
+    <priority>0.80</priority>
+    <changefreq>monthly</changefreq>
+  </url>
+  
+  <url>
+    <loc>https://www.softworkstrading.com/#insights</loc>
+    <lastmod>2025-03-05T00:00:00+00:00</lastmod>
+    <priority>0.70</priority>
+    <changefreq>weekly</changefreq>
+  </url>
+  
+  <url>
+    <loc>https://www.softworkstrading.com/#contact</loc>
+    <lastmod>2025-03-05T00:00:00+00:00</lastmod>
+    <priority>0.90</priority>
+    <changefreq>monthly</changefreq>
+  </url>
+  
+  <!-- Example Articles (these would be dynamically generated in a production environment) -->
+  <url>
+    <loc>https://www.softworkstrading.com/article/1</loc>
+    <lastmod>2025-03-05T00:00:00+00:00</lastmod>
+    <priority>0.60</priority>
+    <changefreq>monthly</changefreq>
+  </url>
+  
+  <url>
+    <loc>https://www.softworkstrading.com/article/2</loc>
+    <lastmod>2025-03-05T00:00:00+00:00</lastmod>
+    <priority>0.60</priority>
+    <changefreq>monthly</changefreq>
+  </url>
+</urlset>

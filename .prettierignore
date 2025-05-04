@@ -1,0 +1,18 @@
+# Ignore artifacts
+dist
+build
+node_modules
+coverage
+
+# Ignore all HTML files
+*.html
+
+# Ignore compiled output
+*.min.js
+*.min.css
+
+# Ignore generated files
+package-lock.json
+yarn.lock
+.vscode
+.idea
