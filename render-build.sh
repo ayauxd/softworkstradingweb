@@ -37,6 +37,22 @@ npm run build
 echo "Verifying build output..."
 if [ -d "dist/public" ] && [ -f "dist/public/index.html" ]; then
   echo "✅ Build successful! Output exists at dist/public/index.html"
+  
+  # Create a build verification file
+  echo "Creating build verification file..."
+  cat > dist/public/build-info.txt << EOF
+Build completed on: $(date)
+Git commit: $(git rev-parse HEAD)
+Git branch: $(git rev-parse --abbrev-ref HEAD)
+Server: Render
+Environment: Production
+EOF
+  
+  # List important files to verify they exist
+  echo "======== BUILD FILES ========"
+  ls -la dist/public/
+  echo "============================"
+  
 else
   echo "❌ Build failed! dist/public/index.html not found"
   exit 1

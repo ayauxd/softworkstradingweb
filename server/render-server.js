@@ -32,7 +32,8 @@ const SERVER_START_TIME = new Date().toISOString();
 
 // Log key system information
 console.log('======================================================');
-console.log(`SERVER STARTING AT ${SERVER_START_TIME}`);
+console.log(`SOFTWORKS TRADING WEBSITE - SERVER STARTING`);
+console.log(`AT ${SERVER_START_TIME}`);
 console.log('======================================================');
 console.log(`Environment: ${NODE_ENV}`);
 console.log(`Platform: ${process.platform} (${os.release()})`);
@@ -43,6 +44,17 @@ console.log(`Process ID: ${process.pid}`);
 console.log(`User: ${os.userInfo().username}`);
 console.log(`Working Directory: ${process.cwd()}`);
 console.log(`Server File: ${__dirname}`);
+
+// Try to get Git information
+try {
+  const { execSync } = require('child_process');
+  const gitCommit = execSync('git rev-parse HEAD').toString().trim();
+  const gitBranch = execSync('git rev-parse --abbrev-ref HEAD').toString().trim();
+  console.log(`Git branch: ${gitBranch}`);
+  console.log(`Git commit: ${gitCommit}`);
+} catch (err) {
+  console.log('Git information not available');
+}
 
 // Log environment variables that might affect deployment
 const IMPORTANT_ENV_VARS = ['PORT', 'NODE_ENV', 'PATH', 'PWD', 'RENDER', 'HOME'];
