@@ -164,9 +164,16 @@ const Header = () => {
             {/* Logo Container */}
             <div className="flex-shrink-0 ml-0">
               <a 
-                href="#home" 
+                href={location === '/' ? "#home" : '/'} 
                 className="flex items-center py-2" 
-                onClick={(e) => { e.preventDefault(); scrollToSection('home'); }}
+                onClick={(e) => { 
+                  if (location === '/') {
+                    e.preventDefault();
+                    scrollToSection('home');
+                  } else {
+                    // Let the link navigate normally to the homepage
+                  }
+                }}
                 aria-label="Softworks Trading Company - Go to homepage"
               >
                 <LogoIcon 
