@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "NODE_ENV=development npx tsx server/index.ts",
     "prebuild": "node ensure-data.js",
-    "build": "node build-static.js",
+    "build": "node build.js",
     "start": "NODE_ENV=production node dist/server/render-server.js",
     "check": "tsc",
     "db:push": "drizzle-kit push",
@@ -14,11 +14,13 @@
     "lint:fix": "eslint . --ext ts,tsx --fix",
     "format": "prettier --write \"**/*.{js,jsx,ts,tsx,json,md}\"",
     "format:check": "prettier --check \"**/*.{js,jsx,ts,tsx,json,md}\"",
-    "deploy": "npm install && npm run build && node copy-optimized-assets.js",
-    "render-build": "node build-static.js && node copy-optimized-assets.js",
-    "build:static": "node build-static.js",
+    "deploy": "npm install && npm run build",
+    "render-build": "npm run build",
+    "build:static": "vite build",
     "optimize-images": "node optimize-images.js",
-    "copy-assets": "node copy-optimized-assets.js"
+    "copy-assets": "node copy-optimized-assets.js",
+    "copy-server": "node copy-server-files.js",
+    "legacy:build": "node build-static.js && node copy-server-files.js"
   },
   "dependencies": {
     "@hookform/resolvers": "^3.10.0",
