@@ -3,7 +3,7 @@ services:
     name: softworks-trading
     env: node
     runtime: node
-    buildCommand: npm ci && npm run build
+    buildCommand: ./render-build.sh
     startCommand: NODE_ENV=production node dist/server/render-server.js
     nodeVersion: 18.x
     autoDeploy: true
