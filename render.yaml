@@ -1,7 +1,7 @@
 services:
   - type: static
     name: softworks-trading
-    buildCommand: npm ci && vite build
+    buildCommand: npm ci && npm run build && node copy-optimized-assets.js
     publishDir: dist/public
     envVars:
       - key: NODE_ENV

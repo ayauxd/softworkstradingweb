@@ -100,6 +100,10 @@ export const articles = [
 console.log('Setting up image directories...');
 ensureDir(path.join(__dirname, 'client', 'public', 'assets', 'images', 'articles'));
 ensureDir(path.join(__dirname, 'public', 'assets', 'images', 'articles'));
+ensureDir(path.join(__dirname, 'client', 'public', 'optimized-images', 'hero'));
+ensureDir(path.join(__dirname, 'client', 'public', 'optimized-images', 'articles'));
+ensureDir(path.join(__dirname, 'client', 'public', 'optimized-images', 'services'));
+ensureDir(path.join(__dirname, 'client', 'public', 'optimized-images', 'logo'));
 
 // Install dependencies
 console.log('Installing dependencies...');
