@@ -1,9 +1,11 @@
 services:
-  - type: static
+  - type: web
     name: softworks-trading
-    buildCommand: npm install && npm run build && node copy-optimized-assets.js
-    publishDir: dist/public
+    buildCommand: npm install && npm run build
+    startCommand: npm start
     envVars:
+      - key: PORT
+        value: 10000
       - key: NODE_ENV
         value: production
     headers:
