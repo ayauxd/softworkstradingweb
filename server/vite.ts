@@ -72,9 +72,38 @@ export function serveStatic(app: Express) {
   const distPath = path.resolve(process.cwd(), "dist", "public");
 
   if (!fs.existsSync(distPath)) {
-    throw new Error(
-      `Could not find the build directory: ${distPath}, make sure to build the client first`,
-    );
+    log(`Warning: Could not find the build directory: ${distPath}, looking for alternate paths...`);
+    
+    // Try alternative paths in case of production environment inconsistencies
+    const alternativePaths = [
+      path.resolve(process.cwd(), "public"),
+      path.resolve(process.cwd(), "client", "dist"),
+      path.resolve(process.cwd(), "dist")
+    ];
+    
+    for (const altPath of alternativePaths) {
+      if (fs.existsSync(altPath)) {
+        log(`Found alternative static path: ${altPath}`);
+        app.use(express.static(altPath));
+        
+        // fall through to index.html if the file doesn't exist
+        app.use("*", (_req, res) => {
+          if (fs.existsSync(path.resolve(altPath, "index.html"))) {
+            res.sendFile(path.resolve(altPath, "index.html"));
+          } else {
+            res.status(500).send("Server is running but static files are missing.");
+          }
+        });
+        
+        return;
+      }
+    }
+    
+    // If we get here, none of the paths worked
+    app.use("*", (_req, res) => {
+      res.status(500).send("Static files not found. Build process may have failed.");
+    });
+    return;
   }
 
   app.use(express.static(distPath));
