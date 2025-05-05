@@ -26,24 +26,17 @@ export default defineConfig({
     emptyOutDir: true,
     // Generate sourcemaps for easier debugging
     sourcemap: true,
-    // Optimize the build
-    minify: 'terser',
-    // Configure chunk splitting for better performance
+    // Basic minification that's more reliable than terser for this project
+    minify: 'esbuild',
+    // Configure chunk splitting for better performance - keeping it simple
     rollupOptions: {
       output: {
         // Split vendor code for better caching
         manualChunks: {
           vendor: ['react', 'react-dom', 'wouter'],
-          ui: ['@radix-ui/react-accordion', '@radix-ui/react-dialog', '@radix-ui/react-popover'],
         },
-        // Use hashed filenames for better caching
-        entryFileNames: 'assets/[name]-[hash].js',
-        chunkFileNames: 'assets/[name]-[hash].js',
-        assetFileNames: 'assets/[name]-[hash].[ext]'
       },
     },
-    // Report build stats
-    reportCompressedSize: true,
   },
   // Make sure we generate a proper static site
   publicDir: path.resolve(__dirname, "client/public"),
