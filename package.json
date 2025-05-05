@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "NODE_ENV=development npx tsx server/index.ts",
     "prebuild": "node ensure-data.js",
-    "build": "vite build && mkdir -p dist/server && cp server/render-server.js dist/server/",
+    "build": "node build-static.js",
     "start": "NODE_ENV=production node dist/server/render-server.js",
     "check": "tsc",
     "db:push": "drizzle-kit push",
@@ -14,8 +14,9 @@
     "lint:fix": "eslint . --ext ts,tsx --fix",
     "format": "prettier --write \"**/*.{js,jsx,ts,tsx,json,md}\"",
     "format:check": "prettier --check \"**/*.{js,jsx,ts,tsx,json,md}\"",
-    "deploy": "npm ci --no-optional && npm run build && npm run start",
-    "render-build": "npm ci --omit=dev && npm run build"
+    "deploy": "npm ci && npm run build",
+    "render-build": "node build-static.js",
+    "build:static": "node build-static.js"
   },
   "dependencies": {
     "@hookform/resolvers": "^3.10.0",
