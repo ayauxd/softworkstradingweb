@@ -3,10 +3,10 @@ services:
     name: softworks-trading
     env: node
     runtime: node
+    buildCommand: npm install && npm run build
+    startCommand: npm start
     nodeVersion: 18.20.7
-    buildCommand: npm run prebuild && npm run build
-    startCommand: npm run start
     envVars:
       - key: NODE_ENV
         value: production
-    plan: starter # Using the $7/month paid plan
+    plan: free # Start with free plan
