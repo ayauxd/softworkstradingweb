@@ -89,7 +89,6 @@ export function ResponsiveImage({
         width={width}
         height={height}
         loading={priority ? 'eager' : loading}
-        fetchPriority={priority ? 'high' : 'auto'}
       />
     </picture>
   );

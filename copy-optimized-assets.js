@@ -5,8 +5,8 @@ import fs from 'fs/promises';
 import path from 'path';
 import { execSync } from 'child_process';
 
-const SOURCE_DIR = path.join(process.cwd(), 'dist', 'public', 'assets', 'optimized');
-const TARGET_DIR = path.join(process.cwd(), 'dist', 'public', 'assets', 'optimized');
+const CLIENT_SOURCE = path.join(process.cwd(), 'client', 'public', 'optimized-images');
+const TARGET_DIR = path.join(process.cwd(), 'dist', 'public', 'optimized-images');
 
 async function ensureOptimizedDirExists() {
   try {
@@ -17,24 +17,56 @@ async function ensureOptimizedDirExists() {
   }
 }
 
-// Simple solution: use a shell command to copy the files
+// Simple solution: copy the files from client to dist
 async function copyOptimizedAssets() {
   try {
     console.log('📋 Copying optimized assets to dist...');
     // Create the target directory if it doesn't exist
     await ensureOptimizedDirExists();
     
-    // Execute shell command to copy files
-    execSync(`cp -R ${SOURCE_DIR}/* ${TARGET_DIR}/`, {
-      stdio: 'inherit'
-    });
-    
-    console.log('✅ Optimized assets copied successfully');
+    // Check if source directory exists
+    try {
+      await fs.access(CLIENT_SOURCE);
+      console.log(`Source directory exists: ${CLIENT_SOURCE}`);
+      
+      // Create subdirectories
+      await fs.mkdir(path.join(TARGET_DIR, 'hero'), { recursive: true });
+      await fs.mkdir(path.join(TARGET_DIR, 'services'), { recursive: true });
+      await fs.mkdir(path.join(TARGET_DIR, 'articles'), { recursive: true });
+      await fs.mkdir(path.join(TARGET_DIR, 'logo'), { recursive: true });
+      
+      // List all files in client source
+      const copyFiles = async (sourceDir, targetDir) => {
+        try {
+          const files = await fs.readdir(sourceDir);
+          for (const file of files) {
+            const sourcePath = path.join(sourceDir, file);
+            const targetPath = path.join(targetDir, file);
+            const stat = await fs.stat(sourcePath);
+            
+            if (stat.isDirectory()) {
+              await fs.mkdir(targetPath, { recursive: true });
+              await copyFiles(sourcePath, targetPath);
+            } else {
+              await fs.copyFile(sourcePath, targetPath);
+              console.log(`Copied: ${sourcePath} to ${targetPath}`);
+            }
+          }
+        } catch (err) {
+          console.error(`Error copying files from ${sourceDir}:`, err);
+        }
+      };
+      
+      await copyFiles(CLIENT_SOURCE, TARGET_DIR);
+      console.log('✅ Optimized assets copied successfully');
+    } catch (err) {
+      console.error(`Source directory not found: ${CLIENT_SOURCE}`, err);
+      // Fallback: Let's use a simpler approach
+      console.log('🔄 Using temporary solution with placeholder images...');
+      await createPlaceholderImages();
+    }
   } catch (error) {
     console.error('Error copying optimized assets:', error);
-    
-    // Fallback: Let's use a simpler approach
-    console.log('🔄 Using temporary solution with placeholder images...');
     await createPlaceholderImages();
   }
 }
@@ -42,39 +74,62 @@ async function copyOptimizedAssets() {
 // Fallback: Create placeholder optimized images if we can't copy them
 async function createPlaceholderImages() {
   try {
+    console.log('Creating placeholder optimized images...');
+    
     // Create required subdirectories
     await fs.mkdir(path.join(TARGET_DIR, 'hero'), { recursive: true });
     await fs.mkdir(path.join(TARGET_DIR, 'services'), { recursive: true });
     await fs.mkdir(path.join(TARGET_DIR, 'articles'), { recursive: true });
     await fs.mkdir(path.join(TARGET_DIR, 'logo'), { recursive: true });
     
-    // Copy original hero image as a placeholder for all sizes
-    const heroSrc = path.join(process.cwd(), 'dist', 'public', 'images', 'hero-image.webp');
-    const sizes = [1920, 1280, 960, 640];
+    // Try to find hero image
+    let heroSrc;
+    const possibleHeroPaths = [
+      path.join(process.cwd(), 'dist', 'public', 'images', 'hero-image.webp'),
+      path.join(process.cwd(), 'client', 'public', 'images', 'hero-image.webp'),
+      path.join(process.cwd(), 'public', 'images', 'hero-image.webp')
+    ];
     
-    for (const size of sizes) {
-      await fs.copyFile(heroSrc, path.join(TARGET_DIR, 'hero', `hero-${size}.webp`));
-      await fs.copyFile(heroSrc, path.join(TARGET_DIR, 'hero', `hero-${size}.jpg`));
-      // Create empty file for AVIF (browser will fall back to WebP)
-      await fs.writeFile(path.join(TARGET_DIR, 'hero', `hero-${size}.avif`), '');
-    }
-    
-    // Handle service images
-    const services = ['ai-strategy-consultation', 'founders-workflow-coaching', 'rapid-automation-deployment'];
-    for (const service of services) {
-      const srcImage = path.join(process.cwd(), 'dist', 'public', 'assets', 'images', 'services', `${service}.jpeg`);
-      const sizes = [1200, 800, 400];
-      
-      for (const size of sizes) {
-        await fs.copyFile(srcImage, path.join(TARGET_DIR, 'services', `${service}-${size}.webp`));
-        await fs.writeFile(path.join(TARGET_DIR, 'services', `${service}-${size}.avif`), '');
+    for (const p of possibleHeroPaths) {
+      try {
+        await fs.access(p);
+        heroSrc = p;
+        console.log(`Found hero image at: ${heroSrc}`);
+        break;
+      } catch (err) {
+        console.log(`Hero image not found at: ${p}`);
       }
     }
     
-    // Handle logo
-    const logoSrc = path.join(process.cwd(), 'dist', 'public', 'assets', 'logo-SwqKAw7L.png');
-    await fs.copyFile(logoSrc, path.join(TARGET_DIR, 'logo', 'logo.webp'));
-    await fs.copyFile(logoSrc, path.join(TARGET_DIR, 'logo', 'logo-small.webp'));
+    // Create placeholder hero images if we found a source
+    if (heroSrc) {
+      const sizes = [1920, 960];
+      
+      for (const size of sizes) {
+        const targetPath = path.join(TARGET_DIR, 'hero', `hero-${size}.webp`);
+        await fs.copyFile(heroSrc, targetPath);
+        console.log(`Created hero image: ${targetPath}`);
+      }
+    } else {
+      console.log('❌ Could not find hero image, skipping hero placeholders');
+    }
+    
+    // Create empty files for other sections as placeholders
+    console.log('Creating placeholder service images...');
+    const services = ['ai-strategy-consultation', 'founders-workflow-coaching', 'rapid-automation-deployment'];
+    for (const service of services) {
+      await fs.writeFile(path.join(TARGET_DIR, 'services', `${service}.webp`), '');
+    }
+    
+    console.log('Creating placeholder article images...');
+    const articles = ['supply-chain', 'connected-intelligence', 'ai-prompting'];
+    for (const article of articles) {
+      await fs.writeFile(path.join(TARGET_DIR, 'articles', `${article}.webp`), '');
+    }
+    
+    console.log('Creating placeholder logo images...');
+    await fs.writeFile(path.join(TARGET_DIR, 'logo', 'logo.webp'), '');
+    await fs.writeFile(path.join(TARGET_DIR, 'logo', 'logo-small.webp'), '');
     
     console.log('✅ Placeholder images created successfully');
   } catch (error) {
@@ -83,4 +138,5 @@ async function createPlaceholderImages() {
 }
 
 // Run the script
-await createPlaceholderImages();
+console.log('Starting asset optimization process...');
+await copyOptimizedAssets();

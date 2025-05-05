@@ -81,7 +81,6 @@ const HeroSection = ({ onTalkToAgent }: HeroSectionProps) => {
               className="w-full h-full object-cover"
               aria-hidden="true"
               loading="eager"
-              fetchpriority="high"
             />
           </picture>
         )}
