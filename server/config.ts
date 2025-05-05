@@ -7,8 +7,8 @@ const envSchema = z.object({
   NODE_ENV: z.enum(['development', 'production', 'test']).default('development'),
   
   // Optional environment variables with defaults
-  PORT: z.string().transform(Number).default('5000'),
-  HOST: z.string().default('0.0.0.0'),
+  PORT: z.string().transform(Number).default(process.env.PORT || '5000'),
+  HOST: z.string().default('0.0.0.0'), // Use 0.0.0.0 to listen on all interfaces
   
   // Database config - optional in development for in-memory mode
   DATABASE_URL: z.string().url().optional(),

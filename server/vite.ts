@@ -69,47 +69,55 @@ export async function setupVite(app: Express, server: Server) {
 }
 
 export function serveStatic(app: Express) {
-  const distPath = path.resolve(process.cwd(), "dist", "public");
-
-  if (!fs.existsSync(distPath)) {
-    log(`Warning: Could not find the build directory: ${distPath}, looking for alternate paths...`);
-    
-    // Try alternative paths in case of production environment inconsistencies
-    const alternativePaths = [
-      path.resolve(process.cwd(), "public"),
-      path.resolve(process.cwd(), "client", "dist"),
-      path.resolve(process.cwd(), "dist")
-    ];
-    
-    for (const altPath of alternativePaths) {
-      if (fs.existsSync(altPath)) {
-        log(`Found alternative static path: ${altPath}`);
-        app.use(express.static(altPath));
-        
-        // fall through to index.html if the file doesn't exist
-        app.use("*", (_req, res) => {
-          if (fs.existsSync(path.resolve(altPath, "index.html"))) {
-            res.sendFile(path.resolve(altPath, "index.html"));
-          } else {
-            res.status(500).send("Server is running but static files are missing.");
-          }
-        });
-        
-        return;
+  // Try various paths in order
+  const paths = [
+    path.resolve(process.cwd(), "dist", "public"),
+    path.resolve(process.cwd(), "public"),
+    path.resolve(process.cwd(), "dist"),
+    path.resolve(process.cwd())
+  ];
+  
+  // Log all paths we're checking
+  log("Checking for static files in the following paths:");
+  paths.forEach(p => log(` - ${p} (exists: ${fs.existsSync(p)})`));
+  
+  // Set up static file serving for all paths that exist
+  paths.forEach(dirPath => {
+    if (fs.existsSync(dirPath)) {
+      log(`Serving static files from: ${dirPath}`);
+      app.use(express.static(dirPath));
+      
+      // Also check for index.html specifically
+      const indexPath = path.join(dirPath, "index.html");
+      if (fs.existsSync(indexPath)) {
+        log(`Found index.html at ${indexPath}`);
+      }
+    }
+  });
+  
+  // Fall through to index.html for SPA routing
+  app.use("*", (_req, res) => {
+    // Try to find an index.html in any of our paths
+    for (const dirPath of paths) {
+      const indexPath = path.join(dirPath, "index.html");
+      if (fs.existsSync(indexPath)) {
+        log(`Serving index.html from ${indexPath}`);
+        return res.sendFile(indexPath);
       }
     }
     
-    // If we get here, none of the paths worked
-    app.use("*", (_req, res) => {
-      res.status(500).send("Static files not found. Build process may have failed.");
-    });
-    return;
-  }
-
-  app.use(express.static(distPath));
-
-  // fall through to index.html if the file doesn't exist
-  app.use("*", (_req, res) => {
-    res.sendFile(path.resolve(distPath, "index.html"));
+    // If no index.html found anywhere
+    res.status(500).send(`
+      <html>
+        <head><title>Server Running</title></head>
+        <body>
+          <h1>Server is running but no index.html was found</h1>
+          <p>The server is running correctly, but couldn't locate the front-end files.</p>
+          <p>Check the build logs for more information.</p>
+          <p>Current working directory: ${process.cwd()}</p>
+          <p>Checked paths: ${paths.join(', ')}</p>
+        </body>
+      </html>
+    `);
   });
 }

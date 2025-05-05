@@ -142,18 +142,50 @@ app.use((req, res, next) => {
     serveStatic(app);
   }
 
-  // Use config values for port and host
+  // Log all environment variables for debugging
+  log('Environment variables:');
+  Object.entries(process.env)
+    .filter(([key]) => !key.includes('SECRET') && !key.includes('KEY') && !key.includes('TOKEN') && !key.includes('PASSWORD'))
+    .forEach(([key, value]) => {
+      log(`  ${key}: ${value}`);
+    });
+  
+  const PORT = process.env.PORT || serverConfig.port;
+  
+  // Use config values for port and host with fallbacks for cloud environments
   server.listen(
     {
-      port: serverConfig.port,
-      host: serverConfig.host,
-      reusePort: true,
+      port: PORT,
+      host: '0.0.0.0', // Always listen on all interfaces in production
     },
     () => {
       log(`Server running in ${serverConfig.nodeEnv} mode`);
-      log(
-        `Listening on http://${serverConfig.host === '0.0.0.0' ? 'localhost' : serverConfig.host}:${serverConfig.port}`
-      );
+      log(`Process running as user: ${require('os').userInfo().username}`);
+      log(`Current directory: ${process.cwd()}`);
+      log(`Listening on port: ${PORT}`);
+      
+      // Try to list files in key directories
+      try {
+        const fs = require('fs');
+        log('Checking for static files:');
+        const directories = [
+          './dist/public',
+          './public',
+          './dist',
+          '.',
+        ];
+        
+        directories.forEach(dir => {
+          try {
+            const files = fs.readdirSync(dir);
+            log(`Files in ${dir}: ${files.length > 0 ? files.join(', ') : 'No files'}`);
+          } catch (err) {
+            log(`Error reading directory ${dir}: ${err.message}`);
+          }
+        });
+      } catch (err) {
+        log(`Error checking files: ${err.message}`);
+      }
     }
   );
 })();
