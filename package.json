@@ -5,10 +5,8 @@
   "license": "MIT",
   "scripts": {
     "dev": "NODE_ENV=development npx tsx server/index.ts",
-    "preinstall": "echo 'Running preinstall checks...'",
-    "prebuild": "echo 'Running prebuild checks...' && npm install --no-package-lock --omit=optional --ignore-scripts",
-    "build": "echo 'Starting build process...' && vite build && echo 'Vite build complete, building server...' && esbuild server/index.ts --platform=node --packages=external --bundle --format=esm --outdir=dist && echo 'Build complete' && ls -la dist dist/public || true",
-    "start": "NODE_ENV=production node dist/index.js",
+    "build": "vite build && esbuild server/index.ts --platform=node --packages=external --bundle --format=esm --outdir=dist",
+    "start": "node server/render-server.js",
     "check": "tsc",
     "db:push": "drizzle-kit push",
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
