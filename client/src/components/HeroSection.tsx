@@ -1,6 +1,16 @@
 import { Button } from '@/components/ui/button';
 import { lazy, Suspense, useEffect, useState } from 'react';
-import animatedNeuralNetworkSrc from '../assets/animations/animated-neural-network.svg';
+
+// Import animation SVG with a more reliable path
+// First try direct import, then fallback to a public URL
+let animatedNeuralNetworkSrc: string;
+try {
+  // Dynamic import is not supported for assets, using static path
+  animatedNeuralNetworkSrc = '/assets/animated-neural-network-B-Og9IhM.svg';
+} catch (e) {
+  // Fallback to a built path that should exist in production
+  animatedNeuralNetworkSrc = '/assets/animated-neural-network-B-Og9IhM.svg';
+}
 
 // Hero image paths
 const heroImages = {

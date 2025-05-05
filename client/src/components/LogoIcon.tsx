@@ -1,11 +1,10 @@
-import logoImage from '../assets/logo.png';
 import { useTheme } from '../hooks/use-theme-toggle';
 
 // Optimized logo paths
 const logoImages = {
   webp: '/optimized-images/logo/logo.webp',
   small: '/optimized-images/logo/logo-small.webp',
-  fallback: logoImage
+  fallback: '/assets/logo.png' // Use direct path instead of imported file
 };
 
 interface LogoIconProps {
