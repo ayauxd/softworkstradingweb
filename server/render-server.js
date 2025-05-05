@@ -1,209 +1,365 @@
-// Enhanced production server for Render deployment
+// PRODUCTION SERVER OPTIMIZED FOR RENDER DEPLOYMENT
+// This is a minimal Express server that serves the React application
+// with extensive logging to help diagnose deployment issues
+
 import express from 'express';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import fs from 'fs';
-import helmet from 'helmet';
+import os from 'os';
 
+// -------------------------------------------------------------------
+// CONFIGURATION
+// -------------------------------------------------------------------
+
+// Get directory name for ESM
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
+
+// Initialize Express app
 const app = express();
+
+// CRITICAL: The PORT must come from environment variable for Render
 const PORT = process.env.PORT || 3000;
 
-// Enhanced logging middleware with timestamps and colorized output
+// Define constants
+const NODE_ENV = process.env.NODE_ENV || 'development';
+const IS_PRODUCTION = NODE_ENV === 'production';
+const SERVER_START_TIME = new Date().toISOString();
+
+// -------------------------------------------------------------------
+// SERVER INFORMATION LOGGING
+// -------------------------------------------------------------------
+
+// Log key system information
+console.log('======================================================');
+console.log(`SERVER STARTING AT ${SERVER_START_TIME}`);
+console.log('======================================================');
+console.log(`Environment: ${NODE_ENV}`);
+console.log(`Platform: ${process.platform} (${os.release()})`);
+console.log(`Node.js Version: ${process.version}`);
+console.log(`CPU Architecture: ${process.arch}`);
+console.log(`Memory: ${Math.round(os.totalmem() / (1024 * 1024 * 1024))}GB total`);
+console.log(`Process ID: ${process.pid}`);
+console.log(`User: ${os.userInfo().username}`);
+console.log(`Working Directory: ${process.cwd()}`);
+console.log(`Server File: ${__dirname}`);
+
+// Log environment variables that might affect deployment
+const IMPORTANT_ENV_VARS = ['PORT', 'NODE_ENV', 'PATH', 'PWD', 'RENDER', 'HOME'];
+console.log('\nCRITICAL ENVIRONMENT VARIABLES:');
+IMPORTANT_ENV_VARS.forEach(key => {
+  console.log(`  ${key}: ${process.env[key] || '(not set)'}`);
+});
+
+// -------------------------------------------------------------------
+// MIDDLEWARE
+// -------------------------------------------------------------------
+
+// Basic request logging middleware
 app.use((req, res, next) => {
-  const timestamp = new Date().toISOString();
-  const method = req.method.padEnd(7);
-  const url = req.url;
-  
-  console.log(`\x1b[90m${timestamp}\x1b[0m \x1b[36m${method}\x1b[0m \x1b[33m${url}\x1b[0m`);
-  
-  // Response time logging
   const start = Date.now();
+  
+  // Log request details
+  console.log(`[${new Date().toISOString()}] ${req.method} ${req.url} (${req.ip})`);
+  
+  // Log response details when finished
   res.on('finish', () => {
     const duration = Date.now() - start;
-    const status = res.statusCode;
-    const statusColor = status >= 500 ? '\x1b[31m' : status >= 400 ? '\x1b[33m' : status >= 300 ? '\x1b[36m' : '\x1b[32m';
-    console.log(`\x1b[90m${timestamp}\x1b[0m \x1b[36m${method}\x1b[0m \x1b[33m${url}\x1b[0m ${statusColor}${status}\x1b[0m \x1b[90m${duration}ms\x1b[0m`);
+    console.log(`[${new Date().toISOString()}] ${req.method} ${req.url} → ${res.statusCode} (${duration}ms)`);
   });
   
   next();
 });
 
-// Security headers with Helmet - Configured for a React SPA
-app.use(
-  helmet({
-    contentSecurityPolicy: {
-      directives: {
-        defaultSrc: ["'self'"],
-        scriptSrc: ["'self'", "'unsafe-inline'", "'unsafe-eval'"],
-        styleSrc: ["'self'", "'unsafe-inline'", "https://fonts.googleapis.com"],
-        imgSrc: ["'self'", "data:", "https://*.softworkstrading.com", "https://images.unsplash.com"],
-        fontSrc: ["'self'", "https://fonts.gstatic.com"],
-        connectSrc: ["'self'", "https://*.softworkstrading.com"],
-      },
-    },
-    // Other security settings
-    xssFilter: true,
-    noSniff: true,
-    referrerPolicy: { policy: "strict-origin-when-cross-origin" },
-  })
-);
+// Add basic security headers
+app.use((req, res, next) => {
+  res.setHeader('X-Content-Type-Options', 'nosniff');
+  res.setHeader('X-XSS-Protection', '1; mode=block');
+  res.setHeader('X-Frame-Options', 'DENY');
+  res.setHeader('Referrer-Policy', 'strict-origin-when-cross-origin');
+  next();
+});
 
-// Detect and print build environment
-const nodeEnv = process.env.NODE_ENV || 'development';
-console.log(`Starting server in ${nodeEnv} environment`);
-console.log(`Process running as user: ${require('os').userInfo().username}`);
-console.log(`Current working directory: ${process.cwd()}`);
-console.log(`Server directory: ${__dirname}`);
+// -------------------------------------------------------------------
+// STATIC FILE SERVING SETUP WITH EXTENSIVE LOGGING
+// -------------------------------------------------------------------
 
-// Comprehensive check for static files with detailed logging
-const staticPaths = [
-  { path: path.resolve(__dirname, '../dist/public'), priority: 1 },
-  { path: path.resolve(__dirname, '../dist'), priority: 2 },
-  { path: path.resolve(__dirname, '../public'), priority: 3 },
-  { path: path.resolve(__dirname, '..'), priority: 4 },
+// Define all possible static file paths in order of priority
+const STATIC_PATHS = [
+  { path: path.resolve(process.cwd(), 'dist', 'public'), priority: 1, desc: 'Primary build output' },
+  { path: path.resolve(process.cwd(), 'dist'), priority: 2, desc: 'Build directory' },
+  { path: path.resolve(process.cwd(), 'public'), priority: 3, desc: 'Public assets' },
+  { path: path.resolve(process.cwd(), 'client', 'public'), priority: 4, desc: 'Client public assets' },
+  { path: path.resolve(process.cwd(), 'client', 'dist'), priority: 5, desc: 'Client build output' },
+  { path: path.resolve(__dirname, '..', 'public'), priority: 6, desc: 'Relative public directory' },
+  { path: path.resolve(__dirname, '..'), priority: 7, desc: 'Parent directory' }
 ];
 
-console.log('Searching for static files in the following paths:');
-staticPaths.forEach(({ path: p, priority }) => {
-  const exists = fs.existsSync(p);
-  console.log(`  [Priority ${priority}] ${p} - ${exists ? '\x1b[32mExists\x1b[0m' : '\x1b[31mNot Found\x1b[0m'}`);
+// Log all potential static paths
+console.log('\nSTATIC FILE PATHS (IN PRIORITY ORDER):');
+STATIC_PATHS.forEach(({ path: dirPath, priority, desc }) => {
+  const exists = fs.existsSync(dirPath);
+  const status = exists ? 'EXISTS' : 'NOT FOUND';
+  console.log(`  [${priority}] ${dirPath} - ${status} (${desc})`);
+  
+  // If the directory exists, log its contents
   if (exists) {
     try {
-      const files = fs.readdirSync(p);
-      if (files.includes('index.html')) {
-        console.log(`    \x1b[32mFound index.html\x1b[0m in this directory`);
+      const files = fs.readdirSync(dirPath);
+      const indexExists = files.includes('index.html');
+      console.log(`     Contains ${files.length} files. index.html: ${indexExists ? 'YES' : 'NO'}`);
+      if (files.length > 0) {
+        console.log(`     Sample files: ${files.slice(0, 5).join(', ')}${files.length > 5 ? '...' : ''}`);
       }
-      console.log(`    Contains ${files.length} files: ${files.slice(0, 5).join(', ')}${files.length > 5 ? '...' : ''}`);
     } catch (err) {
-      console.error(`    Error reading directory: ${err.message}`);
+      console.error(`     Error reading directory: ${err.message}`);
     }
   }
 });
 
-// Serve static files from all existing paths, in priority order
-let staticPathFound = false;
-staticPaths.sort((a, b) => a.priority - b.priority).forEach(({ path: p }) => {
-  if (fs.existsSync(p)) {
-    if (!staticPathFound) {
-      console.log(`\x1b[32mPrimary static path: ${p}\x1b[0m`);
-      staticPathFound = true;
-    } else {
-      console.log(`Additional static path: ${p}`);
-    }
-    app.use(express.static(p, { maxAge: '1d' })); // Add cache control
-  }
-});
+// Setup static file serving for all existing paths in priority order
+const validStaticPaths = STATIC_PATHS
+  .filter(({ path: dirPath }) => fs.existsSync(dirPath))
+  .sort((a, b) => a.priority - b.priority);
 
-if (!staticPathFound) {
-  console.error('\x1b[31mWARNING: No static file paths found!\x1b[0m');
+if (validStaticPaths.length === 0) {
+  console.error('\n‼️ CRITICAL ERROR: No static file paths were found!');
+} else {
+  console.log(`\nServing static files from ${validStaticPaths.length} path(s):`);
+  validStaticPaths.forEach(({ path: dirPath }, index) => {
+    console.log(`  ${index === 0 ? 'PRIMARY' : 'FALLBACK'}: ${dirPath}`);
+    app.use(express.static(dirPath, { 
+      maxAge: IS_PRODUCTION ? '1d' : 0,
+      etag: true,
+      index: false // Don't serve index.html automatically, we'll handle that
+    }));
+  });
 }
 
-// SPA routing - serve index.html for all routes with robust fallbacks
+// -------------------------------------------------------------------
+// SPA ROUTING & FALLBACKS
+// -------------------------------------------------------------------
+
+// Single page application route handler - match all routes to serve index.html
 app.get('*', (req, res) => {
-  // Skip API routes if they existed
+  console.log(`[SPA Route] Handling request for: ${req.url}`);
+  
+  // Skip API routes
   if (req.url.startsWith('/api/')) {
-    return res.status(404).json({ error: 'API endpoint not found' });
+    console.log(`[API Request] No API handler for ${req.url}`);
+    return res.status(404).json({ 
+      error: 'API endpoint not found',
+      path: req.url,
+      timestamp: new Date().toISOString() 
+    });
   }
   
-  // Attempt to find index.html in all possible locations
-  for (const { path: p } of staticPaths) {
-    const indexPath = path.join(p, 'index.html');
+  // Try to find index.html in the static paths
+  for (const { path: dirPath } of validStaticPaths) {
+    const indexPath = path.join(dirPath, 'index.html');
+    
     if (fs.existsSync(indexPath)) {
-      console.log(`Serving SPA from: ${indexPath}`);
+      console.log(`[SPA] Serving index.html from: ${indexPath}`);
       return res.sendFile(indexPath);
     }
   }
   
-  // Comprehensive 404 page if no index.html is found
-  console.error('\x1b[31mERROR: Could not find index.html in any location\x1b[0m');
-  res.status(404).send(`
+  // If no index.html is found in any location, return detailed 404
+  console.error('‼️ CRITICAL ERROR: No index.html found in any location!');
+  return res.status(404).send(`
     <!DOCTYPE html>
     <html lang="en">
       <head>
-        <title>Application Not Found</title>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Application Not Found</title>
         <style>
-          body { font-family: system-ui, -apple-system, sans-serif; line-height: 1.5; padding: 2rem; max-width: 800px; margin: 0 auto; color: #333; }
-          pre { background: #f5f5f5; padding: 1rem; border-radius: 4px; overflow-x: auto; }
-          .error { color: #e53e3e; }
-          .info { color: #4299e1; }
+          body { 
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 
+                         'Open Sans', 'Helvetica Neue', sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 1rem;
+          }
+          h1 { color: #e53e3e; border-bottom: 1px solid #ddd; padding-bottom: 0.5rem; }
+          h2 { color: #3182ce; margin-top: 2rem; }
+          pre { background: #f5f5f5; padding: 1rem; overflow-x: auto; border-radius: 4px; }
+          .timestamp { color: #718096; font-size: 0.9rem; }
         </style>
       </head>
       <body>
-        <h1 class="error">Application Frontend Not Found</h1>
-        <p>The server is running correctly, but could not locate the frontend files.</p>
-        <hr>
-        <h2 class="info">Server Information</h2>
+        <h1>Application Files Not Found</h1>
+        <p class="timestamp">Error occurred at ${new Date().toISOString()}</p>
+        
+        <p>The server is running correctly, but couldn't locate the frontend application files.
+           This usually indicates a build process issue or incorrect path configuration.</p>
+        
+        <h2>Server Information</h2>
         <pre>
-Server Time: ${new Date().toISOString()}
-Node Environment: ${process.env.NODE_ENV || 'Not set'}
+Server Start Time: ${SERVER_START_TIME}
+Current Time: ${new Date().toISOString()}
+Environment: ${NODE_ENV}
+Node.js: ${process.version}
+Platform: ${process.platform} ${os.release()}
+Process ID: ${process.pid}
+Working Directory: ${process.cwd()}
 Port: ${PORT}
-Current Working Directory: ${process.cwd()}
-Server Directory: ${__dirname}
         </pre>
-        <hr>
-        <h2 class="info">Searched Locations</h2>
+        
+        <h2>Search Results</h2>
         <pre>
-${staticPaths.map(({ path: p }) => `${p}/index.html - ${fs.existsSync(path.join(p, 'index.html')) ? 'Exists' : 'Not Found'}`).join('\n')}
+${STATIC_PATHS.map(({ path: p }) => {
+  const exists = fs.existsSync(p);
+  const indexExists = exists && fs.existsSync(path.join(p, 'index.html'));
+  return `${p} - ${exists ? 'Directory exists' : 'Not found'} ${indexExists ? '(with index.html)' : ''}`;
+}).join('\n')}
         </pre>
-        <hr>
-        <p>If you are the application owner, please check your build configuration and deployment logs.</p>
+        
+        <h2>File System Check</h2>
+        <pre>
+${(() => {
+  try {
+    const rootDir = fs.readdirSync(process.cwd());
+    return `Root directory (${process.cwd()}) contains: ${rootDir.join(', ')}`;
+  } catch (err) {
+    return `Error reading root directory: ${err.message}`;
+  }
+})()}
+
+${(() => {
+  try {
+    const distDir = path.resolve(process.cwd(), 'dist');
+    if (fs.existsSync(distDir)) {
+      const files = fs.readdirSync(distDir);
+      return `Dist directory contains: ${files.join(', ')}`;
+    }
+    return 'Dist directory does not exist';
+  } catch (err) {
+    return `Error reading dist directory: ${err.message}`;
+  }
+})()}
+        </pre>
+        
+        <p>If you are the application owner, please check:</p>
+        <ul>
+          <li>Build process configuration (npm run build)</li>
+          <li>Static file output directory settings in vite.config.js</li>
+          <li>Render deployment logs</li>
+        </ul>
       </body>
     </html>
   `);
 });
 
-// Error handling middleware
+// -------------------------------------------------------------------
+// ERROR HANDLING
+// -------------------------------------------------------------------
+
+// Handle server errors
 app.use((err, req, res, next) => {
-  console.error('\x1b[31mServer Error:\x1b[0m', err);
+  console.error('‼️ SERVER ERROR:', err);
   res.status(500).send(`
     <!DOCTYPE html>
     <html lang="en">
       <head>
-        <title>Server Error</title>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Server Error</title>
         <style>
-          body { font-family: system-ui, -apple-system, sans-serif; line-height: 1.5; padding: 2rem; max-width: 800px; margin: 0 auto; color: #333; }
-          .error { color: #e53e3e; }
+          body { 
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 1rem;
+          }
+          h1 { color: #e53e3e; }
+          .details { 
+            background: #f7fafc; 
+            border-left: 4px solid #cbd5e0; 
+            padding: 1rem;
+            margin: 1rem 0;
+          }
+          .timestamp { color: #718096; font-size: 0.9rem; }
         </style>
       </head>
       <body>
-        <h1 class="error">Server Error</h1>
+        <h1>Server Error</h1>
+        <p class="timestamp">Error occurred at ${new Date().toISOString()}</p>
         <p>The server encountered an unexpected condition that prevented it from fulfilling the request.</p>
-        <p>Please try again later or contact the site administrator if the problem persists.</p>
+        
+        <div class="details">
+          <p><strong>Request:</strong> ${req.method} ${req.url}</p>
+          <p><strong>Error Type:</strong> ${err.name || 'Unknown Error'}</p>
+          ${IS_PRODUCTION ? '' : `<p><strong>Message:</strong> ${err.message}</p>`}
+        </div>
+        
+        <p>If this problem persists, please contact the site administrator.</p>
       </body>
     </html>
   `);
 });
 
-// Start server with improved error handling
+// -------------------------------------------------------------------
+// SERVER STARTUP
+// -------------------------------------------------------------------
+
+// Start the server
 const server = app.listen(PORT, '0.0.0.0', () => {
-  console.log(`\x1b[32m✓ Server started successfully\x1b[0m`);
-  console.log(`\x1b[32m✓ Listening on port ${PORT}\x1b[0m`);
+  console.log('\n======================================================');
+  console.log(`🚀 SERVER RUNNING - http://localhost:${PORT}`);
+  console.log('======================================================');
+  console.log(`Time: ${new Date().toISOString()}`);
+  console.log(`Environment: ${NODE_ENV}`);
+  console.log(`Port: ${PORT}`);
+  console.log(`Process ID: ${process.pid}`);
+  console.log(`Memory Usage: ${Math.round(process.memoryUsage().rss / (1024 * 1024))}MB`);
+  console.log('======================================================\n');
   
-  // Print out some useful information for debugging
-  console.log('\nEnvironment Variables:');
-  Object.entries(process.env)
-    .filter(([key]) => ['NODE_ENV', 'PORT', 'HOST'].includes(key))
-    .forEach(([key, value]) => {
-      console.log(`  ${key}: ${value}`);
+  // Check for free disk space (important for deployments)
+  try {
+    const exec = require('child_process').execSync;
+    const diskInfo = exec('df -h /').toString();
+    console.log('Disk space information:');
+    console.log(diskInfo);
+  } catch (err) {
+    console.log('Unable to check disk space:', err.message);
+  }
+});
+
+// -------------------------------------------------------------------
+// ERROR HANDLING AND GRACEFUL SHUTDOWN
+// -------------------------------------------------------------------
+
+// Handle process errors
+process.on('uncaughtException', (err) => {
+  console.error('‼️ UNCAUGHT EXCEPTION:', err);
+  // Log but don't exit in production - let the platform decide
+  if (!IS_PRODUCTION) {
+    process.exit(1);
+  }
+});
+
+process.on('unhandledRejection', (reason, promise) => {
+  console.error('‼️ UNHANDLED REJECTION:', reason);
+});
+
+// Handle graceful shutdown
+['SIGTERM', 'SIGINT'].forEach(signal => {
+  process.on(signal, () => {
+    console.log(`\n${signal} signal received. Shutting down gracefully...`);
+    server.close(() => {
+      console.log('HTTP server closed.');
+      process.exit(0);
     });
-});
-
-// Handle server shutdown gracefully
-process.on('SIGTERM', () => {
-  console.log('SIGTERM signal received: closing HTTP server');
-  server.close(() => {
-    console.log('HTTP server closed');
-  });
-});
-
-process.on('SIGINT', () => {
-  console.log('SIGINT signal received: closing HTTP server');
-  server.close(() => {
-    console.log('HTTP server closed');
+    
+    // Force close if it takes too long
+    setTimeout(() => {
+      console.error('Could not close connections in time, forcefully shutting down.');
+      process.exit(1);
+    }, 10000);
   });
 });
