@@ -3,16 +3,13 @@ services:
     name: softworks-trading
     env: node
     runtime: node
-    buildCommand: npm run render-build
-    startCommand: NODE_ENV=production DEBUG=express:* node dist/server/render-server.js
-    nodeVersion: 18.20.7
+    buildCommand: npm ci && npm run build
+    startCommand: NODE_ENV=production node dist/server/render-server.js
+    nodeVersion: 18.x
     autoDeploy: true
-    healthCheckPath: /
     envVars:
       - key: NODE_ENV
         value: production
-      - key: PORT
-        value: 10000 # Render uses this port by default
     plan: free # Start with free plan
 
 # Additional render.yaml configuration

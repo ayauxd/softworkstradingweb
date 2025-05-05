@@ -5,7 +5,8 @@
   "license": "MIT",
   "scripts": {
     "dev": "NODE_ENV=development npx tsx server/index.ts",
-    "build": "vite build --outDir dist/public && mkdir -p dist/server && cp server/render-server.js dist/server/",
+    "prebuild": "node ensure-data.js",
+    "build": "vite build && mkdir -p dist/server && cp server/render-server.js dist/server/",
     "start": "NODE_ENV=production node dist/server/render-server.js",
     "check": "tsc",
     "db:push": "drizzle-kit push",
@@ -14,7 +15,7 @@
     "format": "prettier --write \"**/*.{js,jsx,ts,tsx,json,md}\"",
     "format:check": "prettier --check \"**/*.{js,jsx,ts,tsx,json,md}\"",
     "deploy": "npm ci --no-optional && npm run build && npm run start",
-    "render-build": "npm ci --no-optional --no-audit --no-fund && npm run build"
+    "render-build": "npm ci --omit=dev && npm run build"
   },
   "dependencies": {
     "@hookform/resolvers": "^3.10.0",
