@@ -138,8 +138,8 @@ const Footer = () => {
         </div>
         
         <div className="mt-10 pt-8 border-t border-gray-700">
-          <div className="text-center mb-8">
-            <LogoIcon className="h-14 md:h-16 w-auto max-w-[200px] mx-auto" isWhite={true} aria-hidden="true" />
+          <div className="flex justify-center mb-8">
+            <LogoIcon className="h-12 w-auto mx-auto" isWhite={true} />
           </div>
           
           <div className="flex flex-col items-center">

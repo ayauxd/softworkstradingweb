@@ -1,4 +1,5 @@
 import { Button } from "@/components/ui/button";
+import { ResponsiveImage } from "@/components/ui/responsive-image";
 
 interface ServicesSectionProps {
   onTalkToAgent?: () => void;
@@ -7,22 +8,25 @@ interface ServicesSectionProps {
 const ServicesSection = ({ onTalkToAgent }: ServicesSectionProps) => {
   const services = [
     {
-      title: "Rapid Automation Deployment",
-      description: "Implement efficient automation solutions tailored to your business needs.",
-      imageUrl: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1650&q=80",
-      alt: "Digital workflow automation with computer dashboard"
+      title: "AI Strategy Consultation (No Coding Needed)",
+      description: "Get expert guidance on integrating AI into your business strategy without needing technical expertise.",
+      imageUrl: "/optimized-images/services/ai-strategy-consultation.webp",
+      fallbackUrl: "/assets/images/services/ai-strategy-consultation.jpeg",
+      alt: "Business meeting discussing AI strategy charts"
     },
     {
       title: "Founders' Workflow Coaching",
-      description: "Personalized coaching sessions to streamline your operations.",
-      imageUrl: "https://images.unsplash.com/photo-1542744173-8e7e53415bb0?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8OHx8YnVzaW5lc3MlMjBtZWV0aW5nfGVufDB8fDB8fHww&auto=format&fit=crop&w=800&q=60",
-      alt: "Business professionals in a meeting discussing workflow strategies"
+      description: "Optimize your personal and team workflows for maximum productivity and focus.",
+      imageUrl: "/optimized-images/services/founders-workflow-coaching.webp",
+      fallbackUrl: "/assets/images/services/founders-workflow-coaching.jpeg",
+      alt: "Team collaborating around a table with laptops"
     },
     {
-      title: "AI Strategy Consultation (No Coding Needed)",
-      description: "Strategize AI integration into your business without the need for coding expertise.",
-      imageUrl: "https://images.unsplash.com/photo-1581091877018-dac6a371d50f?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTh8fHRlY2hub2xvZ3klMjBzdHJhdGVneXxlbnwwfHwwfHx8MA%3D%3D&auto=format&fit=crop&w=800&q=60",
-      alt: "Strategic planning session with technology diagrams and charts"
+      title: "Rapid Automation Deployment",
+      description: "Implement efficient automation solutions tailored to your business needs.",
+      imageUrl: "/optimized-images/services/rapid-automation-deployment.webp",
+      fallbackUrl: "/assets/images/services/rapid-automation-deployment.jpeg",
+      alt: "Digital workflow automation with computer dashboard"
     }
   ];
 
@@ -31,11 +35,11 @@ const ServicesSection = ({ onTalkToAgent }: ServicesSectionProps) => {
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-16">
           <h2 className="text-3xl md:text-4xl font-bold mb-4 text-navy dark:text-soft-white">
-            Start Small. Get Results Fast.
+            Practical AI Solutions with Rapid ROI
           </h2>
           <p className="text-lg text-neutral-gray dark:text-gray-300 max-w-3xl mx-auto">
-            We specialize in helping non-technical teams launch practical AI upgrades—without 
-            needing to learn prompt engineering, APIs, or automation tools.
+            We help non-technical teams implement high-impact AI solutions that deliver measurable results within weeks, not months. 
+            Our approach eliminates the need for technical expertise in prompt engineering, APIs, or automation tools.
           </p>
         </div>
         
@@ -47,12 +51,17 @@ const ServicesSection = ({ onTalkToAgent }: ServicesSectionProps) => {
                         transition-transform hover:scale-105 duration-300"
             >
               <div className="h-48 bg-gray-200 dark:bg-navy-dark overflow-hidden">
-                <img 
-                  src={service.imageUrl} 
-                  alt={service.alt}
-                  className="w-full h-full object-cover"
-                  loading="lazy"
-                />
+                <picture>
+                  <source srcSet={service.imageUrl} type="image/webp" />
+                  <img 
+                    src={service.fallbackUrl} 
+                    alt={service.alt}
+                    className="w-full h-full object-cover"
+                    loading="lazy"
+                    width="800" 
+                    height="450"
+                  />
+                </picture>
               </div>
               <div className="p-6">
                 <h3 className="text-xl font-semibold mb-2 text-center text-navy dark:text-soft-white">
