@@ -64,9 +64,11 @@ export default function ArticlePage() {
           <p className="mb-6">
             Let our experts show you how AI can help your business achieve similar results.
           </p>
-          <Button className="bg-cyan hover:bg-cyan-light text-navy font-semibold py-3 px-8 rounded-md transition-all duration-300">
-            Schedule a Consultation
-          </Button>
+          <Link href="/#contact">
+            <Button className="bg-cyan hover:bg-cyan-light text-navy font-semibold py-3 px-8 rounded-md transition-all duration-300">
+              Schedule a Consultation
+            </Button>
+          </Link>
         </div>
 
         {/* More Articles */}
