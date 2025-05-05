@@ -3,10 +3,29 @@ services:
     name: softworks-trading
     env: node
     runtime: node
-    buildCommand: npm install && npm run build
-    startCommand: npm start
+    buildCommand: npm ci && npm run build
+    startCommand: NODE_ENV=production node dist/server/render-server.js
     nodeVersion: 18.20.7
+    autoDeploy: true
+    healthCheckPath: /
     envVars:
       - key: NODE_ENV
         value: production
+      - key: PORT
+        value: 10000 # Render uses this port by default
     plan: free # Start with free plan
+
+# Additional render.yaml configuration
+headers:
+  # Security headers for all routes
+  "/*":
+    # HSTS is a security feature that tells browsers that the site should only be accessed over HTTPS
+    Strict-Transport-Security: max-age=31536000; includeSubDomains
+    # Prevent MIME type sniffing, which can lead to security vulnerabilities
+    X-Content-Type-Options: nosniff
+    # Prevents the browser from rendering the page inside a frame/iframe
+    X-Frame-Options: DENY
+    # Enables XSS filtering in browsers
+    X-XSS-Protection: 1; mode=block
+    # Controls how much referrer information should be included with requests
+    Referrer-Policy: strict-origin-when-cross-origin
