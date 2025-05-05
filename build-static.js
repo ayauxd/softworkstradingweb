@@ -1,0 +1,141 @@
+// Static build script for Render deployment
+import { execSync } from 'child_process';
+import fs from 'fs';
+import path from 'path';
+import { fileURLToPath } from 'url';
+
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
+
+// Helper to run commands
+function run(command) {
+  console.log(`Running: ${command}`);
+  execSync(command, { stdio: 'inherit' });
+}
+
+// Ensure directories exist
+function ensureDir(dir) {
+  if (!fs.existsSync(dir)) {
+    console.log(`Creating directory: ${dir}`);
+    fs.mkdirSync(dir, { recursive: true });
+  }
+}
+
+console.log('=== STARTING STATIC BUILD PROCESS ===');
+
+// Clean previous build
+console.log('Cleaning previous build...');
+if (fs.existsSync(path.join(__dirname, 'dist'))) {
+  fs.rmSync(path.join(__dirname, 'dist'), { recursive: true, force: true });
+}
+
+// Ensure data directories exist
+console.log('Ensuring data files exist...');
+ensureDir(path.join(__dirname, 'client', 'src', 'data'));
+
+// Copy articles.ts if it doesn't exist
+const articlesFile = path.join(__dirname, 'client', 'src', 'data', 'articles.ts');
+if (!fs.existsSync(articlesFile)) {
+  console.log('Creating articles.ts...');
+  
+  // Create a basic articles data file
+  const content = `
+// Article data
+export const articles = [
+  {
+    id: 1,
+    title: 'AI in Supply Chain: The Future of Logistics',
+    description: 'Discover how agentic AI is reshaping logistics and streamlining operations.',
+    imageUrl: '/assets/images/articles/supply-chain.png',
+    author: "Frederick A",
+    date: 'April 15, 2025',
+    readTime: '5 min read',
+    content: '<h2>The Evolution of Supply Chain Management</h2><p>Supply chain management has undergone several transformations.</p>'
+  },
+  {
+    id: 2,
+    title: 'Connected Intelligence: Building Collaborative AI-Human Teams',
+    description: 'See how teams leverage AI agents to enhance decision-making and productivity.',
+    imageUrl: '/assets/images/articles/connected-intelligence.png',
+    author: "Frederick A",
+    date: 'April 10, 2025',
+    readTime: '4 min read',
+    content: '<h2>The New Team Dynamic: Humans + AI</h2><p>The workplace is undergoing a fundamental transformation.</p>'
+  },
+  {
+    id: 3,
+    title: 'AI Prompting Best Practices',
+    description: 'Learn essential techniques for crafting effective prompts to get the best results from AI language models.',
+    imageUrl: '/assets/images/articles/ai-prompting.png',
+    author: "Peter O",
+    date: 'March 28, 2025',
+    readTime: '5 min read',
+    content: '<h2>The Art and Science of AI Prompting</h2><p>As AI language models become increasingly integrated into business workflows...</p>'
+  },
+  {
+    id: 4,
+    title: 'How to Get Your First Client as an AI Consultant',
+    description: 'Practical strategies for launching your AI consulting business and landing your first client.',
+    imageUrl: '/assets/images/articles/ai-prompting.png',
+    author: 'Dennis O.',
+    date: 'April 2, 2025',
+    readTime: '5 min read',
+    content: '<h2>Breaking Into AI Consulting</h2><p>The AI consulting market is projected to reach $26.4 billion by 2026.</p>'
+  },
+  {
+    id: 5,
+    title: 'Organized Chaos - Mapping Out Your Schedule with Effective Workflows',
+    description: 'Transform your chaotic schedule into a productive system with AI-powered workflow management.',
+    imageUrl: '/assets/images/articles/ai-prompting.jpg',
+    author: "Joseph-Jones A",
+    date: 'March 20, 2025',
+    readTime: '5 min read',
+    content: '<h2>From Chaos to Clarity: The Workflow Revolution</h2><p>In today\\'s hyperconnected workplace...</p>'
+  }
+];`;
+
+  fs.writeFileSync(articlesFile, content);
+}
+
+// Ensure images directories exist
+console.log('Setting up image directories...');
+ensureDir(path.join(__dirname, 'client', 'public', 'assets', 'images', 'articles'));
+ensureDir(path.join(__dirname, 'public', 'assets', 'images', 'articles'));
+
+// Install dependencies
+console.log('Installing dependencies...');
+run('npm ci');
+
+// Run the build
+console.log('Building the application...');
+run('vite build');
+
+// Verify the build
+console.log('Verifying build...');
+const publicDir = path.join(__dirname, 'dist', 'public');
+const indexFile = path.join(publicDir, 'index.html');
+
+if (fs.existsSync(indexFile)) {
+  console.log('✅ Build successful!');
+  
+  // Create build info file
+  const buildInfo = `
+Build completed: ${new Date().toISOString()}
+Build script: build-static.js
+Platform: ${process.platform}
+Node version: ${process.version}
+Directory: ${publicDir}
+`;
+  fs.writeFileSync(path.join(publicDir, 'build-info.txt'), buildInfo);
+  
+  // List files in the build directory
+  console.log('Files in build directory:');
+  const files = fs.readdirSync(publicDir);
+  files.forEach(file => {
+    console.log(`- ${file}`);
+  });
+} else {
+  console.error('❌ Build failed! index.html not found');
+  process.exit(1);
+}
+
+console.log('=== BUILD PROCESS COMPLETED ===');

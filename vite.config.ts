@@ -38,6 +38,7 @@ export default defineConfig({
       },
     },
   },
-  // Make sure we generate a proper static site
+  // Make sure we generate a proper static site with all assets
   publicDir: path.resolve(__dirname, "client/public"),
+  assetsInclude: ['**/*.png', '**/*.jpg', '**/*.jpeg', '**/*.svg', '**/*.webp'],
 });
