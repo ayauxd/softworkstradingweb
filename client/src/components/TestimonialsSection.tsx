@@ -1,4 +1,3 @@
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { 
@@ -17,22 +16,19 @@ const TestimonialsSection = () => {
 
   const testimonials = [
     {
-      name: "Alex Chen",
-      role: "CTO, TechSolutions Inc.",
-      imageUrl: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTB8fHByb2ZpbGUlMjBmYWNlfGVufDB8fDB8fHww&auto=format&fit=crop&w=200&q=60",
-      quote: "Softworks has completely transformed our operational workflows. Their intelligent systems removed bottlenecks we thought were permanent."
+      name: "Alex C.",
+      role: "CTO, Software Development Industry",
+      quote: "Their intelligent workflow automation transformed our development pipeline, removing bottlenecks we thought were permanent."
     },
     {
-      name: "Sarah Johnson",
-      role: "Operations Director, Quantum Retail",
-      imageUrl: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NXx8cHJvZmlsZSUyMGZhY2V8ZW58MHx8MHx8fDA%3D&auto=format&fit=crop&w=200&q=60",
-      quote: "The workflow automation solutions Softworks implemented saved our team 20+ hours per week. Their expertise was invaluable in identifying where AI could best serve our business needs."
+      name: "Sarah J.",
+      role: "Operations Director, E-commerce Industry",
+      quote: "The AI-powered inventory management system saved our team 20+ hours per week. Their expertise was invaluable in identifying where automation could best serve our business needs."
     },
     {
-      name: "Michael Rodriguez",
-      role: "Founder, InnovateMind",
-      imageUrl: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MzJ8fHByb2ZpbGUlMjBmYWNlfGVufDB8fDB8fHww&auto=format&fit=crop&w=200&q=60",
-      quote: "As a non-technical founder, I was hesitant about AI integration. Softworks made the process painless and delivered results that immediately improved our customer response times by 70%."
+      name: "Michael R.",
+      role: "Founder, Tech Startup",
+      quote: "As a non-technical founder, I was hesitant about AI integration. The process was painless and delivered results that immediately improved our customer response times by 70%."
     }
   ];
 

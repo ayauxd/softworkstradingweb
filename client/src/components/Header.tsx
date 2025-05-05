@@ -162,7 +162,7 @@ const Header = () => {
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-16 md:h-20">
             {/* Logo Container */}
-            <div className="flex-shrink-0 -ml-1.5 sm:ml-0">
+            <div className="flex-shrink-0 ml-0">
               <a 
                 href="#home" 
                 className="flex items-center py-2" 
@@ -170,7 +170,7 @@ const Header = () => {
                 aria-label="Softworks Trading Company - Go to homepage"
               >
                 <LogoIcon 
-                  className="h-10 w-auto md:h-12 transition-colors duration-300" 
+                  className="h-8 md:h-10 transition-colors duration-300" 
                 />
               </a>
             </div>

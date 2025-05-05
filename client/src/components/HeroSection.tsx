@@ -1,7 +1,13 @@
 import { Button } from '@/components/ui/button';
 import { lazy, Suspense, useEffect, useState } from 'react';
-import animatedNeuralNetworkSrc from '../assets/animated-neural-network.svg';
-import neuralNetworkImageSrc from '../assets/neural-network-base.png';
+import animatedNeuralNetworkSrc from '../assets/animations/animated-neural-network.svg';
+
+// Hero image paths
+const heroImages = {
+  large: '/optimized-images/hero/hero-1920.webp',
+  medium: '/optimized-images/hero/hero-960.webp',
+  fallback: '/images/hero-image.webp'
+};
 
 // Define image preload for critical hero image
 const preloadImage = (src: string): Promise<void> => {
@@ -22,9 +28,18 @@ const HeroSection = ({ onTalkToAgent }: HeroSectionProps) => {
 
   // Preload hero background image
   useEffect(() => {
-    preloadImage(neuralNetworkImageSrc)
+    // Use medium size for mobile devices, large for desktop
+    const imageSrcToPreload = window.innerWidth < 1024 ? heroImages.medium : heroImages.large;
+    
+    preloadImage(imageSrcToPreload)
       .then(() => setImageLoaded(true))
-      .catch(err => console.error('Error preloading hero image:', err));
+      .catch(err => {
+        console.error('Error preloading optimized hero image:', err);
+        // Fallback to original image
+        preloadImage(heroImages.fallback)
+          .then(() => setImageLoaded(true))
+          .catch(err => console.error('Error preloading fallback hero image:', err));
+      });
   }, []);
 
   const scrollToContact = () => {
@@ -41,23 +56,41 @@ const HeroSection = ({ onTalkToAgent }: HeroSectionProps) => {
   return (
     <section
       id="home"
-      className="relative min-h-[90vh] bg-[#0D3456] dark:bg-[#051525] text-soft-white py-32 md:py-20 transition-colors duration-300 overflow-hidden flex items-center"
+      className="relative min-h-[90vh] bg-[#0D3456] dark:bg-[#051525] text-soft-white pt-36 md:pt-32 pb-20 transition-colors duration-300 overflow-hidden flex items-center"
     >
       {/* Background container - with optimized image loading */}
       <div
         className="absolute inset-0 z-0 bg-gradient-to-b from-[#0D3456]/95 to-[#0D3456]/90 dark:from-[#051525]/98 dark:to-[#051525]/95 bg-cover bg-center"
         style={{
-          backgroundImage: imageLoaded ? `url(${neuralNetworkImageSrc})` : 'none',
           backgroundColor: '#0A2A43', // Fallback color while image loads
+          filter: 'brightness(0.7)', // Darken the background image
         }}
         aria-hidden="true"
       >
+        {imageLoaded && (
+          <picture className="absolute inset-0 h-full w-full">
+            {/* Responsive hero image with different sizes */}
+            <source 
+              srcSet={`${heroImages.large} 1920w, ${heroImages.medium} 960w`}
+              sizes="100vw"
+              type="image/webp"
+            />
+            <img
+              src={heroImages.fallback}
+              alt=""
+              className="w-full h-full object-cover"
+              aria-hidden="true"
+              loading="eager"
+              fetchpriority="high"
+            />
+          </picture>
+        )}
         {/* Animated SVG overlay - Using img tag instead of object for better compatibility */}
         {imageLoaded && (
-          <div className="absolute inset-0 overflow-hidden mix-blend-screen dark:mix-blend-lighten opacity-50 dark:opacity-60">
+          <div className="absolute inset-0 overflow-hidden mix-blend-color-dodge opacity-90 dark:opacity-100">
             <img
               src={animatedNeuralNetworkSrc}
-              className="w-full h-full object-cover"
+              className="w-full h-full object-cover animate-subtle-pulse"
               aria-hidden="true"
               loading="lazy"
               alt=""
@@ -70,14 +103,14 @@ const HeroSection = ({ onTalkToAgent }: HeroSectionProps) => {
         <div className="absolute inset-0 bg-[#0D3456]/10 dark:bg-[#000]/20 mix-blend-multiply"></div>
 
         {/* Additional Dark Overlay for Text Contrast */}
-        <div className="absolute inset-0 bg-black/20 dark:bg-black/30"></div>
+        <div className="absolute inset-0 bg-black/30 dark:bg-black/40"></div>
 
-        {/* Central radial glow effect */}
+        {/* Central radial glow effect - reduced size and intensity */}
         <div
-          className="absolute inset-0 opacity-80 dark:opacity-90"
+          className="absolute inset-0 opacity-60 dark:opacity-70"
           style={{
             background:
-              'radial-gradient(circle at 50% 50%, rgba(0, 188, 212, 0.12), transparent 70%)',
+              'radial-gradient(circle at 50% 50%, rgba(12, 74, 110, 0.08), transparent 50%)',
           }}
         ></div>
       </div>
@@ -93,7 +126,7 @@ const HeroSection = ({ onTalkToAgent }: HeroSectionProps) => {
             AI Solutions
           </h1>
           <p className="text-xl md:text-2xl mb-10 text-gray-200 dark:text-gray-300 animate-slideUp">
-            Collaborate with us to design a time-saving workflow—beginning this week.
+            Start transforming your business operations with proven workflow integration.
           </p>
           <div className="mt-8 flex flex-col sm:flex-row justify-center items-center gap-4">
             <Button
