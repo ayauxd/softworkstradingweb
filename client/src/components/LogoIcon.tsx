@@ -36,7 +36,6 @@ const LogoIcon = ({ className = '', isWhite = false, showText = false }: LogoIco
           width="200"
           height="62"
           loading="eager"
-          fetchpriority="high"
           style={{ aspectRatio: '3.23/1' }}
         />
       </picture>
