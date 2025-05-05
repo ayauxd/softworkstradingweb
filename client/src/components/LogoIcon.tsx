@@ -11,7 +11,7 @@ const LogoIcon = ({ className = '', isWhite = false, showText = false }: LogoIco
   const { theme } = useTheme();
   // Use isWhite prop or automatically use white logo in dark mode
   const shouldUseWhiteLogo = isWhite || theme === 'dark';
-
+  
   return (
     <div className={`${className} relative flex items-center`}>
       <img

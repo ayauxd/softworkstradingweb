@@ -10,17 +10,33 @@
   body {
     @apply font-sans antialiased bg-white dark:bg-navy text-gray-900 dark:text-white;
   }
+  
+  /* Enhanced focus styles for keyboard navigation */
+  :focus-visible {
+    @apply outline-none ring-2 ring-cyan ring-offset-2 ring-offset-white dark:ring-offset-navy transition-shadow duration-300;
+  }
+  
+  /* Make sure links always have a visible focus state that matches hover */
+  a:focus-visible,
+  button:focus-visible,
+  input:focus-visible,
+  select:focus-visible,
+  textarea:focus-visible {
+    @apply outline-none ring-2 ring-cyan ring-offset-2 ring-offset-white dark:ring-offset-navy;
+  }
 
   /* Custom styles for the app */
   :root {
     --navy: #0A2A43;
     --navy-light: #0F3A59;
     --navy-dark: #071E30;
-    --cyan: #00BCD4;
-    --cyan-light: #33C9DB;
-    --cyan-dark: #00A5BB;
+    --cyan: #00A5BB; /* Darkened for better contrast with white backgrounds */
+    --cyan-light: #00C3DD; /* Brightened for better contrast in dark mode */
+    --cyan-dark: #008A9B; /* Deepened for emphasis */
     --soft-white: #F9FAFC;
-    --neutral-gray: #4A5568;
+    --neutral-gray: #3D4A5C; /* Darkened for better contrast on light backgrounds */
+    --gray-400: #6B7A90; /* Darkened for better contrast */
+    --gray-500: #556275; /* Darkened for better contrast */
   }
 
   /* Animations */
@@ -46,6 +62,11 @@
     100% { opacity: 0.4; transform: scale(1); filter: brightness(1); }
   }
   
+  @keyframes subtle-pulse {
+    0%, 100% { filter: brightness(1); }
+    50% { filter: brightness(1.2); }
+  }
+  
   .animate-fadeIn {
     animation: fadeIn 0.5s ease-out forwards;
   }
@@ -60,5 +81,9 @@
   
   .animate-pulse-slow {
     animation: pulse-slow 5s ease-in-out infinite;
+  }
+  
+  .animate-subtle-pulse {
+    animation: subtle-pulse 4s ease-in-out infinite;
   }
 }

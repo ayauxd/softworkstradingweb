@@ -15,10 +15,11 @@ import ErrorBoundary from "./components/ErrorBoundary";
 // Lazily loaded components for code splitting
 const HowItWorksSection = lazy(() => import("./components/HowItWorksSection"));
 const TestimonialsSection = lazy(() => import("./components/TestimonialsSection"));
-const InsightsSection = lazy(() => import("./components/InsightsSection"));
+const BlogSection = lazy(() => import("./components/InsightsSection"));
 const ContactSection = lazy(() => import("./components/ContactSection"));
 const WorkflowAgentModal = lazy(() => import("./components/WorkflowAgentModal"));
 const ArticlePage = lazy(() => import("./pages/ArticlePage"));
+const BlogPage = lazy(() => import("./pages/InsightsPage"));
 
 function HomePage() {
   const [showModal, setShowModal] = useState(false);
@@ -63,7 +64,7 @@ function HomePage() {
         </Suspense>
         
         <Suspense fallback={<SectionFallback />}>
-          <InsightsSection />
+          <BlogSection />
         </Suspense>
         
         <Suspense fallback={<SectionFallback />}>
@@ -104,11 +105,36 @@ function App() {
       <QueryClientProvider client={queryClient}>
         <ThemeProvider>
           <TooltipProvider>
+            {/* Skip to content link for keyboard users */}
+            <a 
+              href="#main-content" 
+              className="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-[100] 
+                         focus:bg-white focus:text-navy dark:focus:bg-navy-dark dark:focus:text-soft-white
+                         focus:px-4 focus:py-2 focus:rounded-md focus:shadow-lg focus:outline-none focus:ring-2 focus:ring-cyan"
+            >
+              Skip to main content
+            </a>
             <Toaster />
             <Switch>
               <Route path="/">
                 <ErrorBoundary>
                   <HomePage />
+                </ErrorBoundary>
+              </Route>
+              <Route path="/blog">
+                <ErrorBoundary>
+                  <Suspense fallback={
+                    <div className="min-h-screen flex flex-col items-center justify-center bg-soft-white dark:bg-navy p-4">
+                      <div className="flex space-x-2 justify-center items-center">
+                        <div className="h-4 w-4 bg-cyan rounded-full animate-bounce"></div>
+                        <div className="h-4 w-4 bg-cyan rounded-full animate-bounce [animation-delay:-.15s]"></div>
+                        <div className="h-4 w-4 bg-cyan rounded-full animate-bounce [animation-delay:-.3s]"></div>
+                      </div>
+                      <p className="text-navy dark:text-soft-white mt-4">Loading blog...</p>
+                    </div>
+                  }>
+                    <BlogPage />
+                  </Suspense>
                 </ErrorBoundary>
               </Route>
               <Route path="/article/:id">
