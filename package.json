@@ -5,14 +5,15 @@
   "license": "MIT",
   "scripts": {
     "dev": "NODE_ENV=development npx tsx server/index.ts",
-    "build": "vite build && esbuild server/index.ts --platform=node --packages=external --bundle --format=esm --outdir=dist",
-    "start": "node server/render-server.js",
+    "build": "vite build && mkdir -p dist/server && cp server/render-server.js dist/server/",
+    "start": "NODE_ENV=production node dist/server/render-server.js",
     "check": "tsc",
     "db:push": "drizzle-kit push",
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "lint:fix": "eslint . --ext ts,tsx --fix",
     "format": "prettier --write \"**/*.{js,jsx,ts,tsx,json,md}\"",
-    "format:check": "prettier --check \"**/*.{js,jsx,ts,tsx,json,md}\""
+    "format:check": "prettier --check \"**/*.{js,jsx,ts,tsx,json,md}\"",
+    "deploy": "npm ci && npm run build && npm run start"
   },
   "dependencies": {
     "@hookform/resolvers": "^3.10.0",
