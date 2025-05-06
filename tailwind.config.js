@@ -15,12 +15,16 @@ module.exports = {
           dark: "#071E30",
         },
         cyan: {
-          DEFAULT: "#00BCD4",
-          light: "#33C9DB",
-          dark: "#00A5BB",
+          DEFAULT: "#00A5BB", // Darkened for better contrast with white backgrounds
+          light: "#00C3DD", // Brightened for better contrast in dark mode
+          dark: "#008A9B", // Deepened for emphasis
         },
         "soft-white": "#F9FAFC",
-        "neutral-gray": "#4A5568",
+        "neutral-gray": "#3D4A5C", // Darkened for better contrast on light backgrounds
+        "gray": {
+          400: "#6B7A90", // Darkened for better contrast
+          500: "#556275", // Darkened for better contrast
+        },
       },
       animation: {
         "pulse-slow": "pulse-slow 3s cubic-bezier(0.4, 0, 0.6, 1) infinite",
