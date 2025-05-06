@@ -83,8 +83,29 @@ const ContactSection = () => {
         body: JSON.stringify(formData)
       });
       
+      const responseData = await response.json();
+      
       if (!response.ok) {
-        throw new Error('Failed to submit form');
+        // If the server returned validation errors, display them
+        if (response.status === 400 && responseData.errors) {
+          const serverErrors: Record<string, string> = {};
+          
+          // Map server validation errors to form fields
+          responseData.errors.forEach((error: any) => {
+            const fieldName = error.path.split('.').pop();
+            if (fieldName && Object.keys(formData).includes(fieldName)) {
+              serverErrors[fieldName] = error.message;
+            }
+          });
+          
+          // If there are field-specific errors, set them
+          if (Object.keys(serverErrors).length > 0) {
+            setFormErrors(serverErrors);
+            throw new Error('Validation failed');
+          }
+        }
+        
+        throw new Error(responseData.message || 'Failed to submit form');
       }
       
       // Form is valid and submitted successfully, show success message
