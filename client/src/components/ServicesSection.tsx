@@ -30,8 +30,7 @@ const ServicesSection = ({ onTalkToAgent }: ServicesSectionProps) => {
       details: [
         { key: "Assessment", value: "Comprehensive review of your current workflows" },
         { key: "Planning", value: "AI roadmap with concrete implementation steps" },
-        { key: "ROI Analysis", value: "Projected cost savings and productivity gains" },
-        { key: "No-Code Focus", value: "Solutions that don't require technical expertise" }
+        { key: "ROI Analysis", value: "Projected cost savings and productivity gains" }
       ]
     },
     {
@@ -43,8 +42,7 @@ const ServicesSection = ({ onTalkToAgent }: ServicesSectionProps) => {
       details: [
         { key: "Time Audit", value: "Identify where your valuable time is being spent" },
         { key: "Task Automation", value: "Set up systems to handle repetitive work" },
-        { key: "Decision Frameworks", value: "Streamline your decision-making process" },
-        { key: "Team Delegation", value: "Optimize handoffs and reduce bottlenecks" }
+        { key: "Decision Frameworks", value: "Streamline your decision-making process" }
       ]
     },
     {
@@ -56,8 +54,7 @@ const ServicesSection = ({ onTalkToAgent }: ServicesSectionProps) => {
       details: [
         { key: "Process Analysis", value: "Identify high-impact automation opportunities" },
         { key: "Custom Solutions", value: "Tailor-made workflows for your specific needs" },
-        { key: "Integration", value: "Connect your existing tools and software" },
-        { key: "Training", value: "Hands-on guidance for your team to maintain systems" }
+        { key: "Integration", value: "Connect your existing tools and software" }
       ]
     }
   ];
@@ -109,26 +106,26 @@ const ServicesSection = ({ onTalkToAgent }: ServicesSectionProps) => {
                 className="absolute inset-0 bg-gradient-to-t from-navy/95 to-navy/90 dark:from-navy-dark/95 dark:to-navy-dark/90 
                           translate-y-full group-hover:translate-y-0 group-focus:translate-y-0 
                           transition-transform duration-300 ease-out
-                          flex flex-col justify-end p-6 text-white"
+                          flex flex-col justify-end p-5 text-white overflow-hidden"
                 aria-hidden="true"
               >
-                <h4 className="text-xl font-semibold mb-4 text-cyan-light">
+                <h4 className="text-lg font-semibold mb-3 text-cyan-light">
                   {service.title}
                 </h4>
                 
-                <ul className="space-y-3 mb-4">
+                <ul className="space-y-2 mb-3">
                   {service.details.map((detail, i) => (
                     <li key={i} className="flex">
-                      <span className="text-cyan font-semibold mr-2">•</span>
-                      <div>
+                      <span className="text-cyan font-semibold mr-2 flex-shrink-0">•</span>
+                      <div className="overflow-hidden">
                         <span className="font-medium text-cyan-light">{detail.key}: </span>
-                        <span className="text-gray-200">{detail.value}</span>
+                        <span className="text-gray-200 text-sm">{detail.value}</span>
                       </div>
                     </li>
                   ))}
                 </ul>
                 
-                <p className="text-sm text-gray-300 mt-auto italic">
+                <p className="text-xs text-gray-300 mt-auto italic">
                   Hover away to close
                 </p>
               </div>

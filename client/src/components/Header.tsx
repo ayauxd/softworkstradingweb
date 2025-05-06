@@ -42,13 +42,13 @@ const Header = () => {
   
   // Handle active section highlighting on scroll
   useEffect(() => {
-    // If we're on the blog page, set active section to blog
+    // If we're on the blog page, set active section to insights
     if (location === '/blog') {
-      setActiveSection('blog');
+      setActiveSection('insights');
       return;
     }
     
-    const sectionIds = ["home", "services", "how-it-works", "blog", "contact"];
+    const sectionIds = ["home", "services", "how-it-works", "insights", "contact"];
     const sections = sectionIds.map(id => document.getElementById(id)).filter(el => el !== null);
     const headerHeight = headerRef.current?.offsetHeight || 80;
 
@@ -186,16 +186,16 @@ const Header = () => {
             <div className="absolute right-3 sm:right-4 top-1/2 -translate-y-1/2 md:relative md:right-auto md:top-auto md:translate-y-0 flex items-center space-x-3 sm:space-x-4 flex-shrink-0">
               {/* Desktop Navigation (remains hidden on mobile) */}
               <nav className="hidden md:flex items-center space-x-6" aria-label="Main Navigation">
-                {["home", "services", "how-it-works", "blog", "contact"].map((item) => (
+                {["home", "services", "how-it-works", "insights", "contact"].map((item) => (
                   <a 
                     key={item}
-                    href={item === 'blog' ? '/blog' : `#${item}`}
+                    href={item === 'insights' ? '/blog' : `#${item}`}
                     className={`text-navy dark:text-soft-white hover:text-cyan dark:hover:text-cyan-light font-medium transition-colors px-2 py-1 rounded-md focus:outline-none focus-visible:ring-2 focus-visible:ring-cyan ${
                       activeSection === item ? 'text-cyan dark:text-cyan-light font-semibold' : ''
                     }`}
                     onClick={(e) => { 
                       e.preventDefault(); 
-                      if (item === 'blog') {
+                      if (item === 'insights' && location !== '/') {
                         navigate('/blog');
                       } else {
                         scrollToSection(item);
@@ -260,10 +260,10 @@ const Header = () => {
               </button>
             </div>
             <nav className="flex flex-col p-4" aria-label="Mobile Navigation">
-              {["home", "services", "how-it-works", "blog", "contact"].map((item, index) => (
+              {["home", "services", "how-it-works", "insights", "contact"].map((item, index) => (
                 <a 
                   key={item}
-                  href={item === 'blog' ? '/blog' : `#${item}`} 
+                  href={item === 'insights' ? '/blog' : `#${item}`} 
                   className={`text-navy dark:text-soft-white hover:text-cyan dark:hover:text-cyan-light font-medium 
                              transition-colors px-3 py-3 rounded-md focus:outline-none focus-visible:ring-2 focus-visible:ring-cyan
                              flex items-center justify-between ${
@@ -273,7 +273,7 @@ const Header = () => {
                              }`}
                   onClick={(e) => { 
                     e.preventDefault(); 
-                    if (item === 'blog') {
+                    if (item === 'insights' && location !== '/') {
                       navigate('/blog');
                     } else {
                       scrollToSection(item);
