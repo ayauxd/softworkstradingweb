@@ -159,9 +159,9 @@ if (validStaticPaths.length === 0) {
 // SPA ROUTING & FALLBACKS
 // -------------------------------------------------------------------
 
-// Single page application route handler - match all routes to serve index.html
+// Enhanced routing to handle prerendered paths and SPA fallbacks
 app.get('*', (req, res) => {
-  console.log(`[SPA Route] Handling request for: ${req.url}`);
+  console.log(`[Route] Handling request for: ${req.url}`);
   
   // Skip API routes
   if (req.url.startsWith('/api/')) {
@@ -173,12 +173,24 @@ app.get('*', (req, res) => {
     });
   }
   
-  // Try to find index.html in the static paths
+  // First try to find prerendered HTML for specific routes
+  // This enables static SEO-friendly versions of key routes
+  const routePath = req.path === '/' ? '/index.html' : `${req.path}/index.html`.replace(/\/+/g, '/');
+  
+  for (const { path: dirPath } of validStaticPaths) {
+    const staticPath = path.join(dirPath, routePath.replace(/^\//, ''));
+    if (fs.existsSync(staticPath)) {
+      console.log(`[Prerendered] Serving static HTML from: ${staticPath}`);
+      return res.sendFile(staticPath);
+    }
+  }
+  
+  // If no prerendered path is found, serve the main index.html as SPA fallback
   for (const { path: dirPath } of validStaticPaths) {
     const indexPath = path.join(dirPath, 'index.html');
     
     if (fs.existsSync(indexPath)) {
-      console.log(`[SPA] Serving index.html from: ${indexPath}`);
+      console.log(`[SPA Fallback] Serving index.html from: ${indexPath}`);
       return res.sendFile(indexPath);
     }
   }
