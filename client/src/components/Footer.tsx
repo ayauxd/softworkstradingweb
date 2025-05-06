@@ -139,7 +139,7 @@ const Footer = () => {
         
         <div className="mt-10 pt-8 border-t border-gray-700">
           <div className="flex justify-center mb-8">
-            <LogoIcon className="h-12 w-auto mx-auto" isWhite={true} />
+            <LogoIcon className="h-9.5 w-auto mx-auto" isWhite={true} />
           </div>
           
           <div className="flex flex-col items-center">
