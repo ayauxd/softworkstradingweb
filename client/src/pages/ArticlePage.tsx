@@ -1,6 +1,7 @@
 import { Button } from '@/components/ui/button';
 import { useEffect } from 'react';
 import { useParams, Link } from 'wouter';
+import { Helmet } from 'react-helmet-async';
 
 // Import articles from shared data file
 import { articles } from '../data/articles';
@@ -15,8 +16,79 @@ export default function ArticlePage() {
     window.scrollTo(0, 0);
   }, [articleId]);
 
+  // Base URL for absolute URLs
+  const baseUrl = "https://www.softworkstrading.com";
+  
+  // Extract the first paragraph for description
+  const getDescription = (content: string) => {
+    const firstParagraphMatch = content.match(/<p>(.*?)<\/p>/);
+    return firstParagraphMatch 
+      ? firstParagraphMatch[1].replace(/<[^>]*>/g, '').substring(0, 160) 
+      : article.description;
+  };
+
   return (
     <div className="bg-soft-white dark:bg-navy min-h-screen">
+      {/* SEO Meta Tags */}
+      <Helmet>
+        <title>{article.title} | Softworks Trading Company</title>
+        <meta name="description" content={getDescription(article.content)} />
+        
+        {/* Open Graph / Facebook */}
+        <meta property="og:type" content="article" />
+        <meta property="og:url" content={`${baseUrl}/article/${article.id}`} />
+        <meta property="og:title" content={article.title} />
+        <meta property="og:description" content={getDescription(article.content)} />
+        <meta property="og:image" content={`${baseUrl}${article.imageUrl}`} />
+        <meta property="og:image:alt" content={article.title} />
+        <meta property="og:site_name" content="Softworks Trading Company" />
+        <meta property="article:published_time" content={new Date(article.date).toISOString()} />
+        <meta property="article:author" content={article.author} />
+        
+        {/* Twitter */}
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:url" content={`${baseUrl}/article/${article.id}`} />
+        <meta name="twitter:title" content={article.title} />
+        <meta name="twitter:description" content={getDescription(article.content)} />
+        <meta name="twitter:image" content={`${baseUrl}${article.imageUrl}`} />
+        <meta name="twitter:label1" content="Written by" />
+        <meta name="twitter:data1" content={article.author} />
+        <meta name="twitter:label2" content="Read Time" />
+        <meta name="twitter:data2" content={article.readTime} />
+        
+        {/* Additional Meta */}
+        <link rel="canonical" href={`${baseUrl}/article/${article.id}`} />
+        
+        {/* Structured Data (JSON-LD) for Articles */}
+        <script type="application/ld+json">
+          {JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "Article",
+            "headline": article.title,
+            "description": getDescription(article.content),
+            "image": [`${baseUrl}${article.imageUrl}`],
+            "datePublished": new Date(article.date).toISOString(),
+            "dateModified": new Date(article.date).toISOString(),
+            "author": {
+              "@type": "Person",
+              "name": article.author
+            },
+            "publisher": {
+              "@type": "Organization",
+              "name": "Softworks Trading Company",
+              "logo": {
+                "@type": "ImageObject",
+                "url": `${baseUrl}/assets/images/logo/logo.png`
+              }
+            },
+            "mainEntityOfPage": {
+              "@type": "WebPage",
+              "@id": `${baseUrl}/article/${article.id}`
+            }
+          })}
+        </script>
+      </Helmet>
+      
       <main id="main-content">
       {/* Hero Section - Text Only */}
       <div className="w-full py-16 bg-navy dark:bg-navy-dark">

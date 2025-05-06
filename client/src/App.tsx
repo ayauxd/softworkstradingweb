@@ -2,6 +2,7 @@ import { Switch, Route } from "wouter";
 import { QueryClientProvider } from "@tanstack/react-query";
 import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
+import { HelmetProvider } from "react-helmet-async";
 import { queryClient } from "./lib/queryClient";
 import { ThemeProvider } from "./components/ThemeProvider";
 import { lazy, Suspense, useState } from "react";
@@ -102,9 +103,10 @@ function App() {
 
   return (
     <ErrorBoundary onError={handleError}>
-      <QueryClientProvider client={queryClient}>
-        <ThemeProvider>
-          <TooltipProvider>
+      <HelmetProvider>
+        <QueryClientProvider client={queryClient}>
+          <ThemeProvider>
+            <TooltipProvider>
             {/* Skip to content link for keyboard users */}
             <a 
               href="#main-content" 
@@ -158,6 +160,7 @@ function App() {
           </TooltipProvider>
         </ThemeProvider>
       </QueryClientProvider>
+      </HelmetProvider>
     </ErrorBoundary>
   );
 }
