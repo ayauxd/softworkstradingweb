@@ -7,6 +7,10 @@ import path from 'path';
 import { fileURLToPath } from 'url';
 import fs from 'fs';
 import os from 'os';
+import { execSync } from 'child_process';
+
+// Wrap the entire server in an async function to allow top-level await
+async function startServer() {
 
 // -------------------------------------------------------------------
 // CONFIGURATION
@@ -47,13 +51,16 @@ console.log(`Server File: ${__dirname}`);
 
 // Try to get Git information
 try {
-  const { execSync } = require('child_process');
-  const gitCommit = execSync('git rev-parse HEAD').toString().trim();
-  const gitBranch = execSync('git rev-parse --abbrev-ref HEAD').toString().trim();
-  console.log(`Git branch: ${gitBranch}`);
-  console.log(`Git commit: ${gitCommit}`);
+  try {
+    const gitCommit = execSync('git rev-parse HEAD').toString().trim();
+    const gitBranch = execSync('git rev-parse --abbrev-ref HEAD').toString().trim();
+    console.log(`Git branch: ${gitBranch}`);
+    console.log(`Git commit: ${gitCommit}`);
+  } catch (execErr) {
+    console.log('Git command execution failed:', execErr.message);
+  }
 } catch (err) {
-  console.log('Git information not available');
+  console.log('Git information not available:', err.message);
 }
 
 // Log environment variables that might affect deployment
@@ -333,8 +340,7 @@ const server = app.listen(PORT, '0.0.0.0', () => {
   
   // Check for free disk space (important for deployments)
   try {
-    const exec = require('child_process').execSync;
-    const diskInfo = exec('df -h /').toString();
+    const diskInfo = execSync('df -h /').toString();
     console.log('Disk space information:');
     console.log(diskInfo);
   } catch (err) {
@@ -374,4 +380,12 @@ process.on('unhandledRejection', (reason, promise) => {
       process.exit(1);
     }, 10000);
   });
+});
+
+} // End of startServer function
+
+// Start the server
+startServer().catch(err => {
+  console.error('Failed to start server:', err);
+  process.exit(1);
 });
