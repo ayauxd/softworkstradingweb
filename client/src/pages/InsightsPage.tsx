@@ -2,6 +2,7 @@ import { Button } from '@/components/ui/button';
 import { useEffect, useMemo } from 'react';
 import { Link } from 'wouter';
 import { ArrowRight, ArrowLeft, Search, Filter } from 'lucide-react';
+import { Helmet } from 'react-helmet-async';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
 
@@ -23,8 +24,72 @@ export default function BlogPage() {
     });
   }, []);
 
+  // Base URL for absolute URLs
+  const baseUrl = "https://www.softworkstrading.com";
+  
+  // Get the latest article for preview image - safely use original articles if needed
+  const latestArticle = articles.length > 0 ? articles[0] : {
+    id: 1,
+    title: "Industry Insights",
+    imageUrl: "/optimized-images/articles/ai-prompting.webp"
+  };
+  
   return (
     <div className="bg-soft-white dark:bg-navy min-h-screen flex flex-col">
+      {/* SEO Meta Tags */}
+      <Helmet>
+        <title>Industry Insights | AI and Automation | Softworks Trading Company</title>
+        <meta name="description" content="Explore our latest articles and insights on AI automation, workflow optimization, and business transformation for entrepreneurs and small teams." />
+        
+        {/* Open Graph / Facebook */}
+        <meta property="og:type" content="website" />
+        <meta property="og:url" content={`${baseUrl}/blog`} />
+        <meta property="og:title" content="Industry Insights | AI and Automation | Softworks Trading Company" />
+        <meta property="og:description" content="Explore our latest articles and insights on AI automation, workflow optimization, and business transformation for entrepreneurs and small teams." />
+        <meta property="og:image" content={`${baseUrl}${latestArticle.imageUrl}`} />
+        <meta property="og:image:alt" content="Softworks Trading Company Industry Insights" />
+        <meta property="og:site_name" content="Softworks Trading Company" />
+        
+        {/* Twitter */}
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:url" content={`${baseUrl}/blog`} />
+        <meta name="twitter:title" content="Industry Insights | AI and Automation | Softworks Trading Company" />
+        <meta name="twitter:description" content="Explore our latest articles and insights on AI automation, workflow optimization, and business transformation for entrepreneurs and small teams." />
+        <meta name="twitter:image" content={`${baseUrl}${latestArticle.imageUrl}`} />
+        
+        {/* Additional Meta */}
+        <link rel="canonical" href={`${baseUrl}/blog`} />
+        
+        {/* Structured Data (JSON-LD) for Article List Page */}
+        <script type="application/ld+json">
+          {JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "CollectionPage",
+            "headline": "Industry Insights | AI and Automation | Softworks Trading Company",
+            "description": "Explore our latest articles and insights on AI automation, workflow optimization, and business transformation for entrepreneurs and small teams.",
+            "image": [`${baseUrl}${latestArticle.imageUrl}`],
+            "publisher": {
+              "@type": "Organization",
+              "name": "Softworks Trading Company",
+              "logo": {
+                "@type": "ImageObject",
+                "url": `${baseUrl}/assets/images/logo/logo.png`
+              }
+            },
+            "mainEntityOfPage": {
+              "@type": "WebPage",
+              "@id": `${baseUrl}/blog`
+            },
+            "itemListElement": articles.slice(0, 5).map((article, index) => ({
+              "@type": "ListItem",
+              "position": index + 1,
+              "url": `${baseUrl}/article/${article.id}`,
+              "name": article.title
+            }))
+          })}
+        </script>
+      </Helmet>
+      
       <Header />
       
       <main id="main-content">
