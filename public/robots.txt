@@ -1,0 +1,11 @@
+# Robots.txt for softworkstrading.com
+User-agent: *
+Allow: /
+
+# Sitemaps
+Sitemap: https://www.softworkstrading.com/sitemap.xml
+
+# Disallow admin routes if any exist
+Disallow: /admin/
+Disallow: /login/
+Disallow: /checkout/
