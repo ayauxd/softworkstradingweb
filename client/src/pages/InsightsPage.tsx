@@ -4,6 +4,7 @@ import { Link } from 'wouter';
 import { ArrowRight, ArrowLeft, Search, Filter } from 'lucide-react';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
+import ContactSection from '../components/ContactSection';
 
 // Import the articles data from a shared location
 import { articles } from '../data/articles';
@@ -132,11 +133,11 @@ export default function BlogPage() {
               className="block group focus:outline-none focus-visible:ring-0"
             >
               <div className="bg-white dark:bg-navy-light rounded-lg overflow-hidden shadow-md hover:shadow-lg focus-within:shadow-lg transition-all duration-300 h-full flex flex-col group-hover:translate-y-[-4px] group-focus-visible:translate-y-[-4px]">
-                <div className="aspect-w-16 aspect-h-9 overflow-hidden">
+                <div className="aspect-w-16 aspect-h-9 overflow-hidden bg-white dark:bg-navy-light p-2">
                   <img 
                     src={article.imageUrl} 
                     alt={article.title} 
-                    className="w-full h-full object-cover transform group-hover:scale-105 group-focus-visible:scale-105 transition-transform duration-500"
+                    className="w-full h-full object-contain transform group-hover:scale-105 group-focus-visible:scale-105 transition-transform duration-500"
                   />
                 </div>
                 <div className="p-6 flex-grow flex flex-col">
@@ -173,8 +174,8 @@ export default function BlogPage() {
           <p className="mb-6">
             Let our experts show you how AI can help your business achieve measurable results with practical automation solutions.
           </p>
-          <Link href="/#contact">
-            <Button className="bg-cyan hover:bg-cyan-light text-navy font-semibold py-3 px-8 rounded-md transition-all duration-300">
+          <Link href="#contact-form" id="schedule-consultation">
+            <Button className="bg-cyan hover:bg-cyan-light text-navy font-semibold py-3 px-8 rounded-md transition-all duration-300" aria-label="Schedule a consultation about transforming your operations">
               Schedule a Consultation
             </Button>
           </Link>
@@ -216,6 +217,11 @@ export default function BlogPage() {
             </a>
           </div>
         </div>
+      </div>
+      
+      {/* Adding ContactSection with id for direct linking */}
+      <div id="contact-form">
+        <ContactSection />
       </div>
       
       <Footer />
