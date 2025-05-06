@@ -8,7 +8,7 @@ import { Link } from "wouter";
 // Import articles from shared data file
 import { articles as allArticles } from "../data/articles";
 
-const BlogSection = () => {
+const InsightsSection = () => {
   // Map icons to articles based on their id
   const getIconForArticle = (id: number) => {
     switch (id % 3) {
@@ -36,10 +36,10 @@ const BlogSection = () => {
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-16">
           <h2 className="text-3xl md:text-4xl font-bold mb-4 text-navy dark:text-soft-white">
-            Blog
+            Industry Insights
           </h2>
           <p className="text-lg text-neutral-gray dark:text-gray-300 max-w-3xl mx-auto">
-            Explore our latest articles and insights on AI and automation.
+            Explore our latest research and industry perspectives on AI automation.
           </p>
         </div>
         
@@ -91,7 +91,7 @@ const BlogSection = () => {
         <div className="text-center mt-10">
           <Link href="/blog">
             <Button variant="outline" className="bg-transparent border-cyan text-cyan hover:bg-cyan hover:text-white dark:border-cyan-light dark:text-cyan-light dark:hover:bg-cyan-light dark:hover:text-navy transition-all duration-300 px-6 py-2 rounded-md">
-              View All Articles
+              View All Insights
             </Button>
           </Link>
         </div>
@@ -100,4 +100,4 @@ const BlogSection = () => {
   );
 };
 
-export default BlogSection;
+export default InsightsSection;
