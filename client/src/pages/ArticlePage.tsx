@@ -18,19 +18,10 @@ export default function ArticlePage() {
   return (
     <div className="bg-soft-white dark:bg-navy min-h-screen">
       <main id="main-content">
-      {/* Hero Section with Article Image */}
-      <div className="w-full h-72 md:h-80 lg:h-96 relative">
-        <div 
-          className="absolute inset-0 bg-cover bg-center bg-no-repeat"
-          style={{ 
-            backgroundImage: `url(${article.imageUrl})`,
-            backgroundSize: 'contain'
-          }}
-        >
-          <div className="absolute inset-0 bg-gradient-to-b from-transparent to-black opacity-70"></div>
-        </div>
-        <div className="container mx-auto px-4 h-full flex flex-col justify-end pb-10 relative z-10">
-          <div className="max-w-4xl">
+      {/* Hero Section - Text Only */}
+      <div className="w-full py-16 bg-navy dark:bg-navy-dark">
+        <div className="container mx-auto px-4">
+          <div className="max-w-4xl mx-auto">
             <div className="flex items-center space-x-4 text-cyan mb-4">
               <Link href="/" className="text-cyan hover:text-cyan-light transition flex items-center">
                 <svg className="w-4 h-4 mr-1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
@@ -60,23 +51,46 @@ export default function ArticlePage() {
       {/* Article Content */}
       <div className="container mx-auto px-4 py-12">
         <div className="max-w-3xl mx-auto bg-white dark:bg-navy-light shadow-lg rounded-lg p-8 mb-8">
+          {/* Featured Article Image */}
+          <div className="mb-8 rounded-lg overflow-hidden">
+            <img 
+              src={article.imageUrl} 
+              alt={article.title}
+              className="w-full h-auto object-contain"
+            />
+          </div>
+          
           <div
             className="prose prose-lg dark:prose-invert max-w-none"
             dangerouslySetInnerHTML={{ __html: article.content }}
           />
         </div>
 
-        {/* Call to Action */}
-        <div className="max-w-3xl mx-auto bg-navy dark:bg-navy-dark text-white rounded-lg p-8">
-          <h3 className="text-2xl font-bold mb-4">Ready to transform your operations?</h3>
+        {/* Call to Action with ID for direct linking */}
+        <div id="transform-operations" className="max-w-3xl mx-auto bg-navy dark:bg-navy-dark text-white rounded-lg p-8">
+          <h3 className="text-2xl font-bold mb-4">Ready to Transform Your Operations?</h3>
           <p className="mb-6">
-            Let our experts show you how AI can help your business achieve similar results with practical automation solutions.
+            Let's explore how intelligent systems can streamline your business with practical automation solutions.
           </p>
-          <Link href="/blog/#contact-form" id="schedule-consultation">
-            <Button className="bg-cyan hover:bg-cyan-light text-navy font-semibold py-3 px-8 rounded-md transition-all duration-300" aria-label="Schedule a consultation about transforming your operations">
+          <form id="consultation-form" className="space-y-4">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div>
+                <label htmlFor="name" className="block text-sm font-medium text-gray-300 mb-1">Your Name</label>
+                <input type="text" id="name" name="name" className="w-full px-4 py-2 bg-navy-light border border-gray-600 rounded-md text-white" placeholder="Enter your name" />
+              </div>
+              <div>
+                <label htmlFor="email" className="block text-sm font-medium text-gray-300 mb-1">Email Address</label>
+                <input type="email" id="email" name="email" className="w-full px-4 py-2 bg-navy-light border border-gray-600 rounded-md text-white" placeholder="you@example.com" />
+              </div>
+            </div>
+            <div>
+              <label htmlFor="message" className="block text-sm font-medium text-gray-300 mb-1">How can we help?</label>
+              <textarea id="message" name="message" rows={3} className="w-full px-4 py-2 bg-navy-light border border-gray-600 rounded-md text-white" placeholder="Tell us about your business needs"></textarea>
+            </div>
+            <Button type="submit" className="bg-cyan hover:bg-cyan-light text-navy font-semibold py-3 px-8 rounded-md transition-all duration-300" aria-label="Schedule a consultation about transforming your operations">
               Schedule a Consultation
             </Button>
-          </Link>
+          </form>
         </div>
 
         {/* More Articles */}
