@@ -193,7 +193,7 @@ export default function BlogPage() {
           {sortedArticles.map((article) => (
             <Link 
               key={article.id} 
-              href={`/article/${article.id}`}
+              href={`/article/${article.id}/${article.slug}`}
               className="block group focus:outline-none focus-visible:ring-0"
             >
               <div className="bg-white dark:bg-navy-light rounded-lg overflow-hidden shadow-md hover:shadow-lg focus-within:shadow-lg transition-all duration-300 h-full flex flex-col group-hover:translate-y-[-4px] group-focus-visible:translate-y-[-4px]">

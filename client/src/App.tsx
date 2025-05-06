@@ -155,6 +155,24 @@ function App() {
                   </Suspense>
                 </ErrorBoundary>
               </Route>
+              
+              {/* New slug-based article route */}
+              <Route path="/article/:id/:slug">
+                <ErrorBoundary>
+                  <Suspense fallback={
+                    <div className="min-h-screen flex flex-col items-center justify-center bg-soft-white dark:bg-navy p-4">
+                      <div className="flex space-x-2 justify-center items-center">
+                        <div className="h-4 w-4 bg-cyan rounded-full animate-bounce"></div>
+                        <div className="h-4 w-4 bg-cyan rounded-full animate-bounce [animation-delay:-.15s]"></div>
+                        <div className="h-4 w-4 bg-cyan rounded-full animate-bounce [animation-delay:-.3s]"></div>
+                      </div>
+                      <p className="text-navy dark:text-soft-white mt-4">Loading article...</p>
+                    </div>
+                  }>
+                    <ArticlePage />
+                  </Suspense>
+                </ErrorBoundary>
+              </Route>
             </Switch>
             <FloatingAgentButton defaultMode="chat" />
           </TooltipProvider>

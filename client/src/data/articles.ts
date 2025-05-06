@@ -1,10 +1,23 @@
 // This file contains all article data for the site
 // Used by both InsightsSection.tsx and ArticlePage.tsx
 
+// Function to generate slug from title
+const slugify = (text: string) => {
+  return text
+    .toString()
+    .toLowerCase()
+    .trim()
+    .replace(/\s+/g, '-')        // Replace spaces with -
+    .replace(/&/g, '-and-')      // Replace & with 'and'
+    .replace(/[^\w\-]+/g, '')    // Remove all non-word chars
+    .replace(/\-\-+/g, '-');     // Replace multiple - with single -
+};
+
 export const articles = [
   {
     id: 1,
     title: 'AI in Supply Chain: The Future of Logistics',
+    slug: 'ai-in-supply-chain-future-logistics',
     description: 'Discover how agentic AI is reshaping logistics and streamlining operations.',
     imageUrl: '/optimized-images/articles/supply-chain.webp',
     fallbackImageUrl: '/assets/images/articles/supply-chain.png',
@@ -61,6 +74,7 @@ export const articles = [
   {
     id: 2,
     title: 'Connected Intelligence: Building Collaborative AI-Human Teams',
+    slug: 'connected-intelligence-ai-human-teams',
     description: 'See how teams leverage AI agents to enhance decision-making and productivity.',
     imageUrl: '/optimized-images/articles/connected-intelligence.webp',
     fallbackImageUrl: '/assets/images/articles/connected-intelligence.png',
@@ -117,6 +131,7 @@ export const articles = [
   {
     id: 3,
     title: 'AI Prompting Best Practices',
+    slug: 'ai-prompting-best-practices',
     description: 'Learn essential techniques for crafting effective prompts to get the best results from AI language models.',
     imageUrl: '/optimized-images/articles/ai-prompting.webp',
     fallbackImageUrl: '/assets/images/articles/ai-prompting.png',
@@ -171,6 +186,7 @@ export const articles = [
   {
     id: 4,
     title: 'Analytics-Driven Content Strategy for Digital Publishers',
+    slug: 'analytics-driven-content-strategy-publishers',
     description: 'How modern analytics is transforming digital publishing and revolutionizing content creation strategies.',
     imageUrl: '/optimized-images/articles/publication-analytics.webp',
     fallbackImageUrl: '/assets/images/articles/publication-analytics.webp',
@@ -245,6 +261,7 @@ export const articles = [
   {
     id: 5,
     title: 'Organized Chaos - Mapping Out Your Schedule with Effective Workflows',
+    slug: 'organized-chaos-effective-workflows',
     description: 'Exploring how structured workflows can transform chaotic schedules into productive, manageable systems.',
     imageUrl: '/optimized-images/articles/organized-chaos.webp',
     fallbackImageUrl: '/optimized-images/articles/organized-chaos.webp',

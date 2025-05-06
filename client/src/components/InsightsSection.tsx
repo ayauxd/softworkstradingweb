@@ -47,7 +47,7 @@ const InsightsSection = () => {
           {displayedArticles.map((article: typeof allArticles[0]) => (
             <Link 
               key={article.id} 
-              href={`/article/${article.id}`}
+              href={`/article/${article.id}/${article.slug}`}
               className="block group"
             >
               <Card className="h-full overflow-hidden transition-all duration-300 hover:shadow-lg dark:bg-navy-light dark:border-navy-light">
