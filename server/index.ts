@@ -2,55 +2,18 @@ import express, { type Request, Response, NextFunction } from 'express';
 import { registerRoutes } from './routes';
 import { setupVite, serveStatic, log } from './vite';
 import { serverConfig } from './config';
-import helmet from 'helmet';
+import { configureSecurity } from './middleware/security';
+import { configureCSRF } from './middleware/csrf';
 
 const app = express();
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
-// Security headers with Helmet - including CSP
-app.use(
-  helmet({
-    contentSecurityPolicy: {
-      directives: {
-        defaultSrc: ["'self'"],
-        scriptSrc: ["'self'", "'unsafe-inline'", "'unsafe-eval'", 'https://fonts.googleapis.com'],
-        styleSrc: ["'self'", "'unsafe-inline'", 'https://fonts.googleapis.com'],
-        imgSrc: [
-          "'self'",
-          'data:',
-          'https://*.softworkstrading.com',
-          'https://images.unsplash.com',
-        ],
-        fontSrc: ["'self'", 'https://fonts.gstatic.com'],
-        connectSrc: ["'self'", 'https://*.softworkstrading.com'],
-        frameSrc: ["'self'"],
-        objectSrc: ["'self'"], // Allow SVG objects from same origin
-        upgradeInsecureRequests: [],
-      },
-    },
-    // Enable HSTS with a long max-age
-    strictTransportSecurity: {
-      maxAge: 63072000, // 2 years
-      includeSubDomains: true,
-      preload: true,
-    },
-    // Prevent click-jacking
-    frameguard: {
-      action: 'deny',
-    },
-    // Set X-XSS-Protection header
-    xssFilter: true,
-    // Disable X-Powered-By header
-    hidePoweredBy: true,
-    // Set X-Content-Type-Options to nosniff
-    noSniff: true,
-    // Set Referrer-Policy
-    referrerPolicy: {
-      policy: 'strict-origin-when-cross-origin',
-    },
-  })
-);
+// Apply security configuration with consolidated CSP
+configureSecurity(app);
+
+// Configure CSRF protection
+configureCSRF(app);
 
 // Helper function to sanitize sensitive data
 function sanitizeLogData(data: Record<string, any>): Record<string, any> {
