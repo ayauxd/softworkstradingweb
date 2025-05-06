@@ -7,9 +7,22 @@ import { Helmet } from 'react-helmet-async';
 import { articles } from '../data/articles';
 
 export default function ArticlePage() {
-  const { id } = useParams();
+  const params = useParams();
+  const { id, slug } = params;
   const articleId = parseInt(id || '1');
   const article = articles.find(a => a.id === articleId) || articles[0];
+  
+  // If the article is loaded but the slug in the URL doesn't match the article's slug,
+  // redirect to the correct URL format without reloading the page
+  useEffect(() => {
+    if (article && slug !== article.slug && typeof window !== 'undefined') {
+      window.history.replaceState(
+        null, 
+        '', 
+        `/article/${article.id}/${article.slug}`
+      );
+    }
+  }, [article, slug]);
 
   // Scroll to top when navigating to an article
   useEffect(() => {
@@ -36,10 +49,12 @@ export default function ArticlePage() {
         
         {/* Open Graph / Facebook */}
         <meta property="og:type" content="article" />
-        <meta property="og:url" content={`${baseUrl}/article/${article.id}`} />
+        <meta property="og:url" content={`${baseUrl}/article/${article.id}/${article.slug}`} />
         <meta property="og:title" content={article.title} />
         <meta property="og:description" content={getDescription(article.content)} />
         <meta property="og:image" content={`${baseUrl}${article.imageUrl}`} />
+        <meta property="og:image:width" content="1200" />
+        <meta property="og:image:height" content="630" />
         <meta property="og:image:alt" content={article.title} />
         <meta property="og:site_name" content="Softworks Trading Company" />
         <meta property="article:published_time" content={new Date(article.date).toISOString()} />
@@ -47,17 +62,18 @@ export default function ArticlePage() {
         
         {/* Twitter */}
         <meta name="twitter:card" content="summary_large_image" />
-        <meta name="twitter:url" content={`${baseUrl}/article/${article.id}`} />
+        <meta name="twitter:url" content={`${baseUrl}/article/${article.id}/${article.slug}`} />
         <meta name="twitter:title" content={article.title} />
         <meta name="twitter:description" content={getDescription(article.content)} />
         <meta name="twitter:image" content={`${baseUrl}${article.imageUrl}`} />
+        <meta name="twitter:image:alt" content={article.title} />
         <meta name="twitter:label1" content="Written by" />
         <meta name="twitter:data1" content={article.author} />
         <meta name="twitter:label2" content="Read Time" />
         <meta name="twitter:data2" content={article.readTime} />
         
         {/* Additional Meta */}
-        <link rel="canonical" href={`${baseUrl}/article/${article.id}`} />
+        <link rel="canonical" href={`${baseUrl}/article/${article.id}/${article.slug}`} />
         
         {/* Structured Data (JSON-LD) for Articles */}
         <script type="application/ld+json">
@@ -83,7 +99,7 @@ export default function ArticlePage() {
             },
             "mainEntityOfPage": {
               "@type": "WebPage",
-              "@id": `${baseUrl}/article/${article.id}`
+              "@id": `${baseUrl}/article/${article.id}/${article.slug}`
             }
           })}
         </script>
@@ -175,7 +191,7 @@ export default function ArticlePage() {
               .map(relatedArticle => (
                 <Link
                   key={relatedArticle.id}
-                  href={`/article/${relatedArticle.id}`}
+                  href={`/article/${relatedArticle.id}/${relatedArticle.slug}`}
                   className="block group"
                 >
                   <div className="bg-white dark:bg-navy-light rounded-lg overflow-hidden shadow-md transition-transform group-hover:scale-105 duration-300">
