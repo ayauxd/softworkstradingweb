@@ -1,4 +1,4 @@
-// build.js - Complete build script for both client and server
+// build.js - Complete build script for both client and server with static prerendering
 import { execSync } from 'child_process';
 import fs from 'fs/promises';
 import path from 'path';
@@ -19,6 +19,24 @@ async function build() {
     // Build client with Vite
     console.log('Building client...');
     execSync('vite build', { stdio: 'inherit' });
+    
+    // Run static prerendering for SEO
+    console.log('Running static prerendering for SEO...');
+    try {
+      // Install jsdom if it doesn't exist (needed for prerendering)
+      try {
+        execSync('npm list jsdom || npm install --no-save jsdom', { stdio: 'inherit' });
+      } catch (e) {
+        console.log('Note: jsdom check/install had an issue, but continuing...');
+      }
+      
+      // Run the prerendering script
+      await import('./render-static.js').then(module => module.default());
+      console.log('Static prerendering completed successfully!');
+    } catch (err) {
+      console.error('Error during static prerendering:', err.message);
+      console.log('Continuing with build despite prerendering error...');
+    }
     
     // Create server directory in dist
     console.log('Setting up server directory...');
@@ -42,6 +60,7 @@ Build script: build.js
 Platform: ${process.platform}
 Node version: ${process.version}
 Directory: ${path.join(__dirname, 'dist')}
+Static Prerendering: Enabled
     `;
     
     await fs.writeFile(path.join(__dirname, 'dist', 'build-info.txt'), buildInfo);
