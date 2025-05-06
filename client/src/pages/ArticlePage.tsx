@@ -19,10 +19,13 @@ export default function ArticlePage() {
     <div className="bg-soft-white dark:bg-navy min-h-screen">
       <main id="main-content">
       {/* Hero Section with Article Image */}
-      <div className="w-full h-96 relative">
-        <div
-          className="absolute inset-0 bg-cover bg-center"
-          style={{ backgroundImage: `url(${article.imageUrl})` }}
+      <div className="w-full h-72 md:h-80 lg:h-96 relative">
+        <div 
+          className="absolute inset-0 bg-cover bg-center bg-no-repeat"
+          style={{ 
+            backgroundImage: `url(${article.imageUrl})`,
+            backgroundSize: 'contain'
+          }}
         >
           <div className="absolute inset-0 bg-gradient-to-b from-transparent to-black opacity-70"></div>
         </div>
@@ -69,8 +72,8 @@ export default function ArticlePage() {
           <p className="mb-6">
             Let our experts show you how AI can help your business achieve similar results with practical automation solutions.
           </p>
-          <Link href="/#contact">
-            <Button className="bg-cyan hover:bg-cyan-light text-navy font-semibold py-3 px-8 rounded-md transition-all duration-300">
+          <Link href="/blog/#contact-form" id="schedule-consultation">
+            <Button className="bg-cyan hover:bg-cyan-light text-navy font-semibold py-3 px-8 rounded-md transition-all duration-300" aria-label="Schedule a consultation about transforming your operations">
               Schedule a Consultation
             </Button>
           </Link>
@@ -91,7 +94,7 @@ export default function ArticlePage() {
                 >
                   <div className="bg-white dark:bg-navy-light rounded-lg overflow-hidden shadow-md transition-transform group-hover:scale-105 duration-300">
                     <div
-                      className="h-48 bg-cover bg-center"
+                      className="h-48 bg-contain bg-center bg-no-repeat"
                       style={{ backgroundImage: `url(${relatedArticle.imageUrl})` }}
                     ></div>
                     <div className="p-6">
