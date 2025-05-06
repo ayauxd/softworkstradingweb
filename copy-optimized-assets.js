@@ -137,6 +137,35 @@ async function createPlaceholderImages() {
   }
 }
 
+// Create a copy of the animation file with the hashed name that might be referenced in the code
+async function createAnimationWithHashedName() {
+  try {
+    const sourceAnimationPath = path.join(process.cwd(), 'dist', 'public', 'assets', 'animated-neural-network.svg');
+    // These are common hash names that might be generated
+    const possibleHashNames = [
+      'animated-neural-network-B-Og9IhM.svg',
+      'animated-neural-network-BOg9IhM.svg',
+      'animated-neural-network-DLcq3A.svg',
+      'animated-neural-network-hashed.svg'
+    ];
+    
+    for (const hashedName of possibleHashNames) {
+      const targetPath = path.join(process.cwd(), 'dist', 'public', 'assets', hashedName);
+      try {
+        await fs.copyFile(sourceAnimationPath, targetPath);
+        console.log(`Created hashed animation file: ${targetPath}`);
+      } catch (err) {
+        console.log(`Could not create ${hashedName}: ${err.message}`);
+      }
+    }
+    
+    console.log('✅ Created hashed animation files');
+  } catch (error) {
+    console.error('Error creating hashed animation files:', error);
+  }
+}
+
 // Run the script
 console.log('Starting asset optimization process...');
 await copyOptimizedAssets();
+await createAnimationWithHashedName();

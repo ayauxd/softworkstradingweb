@@ -5,7 +5,7 @@ import { extname, join, resolve } from 'path';
 import { fileURLToPath } from 'url';
 
 const __dirname = fileURLToPath(new URL('.', import.meta.url));
-const PORT = 5002;
+const PORT = 5000;
 const PUBLIC_DIR = join(__dirname, 'dist', 'public');
 
 // MIME types for common file extensions
