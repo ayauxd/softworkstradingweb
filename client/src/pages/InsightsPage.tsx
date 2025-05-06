@@ -167,31 +167,17 @@ export default function BlogPage() {
           ))}
         </div>
 
-        {/* Newsletter Signup */}
+        {/* Call to Action */}
         <div className="max-w-3xl mx-auto mt-16 bg-navy dark:bg-navy-dark text-white rounded-lg p-8 text-center">
-          <h3 className="text-2xl font-bold mb-4">Stay Updated</h3>
+          <h3 className="text-2xl font-bold mb-4">Ready to transform your operations?</h3>
           <p className="mb-6">
-            Subscribe to our newsletter to receive the latest insights directly in your inbox.
+            Let our experts show you how AI can help your business achieve measurable results with practical automation solutions.
           </p>
-          <form aria-label="Newsletter subscription" className="max-w-md mx-auto w-full">
-            <div className="flex flex-col sm:flex-row gap-4 w-full">
-              <div className="flex-grow relative">
-                <label htmlFor="newsletter-email" className="sr-only">Email address</label>
-                <input 
-                  type="email" 
-                  id="newsletter-email"
-                  name="email"
-                  placeholder="Your email address" 
-                  required
-                  aria-required="true"
-                  className="w-full px-4 py-3 rounded-md text-navy focus:outline-none focus:ring-2 focus:ring-cyan"
-                />
-              </div>
-              <Button type="submit" className="bg-cyan hover:bg-cyan-light text-navy font-semibold py-3 px-6 rounded-md transition-all duration-300">
-                Subscribe
-              </Button>
-            </div>
-          </form>
+          <Link href="/#contact">
+            <Button className="bg-cyan hover:bg-cyan-light text-navy font-semibold py-3 px-8 rounded-md transition-all duration-300">
+              Schedule a Consultation
+            </Button>
+          </Link>
         </div>
         
         {/* Related Resources */}
