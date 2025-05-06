@@ -135,7 +135,7 @@ const HeroSection = ({ onTalkToAgent }: HeroSectionProps) => {
             AI Solutions
           </h1>
           <p className="text-xl md:text-2xl mb-10 text-gray-200 dark:text-gray-300 animate-slideUp">
-            Start transforming your business operations with proven workflow integration.
+            Streamline your operations with AI workflows that deliver measurable results in days, not months.
           </p>
           <div className="mt-8 flex flex-col sm:flex-row justify-center items-center gap-4">
             <Button
@@ -151,7 +151,7 @@ const HeroSection = ({ onTalkToAgent }: HeroSectionProps) => {
                 const targetSection = document.getElementById('services');
                 targetSection?.scrollIntoView({ behavior: 'smooth' });
               }}
-              className="inline-flex items-center justify-center gap-2 whitespace-nowrap ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 bg-transparent text-white border border-white/80 dark:border-white/90 hover:bg-white/90 hover:text-[#0A2A43] dark:hover:text-[#051525] font-semibold text-sm md:text-base py-3 px-8 rounded-md transition-all duration-300 transform hover:scale-105 h-auto shadow-lg shadow-navy-light/10 dark:shadow-black/20 focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-navy active:translate-y-0.5"
+              className="inline-flex items-center justify-center gap-2 whitespace-nowrap ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 bg-navy/40 backdrop-blur-sm text-white border-2 border-white hover:bg-white hover:text-navy dark:hover:text-navy-dark font-semibold text-sm md:text-base py-3 px-8 rounded-md transition-all duration-300 transform hover:scale-105 h-auto shadow-lg shadow-black/30 focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-navy active:translate-y-0.5"
               aria-label="Scroll down to learn more about our services"
               title="Learn more about our AI automation services"
             >

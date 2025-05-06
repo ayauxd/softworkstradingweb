@@ -177,7 +177,7 @@ const Header = () => {
                 aria-label="Softworks Trading Company - Go to homepage"
               >
                 <LogoIcon 
-                  className="h-8 md:h-10 transition-colors duration-300" 
+                  className="h-6.5 md:h-8 transition-colors duration-300" 
                 />
               </a>
             </div>
