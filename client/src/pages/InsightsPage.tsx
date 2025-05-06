@@ -4,7 +4,6 @@ import { Link } from 'wouter';
 import { ArrowRight, ArrowLeft, Search, Filter } from 'lucide-react';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
-import ContactSection from '../components/ContactSection';
 
 // Import the articles data from a shared location
 import { articles } from '../data/articles';
@@ -168,17 +167,31 @@ export default function BlogPage() {
           ))}
         </div>
 
-        {/* Call to Action */}
-        <div className="max-w-3xl mx-auto mt-16 bg-navy dark:bg-navy-dark text-white rounded-lg p-8 text-center">
-          <h3 className="text-2xl font-bold mb-4">Ready to transform your operations?</h3>
+        {/* Call to Action with ID for direct linking */}
+        <div id="transform-operations" className="max-w-3xl mx-auto mt-16 bg-navy dark:bg-navy-dark text-white rounded-lg p-8">
+          <h3 className="text-2xl font-bold mb-4">Ready to Transform Your Operations?</h3>
           <p className="mb-6">
-            Let our experts show you how AI can help your business achieve measurable results with practical automation solutions.
+            Let's explore how intelligent systems can streamline your business with practical automation solutions.
           </p>
-          <Link href="#contact-form" id="schedule-consultation">
-            <Button className="bg-cyan hover:bg-cyan-light text-navy font-semibold py-3 px-8 rounded-md transition-all duration-300" aria-label="Schedule a consultation about transforming your operations">
+          <form id="consultation-form" className="space-y-4">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div>
+                <label htmlFor="name" className="block text-sm font-medium text-gray-300 mb-1 text-left">Your Name</label>
+                <input type="text" id="name" name="name" className="w-full px-4 py-2 bg-navy-light border border-gray-600 rounded-md text-white" placeholder="Enter your name" />
+              </div>
+              <div>
+                <label htmlFor="email" className="block text-sm font-medium text-gray-300 mb-1 text-left">Email Address</label>
+                <input type="email" id="email" name="email" className="w-full px-4 py-2 bg-navy-light border border-gray-600 rounded-md text-white" placeholder="you@example.com" />
+              </div>
+            </div>
+            <div>
+              <label htmlFor="message" className="block text-sm font-medium text-gray-300 mb-1 text-left">How can we help?</label>
+              <textarea id="message" name="message" rows={3} className="w-full px-4 py-2 bg-navy-light border border-gray-600 rounded-md text-white" placeholder="Tell us about your business needs"></textarea>
+            </div>
+            <Button type="submit" className="bg-cyan hover:bg-cyan-light text-navy font-semibold py-3 px-8 rounded-md transition-all duration-300" aria-label="Schedule a consultation about transforming your operations">
               Schedule a Consultation
             </Button>
-          </Link>
+          </form>
         </div>
         
         {/* Related Resources */}
@@ -219,10 +232,7 @@ export default function BlogPage() {
         </div>
       </div>
       
-      {/* Adding ContactSection with id for direct linking */}
-      <div id="contact-form">
-        <ContactSection />
-      </div>
+      {/* Contact form is now part of the "transform-operations" section */}
       
       <Footer />
       </main>
