@@ -115,9 +115,9 @@ const ServicesSection = ({ onTalkToAgent }: ServicesSectionProps) => {
           {services.map((service, index) => (
             <div 
               key={index} 
-              className={`service-card bg-white dark:bg-navy-light rounded-lg shadow-md overflow-hidden 
-                         transition-all duration-300 hover:shadow-lg group relative h-full
-                         ${isMobile && activeService === index ? 'z-10 ring-2 ring-cyan' : ''}`}
+              className={`service-card bg-white dark:bg-navy-light rounded-xl shadow-md overflow-hidden 
+                         transition-all duration-500 hover:shadow-xl group relative h-full flex flex-col
+                         ${isMobile && activeService === index ? 'z-10 ring-2 ring-cyan scale-[1.01]' : 'hover:translate-y-[-4px]'}`}
               tabIndex={0}
               onClick={() => {
                 if (isMobile) {
@@ -131,32 +131,35 @@ const ServicesSection = ({ onTalkToAgent }: ServicesSectionProps) => {
                 }
               }}
             >
-              <div className="h-48 bg-gray-200 dark:bg-navy-dark overflow-hidden">
-                <picture>
+              <div className="relative w-full pt-[56.25%] bg-gradient-to-b from-gray-100 to-gray-200 dark:from-navy-dark/70 dark:to-navy-dark overflow-hidden">
+                <picture className="absolute inset-0">
                   <source srcSet={service.imageUrl} type="image/webp" />
                   <img 
                     src={service.fallbackUrl} 
                     alt={service.alt}
-                    className="w-full h-full object-cover"
+                    className="w-full h-full object-cover transform scale-[1.02] hover:scale-[1.05] transition-transform duration-700"
                     loading="lazy"
                     width="800" 
                     height="450"
                   />
                 </picture>
+                <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent"></div>
               </div>
-              <div className="p-6">
-                <h3 className="text-xl font-semibold mb-2 text-center text-navy dark:text-soft-white">
+              <div className="px-6 py-5 pb-14 relative flex flex-col h-full">
+                <h3 className="text-xl font-semibold mb-3 text-navy dark:text-soft-white leading-tight">
                   {service.title}
                 </h3>
-                <p className="text-neutral-gray dark:text-gray-300 text-center">
+                <p className="text-neutral-gray dark:text-gray-300 text-base leading-relaxed flex-grow">
                   {service.description}
                 </p>
                 
                 {isMobile && (
-                  <div className="text-center mt-2">
-                    <span className="text-xs text-cyan inline-block px-2 py-1 rounded-full bg-cyan/10">
-                      Tap to view details
-                    </span>
+                  <div className="absolute bottom-4 right-4 z-10">
+                    <div className="w-9 h-9 rounded-full bg-cyan/10 flex items-center justify-center transition-all duration-300 hover:bg-cyan/20 shadow-sm backdrop-blur-sm">
+                      <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-cyan" viewBox="0 0 20 20" fill="currentColor">
+                        <path fillRule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clipRule="evenodd" />
+                      </svg>
+                    </div>
                   </div>
                 )}
               </div>
@@ -167,29 +170,36 @@ const ServicesSection = ({ onTalkToAgent }: ServicesSectionProps) => {
                           ${isMobile 
                             ? (activeService === index ? 'translate-y-0' : 'translate-y-full')
                             : 'translate-y-full group-hover:translate-y-0 group-focus:translate-y-0'} 
-                          transition-transform duration-300 ease-out
-                          flex flex-col justify-end p-5 text-white overflow-hidden`}
+                          transition-transform duration-400 ease-out
+                          flex flex-col justify-between p-6 text-white overflow-hidden backdrop-blur-sm shadow-inner`}
                 aria-hidden={isMobile ? activeService !== index : true}
+                style={{ 
+                  transitionTimingFunction: 'cubic-bezier(0.16, 1, 0.3, 1)'
+                }}
               >
-                <h4 className="text-lg font-semibold mb-3 text-cyan-light">
-                  {service.title}
-                </h4>
+                <div className="overflow-auto">
+                  <h4 className="text-lg font-semibold mb-4 text-cyan-light">
+                    {service.title}
+                  </h4>
+                  
+                  <ul className="space-y-3 mb-4">
+                    {service.details.map((detail, i) => (
+                      <li key={i} className="flex items-start">
+                        <span className="text-cyan font-semibold mr-2.5 mt-0.5 flex-shrink-0">•</span>
+                        <div className="overflow-hidden">
+                          <span className="font-medium text-cyan-light">{detail.key}: </span>
+                          <span className="text-gray-200 text-sm">{detail.value}</span>
+                        </div>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
                 
-                <ul className="space-y-2 mb-3">
-                  {service.details.map((detail, i) => (
-                    <li key={i} className="flex">
-                      <span className="text-cyan font-semibold mr-2 flex-shrink-0">•</span>
-                      <div className="overflow-hidden">
-                        <span className="font-medium text-cyan-light">{detail.key}: </span>
-                        <span className="text-gray-200 text-sm">{detail.value}</span>
-                      </div>
-                    </li>
-                  ))}
-                </ul>
-                
-                <p className="text-xs text-gray-300 mt-auto italic">
-                  {isMobile ? "Tap again to close" : "Hover away to close"}
-                </p>
+                {!isMobile && (
+                  <p className="text-xs text-gray-300 mt-auto italic text-right">
+                    Hover away to close
+                  </p>
+                )}
               </div>
             </div>
           ))}
