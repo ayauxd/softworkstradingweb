@@ -1,0 +1,148 @@
+/* Policy Pages CSS */
+.policy-content h1 {
+  font-size: 2.25rem;
+  font-weight: bold;
+  margin-bottom: 0.75rem;
+  color: var(--color-navy, #0A2A43);
+}
+
+.policy-content .last-updated {
+  font-size: 0.875rem;
+  color: var(--color-gray-500, #6B7280);
+  margin-bottom: 2rem;
+  display: inline-block;
+  padding: 0.25rem 0.5rem;
+  background-color: var(--color-gray-100, #F3F4F6);
+  border-radius: 0.25rem;
+}
+
+.policy-content section {
+  margin-bottom: 2rem;
+}
+
+.policy-content h2 {
+  font-size: 1.5rem;
+  font-weight: bold;
+  margin-top: 1.5rem;
+  margin-bottom: 1rem;
+  color: var(--color-navy-light, #1F3D5C);
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid var(--color-gray-200, #E5E7EB);
+}
+
+.policy-content h3 {
+  font-size: 1.25rem;
+  font-weight: bold;
+  margin-top: 1.5rem;
+  margin-bottom: 0.75rem;
+  color: var(--color-navy-light, #1F3D5C);
+}
+
+.policy-content p {
+  margin-bottom: 1rem;
+  line-height: 1.6;
+}
+
+.policy-content ul {
+  margin-left: 1.5rem;
+  margin-bottom: 1rem;
+  list-style-type: disc;
+}
+
+.policy-content li {
+  margin-bottom: 0.5rem;
+}
+
+.policy-content a {
+  color: var(--color-cyan, #00BCD4);
+  text-decoration: none;
+  transition: all 0.3s ease;
+  border-bottom: 1px solid transparent;
+}
+
+.policy-content a:hover {
+  color: var(--color-cyan-light, #4DD0E1);
+  border-bottom-color: var(--color-cyan-light, #4DD0E1);
+}
+
+/* Table of Contents */
+.policy-content .toc {
+  background-color: var(--color-gray-100, #F3F4F6);
+  padding: 1.5rem;
+  border-radius: 0.5rem;
+  margin-bottom: 2rem;
+}
+
+.policy-content .toc h3 {
+  margin-top: 0;
+  margin-bottom: 1rem;
+  font-size: 1.25rem;
+  color: var(--color-navy, #0A2A43);
+}
+
+.policy-content .toc ul {
+  list-style: none;
+  margin-left: 0;
+}
+
+.policy-content .toc li {
+  margin-bottom: 0.5rem;
+  padding-left: 0;
+}
+
+/* Dark mode adjustments */
+.dark .policy-content h1,
+.dark .policy-content h2,
+.dark .policy-content h3 {
+  color: var(--color-soft-white, #F9FAFC);
+}
+
+.dark .policy-content .toc {
+  background-color: var(--color-navy-light, #1F3D5C);
+}
+
+.dark .policy-content .last-updated {
+  background-color: var(--color-navy-light, #1F3D5C);
+  color: var(--color-gray-300, #D1D5DB);
+}
+
+.dark .policy-content h2 {
+  border-bottom-color: var(--color-navy-light, #1F3D5C);
+}
+
+.dark .policy-content a {
+  color: var(--color-cyan-light, #4DD0E1);
+}
+
+.dark .policy-content a:hover {
+  color: var(--color-cyan, #00BCD4);
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .policy-content h1 {
+    font-size: 2rem;
+  }
+  
+  .policy-content h2 {
+    font-size: 1.35rem;
+  }
+  
+  .policy-content h3 {
+    font-size: 1.15rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .policy-content h1 {
+    font-size: 1.75rem;
+  }
+  
+  .policy-content h2 {
+    font-size: 1.25rem;
+  }
+  
+  .policy-content h3 {
+    font-size: 1.1rem;
+  }
+}

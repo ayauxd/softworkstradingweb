@@ -66,6 +66,8 @@ const HeroSection = ({ onTalkToAgent }: HeroSectionProps) => {
   return (
     <section
       id="home"
+      role="region"
+      aria-labelledby="home-heading"
       className="relative min-h-[90vh] bg-[#0D3456] dark:bg-[#051525] text-soft-white pt-36 md:pt-32 pb-20 transition-colors duration-300 overflow-hidden flex items-center"
     >
       {/* Background container - with optimized image loading */}
@@ -127,7 +129,7 @@ const HeroSection = ({ onTalkToAgent }: HeroSectionProps) => {
       {/* Hero Content (Remains on Top) */}
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         <div className="max-w-4xl mx-auto text-center">
-          <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 leading-tight animate-fadeIn text-white dark:text-gray-100">
+          <h1 id="home-heading" className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 leading-tight animate-fadeIn text-white dark:text-gray-100">
             Automate Your Business With{' '}
             <span className="bg-gradient-to-r from-cyan to-cyan-light bg-clip-text text-transparent">
               Practical
@@ -135,7 +137,7 @@ const HeroSection = ({ onTalkToAgent }: HeroSectionProps) => {
             AI Solutions
           </h1>
           <p className="text-xl md:text-2xl mb-10 text-gray-200 dark:text-gray-300 animate-slideUp">
-            Streamline your operations with AI workflows that deliver measurable results in days, not months.
+            Streamline your operations with AI workflows that deliver measurable results.
           </p>
           <div className="mt-8 flex flex-col sm:flex-row justify-center items-center gap-4">
             <Button

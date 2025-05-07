@@ -16,7 +16,7 @@ const Footer = () => {
   };
 
   return (
-    <footer className="bg-navy-dark text-soft-white py-10 sm:py-12">
+    <footer className="bg-navy-dark text-soft-white py-10 sm:py-12" role="contentinfo">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8 sm:gap-10">
           {/* Quick Links */}
@@ -27,7 +27,7 @@ const Footer = () => {
                 <li key={link}>
                   <a 
                     href={`#${link}`} 
-                    className="text-gray-300 hover:text-cyan transition-colors inline-flex items-center"
+                    className="text-gray-200 hover:text-cyan transition-colors inline-flex items-center"
                     onClick={(e) => { e.preventDefault(); scrollToSection(link); }}
                   >
                     <svg
@@ -66,7 +66,7 @@ const Footer = () => {
                 <li key={service}>
                   <a 
                     href="#services" 
-                    className="text-gray-300 hover:text-cyan transition-colors inline-flex items-center"
+                    className="text-gray-200 hover:text-cyan transition-colors inline-flex items-center"
                     onClick={(e) => { e.preventDefault(); scrollToSection("services"); }}
                   >
                     <svg
@@ -149,11 +149,27 @@ const Footer = () => {
             </div>
             
             <div className="flex flex-wrap justify-center gap-8 mb-6">
-              {["Privacy Policy", "Terms of Service", "Cookie Policy"].map((policy) => (
-                <a key={policy} href="#" className="text-gray-300 hover:text-cyan transition-colors text-sm">
-                  {policy}
-                </a>
-              ))}
+              <a 
+                href="/privacy-policy"
+                className="text-gray-200 hover:text-cyan transition-colors text-sm"
+                aria-label="View our Privacy Policy"
+              >
+                Privacy Policy
+              </a>
+              <a 
+                href="/terms-of-service"
+                className="text-gray-200 hover:text-cyan transition-colors text-sm"
+                aria-label="View our Terms of Service"
+              >
+                Terms of Service
+              </a>
+              <a 
+                href="/cookie-policy"
+                className="text-gray-200 hover:text-cyan transition-colors text-sm"
+                aria-label="View our Cookie Policy"
+              >
+                Cookie Policy
+              </a>
             </div>
           </div>
         </div>

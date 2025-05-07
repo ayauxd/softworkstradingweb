@@ -113,7 +113,7 @@ export const withCSRF = <T extends (...args: any[]) => Promise<any>>(fetchFn: T)
  *   
  *   return (
  *     <form onSubmit={handleSubmit(onSubmit)}>
- *       {/* Form fields */}
+ *       Form fields would go here
  *     </form>
  *   );
  * };

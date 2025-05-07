@@ -54,4 +54,26 @@
     <priority>0.60</priority>
     <changefreq>monthly</changefreq>
   </url>
+  
+  <!-- Legal Pages -->
+  <url>
+    <loc>https://www.softworkstrading.com/privacy-policy</loc>
+    <lastmod>2025-05-06T00:00:00+00:00</lastmod>
+    <priority>0.50</priority>
+    <changefreq>monthly</changefreq>
+  </url>
+  
+  <url>
+    <loc>https://www.softworkstrading.com/terms-of-service</loc>
+    <lastmod>2025-05-06T00:00:00+00:00</lastmod>
+    <priority>0.50</priority>
+    <changefreq>monthly</changefreq>
+  </url>
+  
+  <url>
+    <loc>https://www.softworkstrading.com/cookie-policy</loc>
+    <lastmod>2025-05-06T00:00:00+00:00</lastmod>
+    <priority>0.50</priority>
+    <changefreq>monthly</changefreq>
+  </url>
 </urlset>
