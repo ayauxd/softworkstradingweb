@@ -1,5 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { ResponsiveImage } from "@/components/ui/responsive-image";
+import { useState, useEffect } from "react";
 
 interface ServiceDetail {
   key: string;
@@ -20,6 +21,42 @@ interface ServicesSectionProps {
 }
 
 const ServicesSection = ({ onTalkToAgent }: ServicesSectionProps) => {
+  const [activeService, setActiveService] = useState<number | null>(null);
+  const [isMobile, setIsMobile] = useState(false);
+  
+  // Check if we're on mobile view
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 768); // 768px is the md breakpoint in Tailwind
+    };
+    
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    
+    return () => {
+      window.removeEventListener('resize', checkMobile);
+    };
+  }, []);
+  
+  // Close active service on mobile when clicking outside
+  useEffect(() => {
+    if (!isMobile) return;
+    
+    const handleClickOutside = (e: MouseEvent) => {
+      if (!activeService) return;
+      
+      // Check if click target is a service card
+      const clickedOnCard = (e.target as Element).closest('.service-card');
+      if (!clickedOnCard) {
+        setActiveService(null);
+      }
+    };
+    
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [isMobile, activeService]);
   const services: Service[] = [
     {
       title: "AI Strategy Consultation (No Coding Needed)",
@@ -42,7 +79,8 @@ const ServicesSection = ({ onTalkToAgent }: ServicesSectionProps) => {
       details: [
         { key: "Time Audit", value: "Identify where your valuable time is being spent" },
         { key: "Task Automation", value: "Set up systems to handle repetitive work" },
-        { key: "Decision Frameworks", value: "Streamline your decision-making process" }
+        { key: "Decision Frameworks", value: "Streamline your decision-making process" },
+        { key: "Knowledge Management", value: "Systems to capture and leverage company knowledge" }
       ]
     },
     {
@@ -54,7 +92,8 @@ const ServicesSection = ({ onTalkToAgent }: ServicesSectionProps) => {
       details: [
         { key: "Process Analysis", value: "Identify high-impact automation opportunities" },
         { key: "Custom Solutions", value: "Tailor-made workflows for your specific needs" },
-        { key: "Integration", value: "Connect your existing tools and software" }
+        { key: "Integration", value: "Connect your existing tools and software" },
+        { key: "Optimization", value: "Continuous improvement of your automated processes" }
       ]
     }
   ];
@@ -76,8 +115,21 @@ const ServicesSection = ({ onTalkToAgent }: ServicesSectionProps) => {
           {services.map((service, index) => (
             <div 
               key={index} 
-              className="bg-white dark:bg-navy-light rounded-lg shadow-md overflow-hidden transition-shadow duration-300 hover:shadow-lg group relative h-full"
+              className={`service-card bg-white dark:bg-navy-light rounded-lg shadow-md overflow-hidden 
+                         transition-all duration-300 hover:shadow-lg group relative h-full
+                         ${isMobile && activeService === index ? 'z-10 ring-2 ring-cyan' : ''}`}
               tabIndex={0}
+              onClick={() => {
+                if (isMobile) {
+                  setActiveService(activeService === index ? null : index);
+                }
+              }}
+              onKeyDown={(e) => {
+                if (isMobile && (e.key === 'Enter' || e.key === ' ')) {
+                  e.preventDefault();
+                  setActiveService(activeService === index ? null : index);
+                }
+              }}
             >
               <div className="h-48 bg-gray-200 dark:bg-navy-dark overflow-hidden">
                 <picture>
@@ -99,15 +151,25 @@ const ServicesSection = ({ onTalkToAgent }: ServicesSectionProps) => {
                 <p className="text-neutral-gray dark:text-gray-300 text-center">
                   {service.description}
                 </p>
+                
+                {isMobile && (
+                  <div className="text-center mt-2">
+                    <span className="text-xs text-cyan inline-block px-2 py-1 rounded-full bg-cyan/10">
+                      Tap to view details
+                    </span>
+                  </div>
+                )}
               </div>
               
-              {/* Hover Details Overlay - slides up on hover/focus */}
+              {/* Details Overlay - slides up on hover/focus on desktop, and on tap on mobile */}
               <div 
-                className="absolute inset-0 bg-gradient-to-t from-navy/95 to-navy/90 dark:from-navy-dark/95 dark:to-navy-dark/90 
-                          translate-y-full group-hover:translate-y-0 group-focus:translate-y-0 
+                className={`absolute inset-0 bg-gradient-to-t from-navy/95 to-navy/90 dark:from-navy-dark/95 dark:to-navy-dark/90 
+                          ${isMobile 
+                            ? (activeService === index ? 'translate-y-0' : 'translate-y-full')
+                            : 'translate-y-full group-hover:translate-y-0 group-focus:translate-y-0'} 
                           transition-transform duration-300 ease-out
-                          flex flex-col justify-end p-5 text-white overflow-hidden"
-                aria-hidden="true"
+                          flex flex-col justify-end p-5 text-white overflow-hidden`}
+                aria-hidden={isMobile ? activeService !== index : true}
               >
                 <h4 className="text-lg font-semibold mb-3 text-cyan-light">
                   {service.title}
@@ -126,7 +188,7 @@ const ServicesSection = ({ onTalkToAgent }: ServicesSectionProps) => {
                 </ul>
                 
                 <p className="text-xs text-gray-300 mt-auto italic">
-                  Hover away to close
+                  {isMobile ? "Tap again to close" : "Hover away to close"}
                 </p>
               </div>
             </div>
