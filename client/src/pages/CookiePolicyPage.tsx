@@ -1,0 +1,97 @@
+import React from 'react';
+import PolicyLayout from '@/components/PolicyLayout';
+
+const CookiePolicyPage = () => {
+  return (
+    <PolicyLayout 
+      title="Cookie Policy" 
+      description="Softworks Trading Company's Cookie Policy - Understanding how we use cookies and similar technologies on our website."
+    >
+      <div className="policy-content">
+        <h1>Cookie Policy</h1>
+        <p className="last-updated">Last Updated: May 6, 2025</p>
+
+        {/* Table of Contents */}
+        <div className="toc">
+          <h3>Table of Contents</h3>
+          <ul>
+            <li><a href="#introduction">1. Introduction</a></li>
+            <li><a href="#what-are-cookies">2. What Are Cookies?</a></li>
+            <li><a href="#types-of-cookies">3. Types of Cookies We Use</a></li>
+            <li><a href="#third-party">4. Third-Party Cookies</a></li>
+            <li><a href="#managing-cookies">5. Managing Cookies</a></li>
+            <li><a href="#preferences-tool">6. Cookie Preferences Tool</a></li>
+            <li><a href="#changes">7. Changes to This Cookie Policy</a></li>
+            <li><a href="#contact">8. Contact Us</a></li>
+          </ul>
+        </div>
+
+        <section id="introduction">
+          <h2>1. Introduction</h2>
+          <p>This Cookie Policy explains how Softworks Trading Company ("we", "us", or "our") uses cookies and similar technologies on our website. We use cookies to enhance your browsing experience, analyze site traffic, and personalize content.</p>
+          <p>By continuing to use our website, you are agreeing to our use of cookies as described in this Cookie Policy.</p>
+        </section>
+
+        <section id="what-are-cookies">
+          <h2>2. What Are Cookies?</h2>
+          <p>Cookies are small text files that are stored on your device (computer, tablet, or mobile) when you visit a website. They allow the website to recognize your device and remember certain information about your visit, such as your preferences and actions on the site.</p>
+          <p>Cookies are widely used to make websites work more efficiently, as well as to provide information to the website owners.</p>
+        </section>
+
+        <section id="types-of-cookies">
+          <h2>3. Types of Cookies We Use</h2>
+          
+          <h3>3.1 Essential Cookies</h3>
+          <p>These cookies are necessary for the website to function properly. They enable basic functions like page navigation and access to secure areas of the website. The website cannot function properly without these cookies.</p>
+          
+          <h3>3.2 Performance and Analytics Cookies</h3>
+          <p>These cookies help us understand how visitors interact with our website by collecting and reporting information anonymously. They help us improve the way our website works.</p>
+          
+          <h3>3.3 Functionality Cookies</h3>
+          <p>These cookies allow the website to remember choices you make (such as your username, language, or the region you are in) and provide enhanced, more personal features.</p>
+          
+          <h3>3.4 Targeting/Advertising Cookies</h3>
+          <p>These cookies are used to track visitors across websites. The intention is to display ads that are relevant and engaging for the individual user.</p>
+        </section>
+
+        <section id="third-party">
+          <h2>4. Third-Party Cookies</h2>
+          <p>We may use third-party services on our website, such as analytics services, which may set their own cookies. These third parties may collect your information for their own purposes. We do not control these third-party cookies and they are subject to the third party's privacy policy.</p>
+        </section>
+
+        <section id="managing-cookies">
+          <h2>5. Managing Cookies</h2>
+          <p>Most web browsers allow you to manage your cookie preferences. You can set your browser to refuse cookies, or to alert you when cookies are being sent. The methods for doing so vary from browser to browser, and from version to version.</p>
+          <p>Please note that if you choose to block cookies, some parts of our website may not function properly.</p>
+          <p>For more information on how to manage cookies in your web browser, visit:</p>
+          <ul>
+            <li><a href="https://support.google.com/chrome/answer/95647" target="_blank" rel="noopener noreferrer">Google Chrome</a></li>
+            <li><a href="https://support.mozilla.org/en-US/kb/enhanced-tracking-protection-firefox-desktop" target="_blank" rel="noopener noreferrer">Mozilla Firefox</a></li>
+            <li><a href="https://support.apple.com/guide/safari/manage-cookies-and-website-data-sfri11471/mac" target="_blank" rel="noopener noreferrer">Safari</a></li>
+            <li><a href="https://support.microsoft.com/en-us/windows/microsoft-edge-browsing-data-and-privacy-bb8174ba-9d73-dcf2-9b4a-c582b4e640dd" target="_blank" rel="noopener noreferrer">Microsoft Edge</a></li>
+          </ul>
+        </section>
+
+        <section id="preferences-tool">
+          <h2>6. Cookie Preferences Tool</h2>
+          <p>We provide a cookie preferences tool that allows you to choose which categories of cookies you accept or reject. Essential cookies cannot be rejected as they are necessary for the website to function properly.</p>
+          <p>You can access our cookie preferences tool by clicking on "Cookie Settings" in the footer of our website.</p>
+        </section>
+
+        <section id="changes">
+          <h2>7. Changes to This Cookie Policy</h2>
+          <p>We may update our Cookie Policy from time to time. We will notify you of any changes by posting the new Cookie Policy on this page and updating the "Last Updated" date.</p>
+          <p>You are advised to review this Cookie Policy periodically for any changes.</p>
+        </section>
+
+        <section id="contact">
+          <h2>8. Contact Us</h2>
+          <p>If you have any questions about our use of cookies, please contact us at:</p>
+          <p>Email: <a href="mailto:agent@softworkstrading.com">agent@softworkstrading.com</a></p>
+        </section>
+      </div>
+    </PolicyLayout>
+  );
+};
+
+export default CookiePolicyPage;

@@ -12,6 +12,7 @@ import ServicesSection from "./components/ServicesSection";
 import Footer from "./components/Footer";
 import FloatingAgentButton from "./components/FloatingAgentButton";
 import ErrorBoundary from "./components/ErrorBoundary";
+import "./styles/policyPages.css"; // Import policy pages styles
 
 // Lazily loaded components for code splitting
 const HowItWorksSection = lazy(() => import("./components/HowItWorksSection"));
@@ -21,6 +22,11 @@ const ContactSection = lazy(() => import("./components/ContactSection"));
 const WorkflowAgentModal = lazy(() => import("./components/WorkflowAgentModal"));
 const ArticlePage = lazy(() => import("./pages/ArticlePage"));
 const BlogPage = lazy(() => import("./pages/InsightsPage"));
+
+// Lazily loaded policy pages
+const PrivacyPolicyPage = lazy(() => import("./pages/PrivacyPolicyPage"));
+const TermsOfServicePage = lazy(() => import("./pages/TermsOfServicePage"));
+const CookiePolicyPage = lazy(() => import("./pages/CookiePolicyPage"));
 
 function HomePage() {
   const [showModal, setShowModal] = useState(false);
@@ -50,7 +56,7 @@ function HomePage() {
   return (
     <div className="min-h-screen flex flex-col bg-soft-white dark:bg-navy text-navy dark:text-soft-white transition-colors duration-300">
       <Header />
-      <main id="main-content" className="pt-16 flex-grow">
+      <main id="main-content" className="pt-16 flex-grow" role="main">
         {/* Critical path components loaded eagerly for better LCP */}
         <HeroSection onTalkToAgent={() => openModal('call')} />
         <ServicesSection onTalkToAgent={() => openModal('chat')} />
@@ -170,6 +176,58 @@ function App() {
                     </div>
                   }>
                     <ArticlePage />
+                  </Suspense>
+                </ErrorBoundary>
+              </Route>
+              
+              {/* Policy pages routes */}
+              <Route path="/privacy-policy">
+                <ErrorBoundary>
+                  <Suspense fallback={
+                    <div className="min-h-screen flex flex-col items-center justify-center bg-soft-white dark:bg-navy p-4">
+                      <div className="flex space-x-2 justify-center items-center">
+                        <div className="h-4 w-4 bg-cyan rounded-full animate-bounce"></div>
+                        <div className="h-4 w-4 bg-cyan rounded-full animate-bounce [animation-delay:-.15s]"></div>
+                        <div className="h-4 w-4 bg-cyan rounded-full animate-bounce [animation-delay:-.3s]"></div>
+                      </div>
+                      <p className="text-navy dark:text-soft-white mt-4">Loading privacy policy...</p>
+                    </div>
+                  }>
+                    <PrivacyPolicyPage />
+                  </Suspense>
+                </ErrorBoundary>
+              </Route>
+              
+              <Route path="/terms-of-service">
+                <ErrorBoundary>
+                  <Suspense fallback={
+                    <div className="min-h-screen flex flex-col items-center justify-center bg-soft-white dark:bg-navy p-4">
+                      <div className="flex space-x-2 justify-center items-center">
+                        <div className="h-4 w-4 bg-cyan rounded-full animate-bounce"></div>
+                        <div className="h-4 w-4 bg-cyan rounded-full animate-bounce [animation-delay:-.15s]"></div>
+                        <div className="h-4 w-4 bg-cyan rounded-full animate-bounce [animation-delay:-.3s]"></div>
+                      </div>
+                      <p className="text-navy dark:text-soft-white mt-4">Loading terms of service...</p>
+                    </div>
+                  }>
+                    <TermsOfServicePage />
+                  </Suspense>
+                </ErrorBoundary>
+              </Route>
+              
+              <Route path="/cookie-policy">
+                <ErrorBoundary>
+                  <Suspense fallback={
+                    <div className="min-h-screen flex flex-col items-center justify-center bg-soft-white dark:bg-navy p-4">
+                      <div className="flex space-x-2 justify-center items-center">
+                        <div className="h-4 w-4 bg-cyan rounded-full animate-bounce"></div>
+                        <div className="h-4 w-4 bg-cyan rounded-full animate-bounce [animation-delay:-.15s]"></div>
+                        <div className="h-4 w-4 bg-cyan rounded-full animate-bounce [animation-delay:-.3s]"></div>
+                      </div>
+                      <p className="text-navy dark:text-soft-white mt-4">Loading cookie policy...</p>
+                    </div>
+                  }>
+                    <CookiePolicyPage />
                   </Suspense>
                 </ErrorBoundary>
               </Route>
