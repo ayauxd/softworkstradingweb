@@ -32,27 +32,31 @@ export const aiService = {
    */
   sendChatMessage: async (message: string, conversationId?: string): Promise<ChatResponse> => {
     try {
-      // Get CSRF token with error handling
-      let csrfToken = '';
-      try {
-        csrfToken = await fetchCSRFToken();
-      } catch (csrfError) {
-        console.error('Error getting CSRF token:', csrfError);
-        throw new Error('Could not get CSRF token for API call');
-      }
-      
       // Get current conversation ID or generate a new one if not provided
       const currentConversationId = conversationId || 
                                    conversationManager.getCurrentConversationId() || 
                                    conversationManager.generateNewConversationId();
       
+      // Setup headers
+      const headers: Record<string, string> = {
+        'Content-Type': 'application/json'
+      };
+      
+      // Try to get CSRF token, but don't fail if it's not available
+      try {
+        const csrfToken = await fetchCSRFToken();
+        if (csrfToken) {
+          headers['X-CSRF-Token'] = csrfToken;
+        }
+      } catch (csrfError) {
+        console.error('CSRF token not available, proceeding without it:', csrfError);
+        // Continue without CSRF token, server might accept the request anyway
+      }
+      
       // Call the server API endpoint
       const response = await fetch('/api/ai/chat', {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'X-CSRF-Token': csrfToken
-        },
+        headers,
         body: JSON.stringify({ message, conversationId: currentConversationId })
       });
       
@@ -83,21 +87,25 @@ export const aiService = {
    */
   generateVoiceAudio: async (text: string, voiceId?: string): Promise<VoiceResponse> => {
     try {
-      // Get CSRF token with error handling
-      let csrfToken = '';
+      // Setup headers
+      const headers: Record<string, string> = {
+        'Content-Type': 'application/json'
+      };
+      
+      // Try to get CSRF token, but don't fail if it's not available
       try {
-        csrfToken = await fetchCSRFToken();
+        const csrfToken = await fetchCSRFToken();
+        if (csrfToken) {
+          headers['X-CSRF-Token'] = csrfToken;
+        }
       } catch (csrfError) {
-        console.error('Error getting CSRF token:', csrfError);
-        throw new Error('Could not get CSRF token for API call');
+        console.error('CSRF token not available, proceeding without it:', csrfError);
+        // Continue without CSRF token, server might accept the request
       }
       
       const response = await fetch('/api/ai/voice', {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'X-CSRF-Token': csrfToken
-        },
+        headers,
         body: JSON.stringify({ text, voiceId })
       });
       
@@ -125,16 +133,26 @@ export const aiService = {
    */
   sendCallSummary: async (callSummary: string, userEmail?: string): Promise<boolean> => {
     try {
-      // Get CSRF token
-      const csrfToken = await fetchCSRFToken();
+      // Setup headers
+      const headers: Record<string, string> = {
+        'Content-Type': 'application/json'
+      };
+      
+      // Try to get CSRF token, but don't fail if it's not available
+      try {
+        const csrfToken = await fetchCSRFToken();
+        if (csrfToken) {
+          headers['X-CSRF-Token'] = csrfToken;
+        }
+      } catch (csrfError) {
+        console.error('CSRF token not available, proceeding without it:', csrfError);
+        // Continue without CSRF token, server might accept the request
+      }
       
       // Send call summary to server
       const response = await fetch('/api/ai/call-summary', {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'X-CSRF-Token': csrfToken
-        },
+        headers,
         body: JSON.stringify({
           summary: callSummary,
           userEmail: userEmail || 'Not provided',
