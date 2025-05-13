@@ -93,3 +93,50 @@ export const userAccountSchema = z.object({
     .optional()
     .transform(val => val?.trim() || undefined),
 });
+
+/**
+ * Chat message request schema
+ */
+export const chatMessageSchema = z.object({
+  message: z.string()
+    .min(1, 'Message cannot be empty')
+    .max(4000, 'Message must be less than 4000 characters')
+    .transform(val => val.trim()),
+    
+  conversationId: z.string()
+    .optional()
+    .transform(val => val?.trim() || undefined),
+});
+
+/**
+ * Voice generation request schema
+ */
+export const voiceGenerationSchema = z.object({
+  text: z.string()
+    .min(1, 'Text cannot be empty')
+    .max(4000, 'Text must be less than 4000 characters')
+    .transform(val => val.trim()),
+    
+  voiceId: z.string()
+    .optional()
+    .transform(val => val?.trim() || undefined),
+});
+
+/**
+ * Call summary schema
+ */
+export const callSummarySchema = z.object({
+  summary: z.string()
+    .min(1, 'Summary cannot be empty')
+    .max(10000, 'Summary must be less than 10000 characters')
+    .transform(val => val.trim()),
+    
+  userEmail: z.string()
+    .email('Please enter a valid email address')
+    .optional()
+    .transform(val => val?.toLowerCase().trim() || undefined),
+    
+  timestamp: z.string()
+    .optional()
+    .transform(val => val?.trim() || new Date().toISOString()),
+});

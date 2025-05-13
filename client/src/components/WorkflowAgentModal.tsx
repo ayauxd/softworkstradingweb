@@ -7,6 +7,8 @@ import { Label } from "@/components/ui/label";
 import { Send, X, Phone, MessageSquare } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { cn } from "@/lib/utils";
+import { aiService } from "@/lib/aiService";
+import { generateSystemPrompt } from "@/lib/companyInfo";
 
 interface WorkflowAgentModalProps {
   onClose: () => void;
@@ -48,9 +50,23 @@ const WorkflowAgentModal = ({
   const [activeTab, setActiveTab] = useState<"none" | "chat" | "call">(initialMode === 'none' ? 'none' : initialMode);
   const [showCallbackForm, setShowCallbackForm] = useState(false);
   const [chatInput, setChatInput] = useState("");
-  const [messages, setMessages] = useState<Array<{from: string, text: string}>>([
-    { from: "agent", text: "Hello! I'm here to help you automate your workflows. What specific process are you looking to improve?" }
-  ]);
+  // Initialize messages from localStorage if available, otherwise use default welcome message
+  const [messages, setMessages] = useState<Array<{from: string, text: string}>>(() => {
+    // Check if we have saved messages in localStorage
+    const savedMessages = localStorage.getItem('chatMessages');
+    if (savedMessages) {
+      try {
+        return JSON.parse(savedMessages);
+      } catch (e) {
+        console.error('Error parsing saved messages:', e);
+      }
+    }
+    // Return default welcome message if no saved messages or error parsing
+    return [{ 
+      from: "agent", 
+      text: "Hello! I'm here to help you implement practical, no-code AI solutions that save time and scale operations for entrepreneurs and SMEs. As Softworks Trading Company's workflow agent, I can assist with automating repetitive processes across services like professional services, e-commerce, and consulting. What specific business challenges are you facing that AI might help solve?" 
+    }];
+  });
   const [callbackForm, setCallbackForm] = useState({
     fullName: "",
     workEmail: "",
@@ -92,10 +108,18 @@ const WorkflowAgentModal = ({
     };
   }, []);
   
-  // Scroll to bottom of chat when messages change
+  // Scroll to bottom of chat when messages change and save to localStorage
   useEffect(() => {
+    // Scroll to bottom of messages
     if (messagesEndRef.current) {
       messagesEndRef.current.scrollIntoView({ behavior: "smooth" });
+    }
+    
+    // Save messages to localStorage
+    try {
+      localStorage.setItem('chatMessages', JSON.stringify(messages));
+    } catch (e) {
+      console.error('Error saving messages to localStorage:', e);
     }
   }, [messages]);
   
@@ -111,15 +135,118 @@ const WorkflowAgentModal = ({
     if (onModeChange) onModeChange('chat');
   }, [onModeChange]);
   
-  // Function to handle the 2-second call simulation
+  // Voice call state
+  const [isVoiceCallActive, setIsVoiceCallActive] = useState(false);
+  const [voiceCallMessages, setVoiceCallMessages] = useState<Array<{from: string, text: string}>>([]);
+  const [callTimeRemaining, setCallTimeRemaining] = useState(180); // 3 minutes in seconds
+  const [isProcessingCallSummary, setIsProcessingCallSummary] = useState(false);
+  
+  // Function to handle the voice call with 2-second connecting animation
   const simulateCallConnection = useCallback(() => {
     setActiveTab("call");
     setShowCallbackForm(false); // Ensure form is hidden during simulation
-    const timer = setTimeout(() => {
-      setShowCallbackForm(true);
+    
+    // Show "connecting" animation for 2 seconds
+    const connectionTimer = setTimeout(() => {
+      // Start the voice call
+      setIsVoiceCallActive(true);
+      
+      // Initialize the call with a welcome message
+      const welcomeMessage = "Hello! I'm your Softworks Trading workflow agent. I'm here to help you implement practical AI solutions for your business. This call will last up to 3 minutes. How can I assist you today?";
+      
+      // Add message to the call history
+      setVoiceCallMessages([{
+        from: "agent",
+        text: welcomeMessage
+      }]);
+      
+      // Generate and play welcome voice message
+      aiService.generateVoiceAudio(welcomeMessage).then(response => {
+        if (response.success && response.audioData) {
+          aiService.playAudio(response.audioData);
+        }
+      }).catch(error => {
+        console.error("Error generating welcome voice:", error);
+      });
+      
+      // Start countdown timer (3 minutes)
+      startCallTimer();
     }, 2000);
-    return () => clearTimeout(timer); // Return cleanup function
+    
+    return () => {
+      clearTimeout(connectionTimer);
+    };
   }, []);
+  
+  // Function to start the 3-minute call timer
+  const startCallTimer = useCallback(() => {
+    const timerInterval = setInterval(() => {
+      setCallTimeRemaining(prev => {
+        if (prev <= 1) {
+          // Time's up - end the call
+          clearInterval(timerInterval);
+          endVoiceCall();
+          return 0;
+        }
+        return prev - 1;
+      });
+    }, 1000);
+    
+    // Store the interval ID for cleanup
+    return () => clearInterval(timerInterval);
+  }, []);
+  
+  // Format time remaining as MM:SS
+  const formattedTimeRemaining = useMemo(() => {
+    const minutes = Math.floor(callTimeRemaining / 60);
+    const seconds = callTimeRemaining % 60;
+    return `${minutes}:${seconds.toString().padStart(2, '0')}`;
+  }, [callTimeRemaining]);
+  
+  // Function to end the voice call and generate summary
+  const endVoiceCall = useCallback(async () => {
+    setIsVoiceCallActive(false);
+    setIsProcessingCallSummary(true);
+    
+    try {
+      // If there are no messages other than the welcome message, just show the callback form
+      if (voiceCallMessages.length <= 1) {
+        setShowCallbackForm(true);
+        setIsProcessingCallSummary(false);
+        return;
+      }
+      
+      // Prepare the call transcript
+      const transcript = voiceCallMessages.map(msg => 
+        `${msg.from.toUpperCase()}: ${msg.text}`
+      ).join('\n');
+      
+      // Generate a call summary using OpenAI
+      const summaryPrompt = `You are an AI assistant for Softworks Trading Company. Please summarize the following call transcript and extract key action items and follow-up tasks. Keep the summary concise (max 250 words):\n\n${transcript}`;
+      
+      const summaryResponse = await aiService.sendChatMessage(summaryPrompt);
+      
+      if (summaryResponse.success) {
+        // Send the summary to the server/email
+        const emailSent = await aiService.sendCallSummary(
+          `Call Summary:\n${summaryResponse.text}\n\nFull Transcript:\n${transcript}`,
+          callbackForm.workEmail
+        );
+        
+        // Show the callback form with the summary
+        setCallbackForm(prev => ({
+          ...prev,
+          message: `Call Summary: ${summaryResponse.text}\n\nPlease add any additional context or questions.`
+        }));
+      }
+    } catch (error) {
+      console.error('Error processing call summary:', error);
+    } finally {
+      // Show the callback form regardless of whether summary generation succeeded
+      setShowCallbackForm(true);
+      setIsProcessingCallSummary(false);
+    }
+  }, [voiceCallMessages, callbackForm.workEmail]);
 
   // Effect to trigger simulation if modal opens in 'call' mode
   useEffect(() => {
@@ -137,26 +264,97 @@ const WorkflowAgentModal = ({
     if (onModeChange) onModeChange('call');
   }, [simulateCallConnection, onModeChange]);
   
-  const handleSendMessage = useCallback(() => {
+  const handleSendMessage = useCallback(async () => {
     if (chatInput.trim()) {
-      // Add user message
+      // Add user message to the UI immediately
       setMessages(prev => [...prev, { from: "user", text: chatInput }]);
       
-      // Clear input
+      // Save the message for API call before clearing input
+      const messageText = chatInput.trim();
+      
+      // Clear input field
       setChatInput("");
       
-      // Simulate response after a short delay
-      setTimeout(() => {
-        setMessages(prev => [
-          ...prev, 
-          { 
-            from: "agent", 
-            text: "Thanks for reaching out! We'll analyze your specific needs and suggest the best automation approach for your business. Would you like to schedule a detailed consultation?" 
+      try {
+        // Show typing indicator
+        setMessages(prev => [...prev, { from: "agent", text: "..." }]);
+        
+        // For debugging: log the attempt to call OpenAI
+        console.log("Attempting to call OpenAI via API...");
+        
+        // Note: In production, API keys should NEVER be in client-side code
+        // We should use the server's API endpoints instead
+        // For security, we'll use the server endpoint only and not attempt direct OpenAI calls
+        
+        // Get current conversation ID from localStorage or create a new one
+        let currentConversationId = localStorage.getItem('currentConversationId');
+        if (!currentConversationId) {
+          currentConversationId = `conv_${Date.now()}_${Math.random().toString(36).substring(2, 7)}`;
+          localStorage.setItem('currentConversationId', currentConversationId);
+        }
+        
+        // Use the AI service for chat (properly routes through server API)
+        let response;
+        try {
+          response = await aiService.sendChatMessage(messageText, currentConversationId);
+          console.log("API service response:", response);
+          
+          // Update local conversation ID if the server returned a new one
+          if (response.conversationId && response.conversationId !== currentConversationId) {
+            localStorage.setItem('currentConversationId', response.conversationId);
           }
-        ]);
-      }, 1000);
+        } catch (apiError) {
+          console.error("API service failed", apiError);
+          throw new Error("Failed to connect to chat service");
+        }
+        
+        // Replace typing indicator with actual response
+        setMessages(prev => {
+          const newMessages = [...prev];
+          // Remove the typing indicator
+          newMessages.pop();
+          // Add the actual response
+          newMessages.push({ from: "agent", text: response.text });
+          return newMessages;
+        });
+        
+        // If we have voice support and the response was successful, generate voice
+        if (response.success) {
+          try {
+            const voiceResponse = await aiService.generateVoiceAudio(response.text);
+            if (voiceResponse.success && voiceResponse.audioData) {
+              aiService.playAudio(voiceResponse.audioData);
+            }
+          } catch (voiceError) {
+            console.error("Error generating voice response:", voiceError);
+            // Don't show error to user, simply continue without voice
+          }
+        }
+      } catch (error) {
+        console.error("Error sending message:", error);
+        
+        // Replace typing indicator with error message
+        setMessages(prev => {
+          const newMessages = [...prev];
+          // Remove the typing indicator
+          newMessages.pop();
+          // Add error message
+          newMessages.push({ 
+            from: "agent", 
+            text: "I'm sorry, I'm having trouble connecting right now. Please try again in a moment." 
+          });
+          return newMessages;
+        });
+        
+        // Show toast error
+        toast({
+          title: "Connection Error",
+          description: "Could not connect to the AI service. Please try again.",
+          variant: "destructive"
+        });
+      }
     }
-  }, [chatInput]);
+  }, [chatInput, toast]);
   
   const handleChatInputKeyDown = useCallback((e: React.KeyboardEvent) => {
     if (e.key === "Enter") {
@@ -184,7 +382,7 @@ const WorkflowAgentModal = ({
     return (email: string) => emailRegex.test(email);
   }, []);
   
-  const handleCallbackFormSubmit = useCallback((e: React.FormEvent) => {
+  const handleCallbackFormSubmit = useCallback(async (e: React.FormEvent) => {
     e.preventDefault();
     
     // Reset error states
@@ -228,11 +426,40 @@ const WorkflowAgentModal = ({
       return;
     }
     
+    // Attempt to send the call summary/form data to the server or via email
+    let emailSent = false;
+    try {
+      // Send the form data as a summary
+      const formSummary = `
+        Name: ${callbackForm.fullName}
+        Email: ${callbackForm.workEmail}
+        Company: ${callbackForm.companyName || 'Not provided'}
+        Preferred Callback Time: ${callbackForm.callbackTime || 'Not specified'}
+        
+        Message/Summary:
+        ${callbackForm.message}
+      `;
+      
+      emailSent = await aiService.sendCallSummary(formSummary, callbackForm.workEmail);
+    } catch (error) {
+      console.error('Error sending callback form:', error);
+      // Continue anyway as we'll show success message
+    }
+    
     // Form is valid, show success message
     toast({
       title: "Callback Requested!",
       description: "One of our workflow agents will contact you shortly.",
     });
+    
+    // Show email status message if the email wasn't sent
+    if (!emailSent) {
+      toast({
+        title: "Contact Details Saved",
+        description: "We have your information but couldn't send an email confirmation.",
+        variant: "default"
+      });
+    }
     
     // Close modal
     onClose();
@@ -243,15 +470,40 @@ const WorkflowAgentModal = ({
       <DialogContent className="sm:max-w-screen-sm max-h-[85vh] overflow-y-auto [&>button]:hidden">
         <div className="flex justify-between items-center">
           <DialogTitle className="text-lg sm:text-xl">Talk to a Workflow Agent</DialogTitle>
-          <DialogClose asChild>
-            <button 
-              className="rounded-full p-2 hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors focus:outline-none focus:ring-2 focus:ring-cyan"
-              aria-label="Close"
-              tabIndex={0}
-            >
-              <X className="h-5 w-5 text-gray-500" />
-            </button>
-          </DialogClose>
+          <div className="flex items-center space-x-2">
+            {activeTab === "chat" && messages.length > 1 && (
+              <button
+                onClick={() => {
+                  // Clear chat history and reset to welcome message
+                  const welcomeMessage = { 
+                    from: "agent", 
+                    text: "Hello! I'm here to help you implement practical, no-code AI solutions that save time and scale operations for entrepreneurs and SMEs. As Softworks Trading Company's workflow agent, I can assist with automating repetitive processes across services like professional services, e-commerce, and consulting. What specific business challenges are you facing that AI might help solve?" 
+                  };
+                  setMessages([welcomeMessage]);
+                  localStorage.removeItem('chatMessages');
+                  // Also clear the conversation ID to start a fresh conversation
+                  localStorage.removeItem('currentConversationId');
+                  toast({
+                    title: "Chat history cleared",
+                    description: "Starting a new conversation",
+                  });
+                }}
+                className="text-xs rounded-md px-2 py-1 bg-gray-200 hover:bg-gray-300 dark:bg-gray-700 dark:hover:bg-gray-600 transition-colors text-navy dark:text-soft-white"
+                aria-label="Clear chat history"
+              >
+                Clear History
+              </button>
+            )}
+            <DialogClose asChild>
+              <button 
+                className="rounded-full p-2 hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors focus:outline-none focus:ring-2 focus:ring-cyan"
+                aria-label="Close"
+                tabIndex={0}
+              >
+                <X className="h-5 w-5 text-gray-500" />
+              </button>
+            </DialogClose>
+          </div>
         </div>
         
         {activeTab === "none" && (
@@ -342,15 +594,146 @@ const WorkflowAgentModal = ({
         {activeTab === "call" && (
           <div className="min-h-[300px]"> {/* Ensure container has min height */}
             {!showCallbackForm ? (
-              // Connecting State UI
+              !isVoiceCallActive ? (
+                // Connecting State UI
+                <div className="flex flex-col items-center justify-center p-8 h-full">
+                  <div className="flex space-x-1 mb-4">
+                    <span className="h-2 w-2 bg-cyan rounded-full animate-bounce [animation-delay:-0.3s]"></span>
+                    <span className="h-2 w-2 bg-cyan rounded-full animate-bounce [animation-delay:-0.15s]"></span>
+                    <span className="h-2 w-2 bg-cyan rounded-full animate-bounce"></span>
+                  </div>
+                  <p className="text-lg font-medium text-navy dark:text-soft-white">Connecting...</p>
+                  <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">Please wait while we set up the call.</p>
+                </div>
+              ) : (
+                // Active Voice Call UI
+                <div className="flex flex-col h-full">
+                  {/* Call timer and end call button */}
+                  <div className="flex justify-between items-center p-4 border-b border-gray-200 dark:border-gray-700">
+                    <div className="flex items-center">
+                      <div className="h-2 w-2 bg-green-500 rounded-full animate-pulse mr-2"></div>
+                      <span className="text-sm text-navy dark:text-gray-300">Call in progress</span>
+                    </div>
+                    <div className="flex items-center">
+                      <span className="text-sm mr-4">{formattedTimeRemaining}</span>
+                      <button
+                        onClick={endVoiceCall}
+                        className="bg-red-500 hover:bg-red-600 text-white rounded-full p-2 transition-colors duration-200"
+                        aria-label="End call"
+                      >
+                        <Phone className="h-4 w-4" />
+                      </button>
+                    </div>
+                  </div>
+                  
+                  {/* Voice call transcript */}
+                  <div className="flex-grow overflow-y-auto p-4 bg-gray-50 dark:bg-gray-800">
+                    {voiceCallMessages.map((message, index) => (
+                      <div key={index} className={`mb-4 ${message.from === "user" ? "text-right" : ""}`}>
+                        <div className="font-medium text-navy dark:text-soft-white">
+                          {message.from === "agent" ? "Workflow Agent" : "You"}
+                        </div>
+                        <div className={cn(
+                          "p-3 rounded-lg inline-block max-w-[75%] mt-1 text-navy dark:text-soft-white",
+                          "transition-all duration-200 text-base",
+                          message.from === "agent" 
+                            ? "bg-white dark:bg-navy shadow-md" 
+                            : "bg-cyan bg-opacity-20"
+                        )}>
+                          {message.text}
+                        </div>
+                      </div>
+                    ))}
+                    <div ref={messagesEndRef} />
+                  </div>
+                  
+                  {/* Voice input area */}
+                  <div className="p-4 border-t border-gray-200 dark:border-gray-700">
+                    <div className="flex w-full">
+                      <Input
+                        type="text"
+                        value={chatInput}
+                        onChange={(e) => setChatInput(e.target.value)}
+                        onKeyDown={(e) => {
+                          if (e.key === "Enter" && chatInput.trim()) {
+                            // Add user message to transcript
+                            setVoiceCallMessages(prev => [...prev, { from: "user", text: chatInput }]);
+                            
+                            // Save message and clear input
+                            const messageText = chatInput.trim();
+                            setChatInput("");
+                            
+                            // Process response
+                            aiService.sendChatMessage(messageText).then(response => {
+                              if (response.success) {
+                                // Add agent response to transcript
+                                setVoiceCallMessages(prev => [...prev, { from: "agent", text: response.text }]);
+                                
+                                // Generate and play voice response
+                                aiService.generateVoiceAudio(response.text).then(voiceResponse => {
+                                  if (voiceResponse.success && voiceResponse.audioData) {
+                                    aiService.playAudio(voiceResponse.audioData);
+                                  }
+                                }).catch(error => {
+                                  console.error("Error generating voice response:", error);
+                                });
+                              }
+                            }).catch(error => {
+                              console.error("Error sending message:", error);
+                            });
+                          }
+                        }}
+                        placeholder="Type your message..."
+                        className="flex-1 px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-l-md"
+                      />
+                      <Button
+                        onClick={() => {
+                          if (chatInput.trim()) {
+                            // Add user message to transcript
+                            setVoiceCallMessages(prev => [...prev, { from: "user", text: chatInput }]);
+                            
+                            // Save message and clear input
+                            const messageText = chatInput.trim();
+                            setChatInput("");
+                            
+                            // Process response
+                            aiService.sendChatMessage(messageText).then(response => {
+                              if (response.success) {
+                                // Add agent response to transcript
+                                setVoiceCallMessages(prev => [...prev, { from: "agent", text: response.text }]);
+                                
+                                // Generate and play voice response
+                                aiService.generateVoiceAudio(response.text).then(voiceResponse => {
+                                  if (voiceResponse.success && voiceResponse.audioData) {
+                                    aiService.playAudio(voiceResponse.audioData);
+                                  }
+                                }).catch(error => {
+                                  console.error("Error generating voice response:", error);
+                                });
+                              }
+                            }).catch(error => {
+                              console.error("Error sending message:", error);
+                            });
+                          }
+                        }}
+                        className="bg-cyan hover:bg-cyan-light text-navy font-medium py-2 px-4 rounded-r-md transition-all duration-200"
+                      >
+                        <Send className="h-5 w-5" />
+                      </Button>
+                    </div>
+                  </div>
+                </div>
+              )
+            ) : isProcessingCallSummary ? (
+              // Processing call summary UI
               <div className="flex flex-col items-center justify-center p-8 h-full">
                 <div className="flex space-x-1 mb-4">
                   <span className="h-2 w-2 bg-cyan rounded-full animate-bounce [animation-delay:-0.3s]"></span>
                   <span className="h-2 w-2 bg-cyan rounded-full animate-bounce [animation-delay:-0.15s]"></span>
                   <span className="h-2 w-2 bg-cyan rounded-full animate-bounce"></span>
                 </div>
-                <p className="text-lg font-medium text-navy dark:text-soft-white">Connecting...</p>
-                <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">Please wait while we set up the call.</p>
+                <p className="text-lg font-medium text-navy dark:text-soft-white">Processing call summary...</p>
+                <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">This will just take a moment.</p>
               </div>
             ) : (
               // Callback Form (Existing structure)
