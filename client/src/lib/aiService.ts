@@ -1,4 +1,4 @@
-import { getCsrfToken } from './csrf';
+import { fetchCSRFToken } from './csrf';
 import { ChatResponse, VoiceResponse } from '../../../shared/aiModels';
 import { generateSystemPrompt } from './companyInfo';
 
@@ -35,7 +35,7 @@ export const aiService = {
       // Get CSRF token with error handling
       let csrfToken = '';
       try {
-        csrfToken = await getCsrfToken();
+        csrfToken = await fetchCSRFToken();
       } catch (csrfError) {
         console.error('Error getting CSRF token:', csrfError);
         throw new Error('Could not get CSRF token for API call');
@@ -86,7 +86,7 @@ export const aiService = {
       // Get CSRF token with error handling
       let csrfToken = '';
       try {
-        csrfToken = await getCsrfToken();
+        csrfToken = await fetchCSRFToken();
       } catch (csrfError) {
         console.error('Error getting CSRF token:', csrfError);
         throw new Error('Could not get CSRF token for API call');
@@ -126,7 +126,7 @@ export const aiService = {
   sendCallSummary: async (callSummary: string, userEmail?: string): Promise<boolean> => {
     try {
       // Get CSRF token
-      const csrfToken = await getCsrfToken();
+      const csrfToken = await fetchCSRFToken();
       
       // Send call summary to server
       const response = await fetch('/api/ai/call-summary', {
