@@ -4,6 +4,7 @@ import { storage } from "./storage";
 import { csrfProtection } from "./middleware/csrf";
 import { validateAndSanitize } from "./middleware/validation";
 import { contactFormSchema, subscriptionSchema } from "./schemas/api";
+import aiRoutes from "./routes/ai";
 
 export async function registerRoutes(app: Express): Promise<Server> {
   // Health check endpoint
@@ -86,6 +87,9 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
   // use storage to perform CRUD operations on the storage interface
   // e.g. storage.insertUser(user) or storage.getUserByUsername(username)
+  
+  // Register AI routes
+  app.use('/api/ai', aiRoutes);
 
   const httpServer = createServer(app);
 

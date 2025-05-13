@@ -21,6 +21,12 @@ const envSchema = z.object({
   
   // Frontend config
   CLIENT_URL: z.string().url().default('http://localhost:3000'),
+  
+  // AI Service API Keys - optional in development for mock responses
+  OPENAI_API_KEY: z.string().optional(),
+  ELEVENLABS_API_KEY: z.string().optional(),
+  ELEVENLABS_DEFAULT_VOICE_ID: z.string().optional(),
+  GEMINI_API_KEY: z.string().optional(),
 });
 
 // Local defaults for development to avoid exposing in .env files
@@ -95,4 +101,21 @@ export const corsConfig = {
   clientUrl: config.CLIENT_URL,
   // Add any other cors origins if needed
   allowedOrigins: [config.CLIENT_URL],
+};
+
+// AI service configuration
+export const aiConfig = {
+  openai: {
+    apiKey: config.OPENAI_API_KEY,
+    isConfigured: !!config.OPENAI_API_KEY,
+  },
+  elevenlabs: {
+    apiKey: config.ELEVENLABS_API_KEY,
+    defaultVoiceId: config.ELEVENLABS_DEFAULT_VOICE_ID,
+    isConfigured: !!config.ELEVENLABS_API_KEY,
+  },
+  gemini: {
+    apiKey: config.GEMINI_API_KEY,
+    isConfigured: !!config.GEMINI_API_KEY,
+  },
 };

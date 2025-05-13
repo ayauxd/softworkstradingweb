@@ -123,7 +123,7 @@ app.use((req, res, next) => {
     },
     () => {
       log(`Server running in ${serverConfig.nodeEnv} mode`);
-      log(`Process running as user: ${require('os').userInfo().username}`);
+      // log(`Process running as user: ${require('os').userInfo().username}`);
       log(`Current directory: ${process.cwd()}`);
       log(`Listening on port: ${PORT}`);
       

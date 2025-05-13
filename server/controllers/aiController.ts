@@ -95,26 +95,33 @@ export const aiController = {
         return;
       }
       
+      // File path for call summary
+      let filePath = '';
+      
       // 1. Save to file log
       try {
         const logsDir = path.join(process.cwd(), 'logs');
         
         // Create logs directory if it doesn't exist
         if (!fs.existsSync(logsDir)) {
+          console.log('Creating logs directory at:', logsDir);
           fs.mkdirSync(logsDir, { recursive: true });
         }
         
         // Create a timestamped filename
         const date = new Date();
         const filename = `call_summary_${date.toISOString().replace(/[:.]/g, '-')}.txt`;
-        const filePath = path.join(logsDir, filename);
+        filePath = path.join(logsDir, filename);
         
-        // Write summary to file
-        fs.writeFileSync(filePath, 
+        // Format summary content
+        const summaryContent = 
           `Timestamp: ${timestamp || date.toISOString()}\n` +
           `User Email: ${userEmail || 'Not provided'}\n\n` +
-          summary
-        );
+          summary;
+        
+        // Write summary to file
+        fs.writeFileSync(filePath, summaryContent);
+        console.log('Call summary saved to file:', filePath);
       } catch (fileError) {
         console.error('Error saving call summary to file:', fileError);
         // Continue to email sending even if file saving fails
@@ -124,37 +131,52 @@ export const aiController = {
       let emailSent = false;
       
       try {
-        // Create transport (configure based on your email provider)
-        const emailConfig = {
-          host: process.env.EMAIL_HOST || 'smtp.example.com',
-          port: Number(process.env.EMAIL_PORT) || 587,
-          secure: process.env.EMAIL_SECURE === 'true',
-          auth: {
-            user: process.env.EMAIL_USER,
-            pass: process.env.EMAIL_PASSWORD
+        // Skip email sending in development mode unless explicitly configured
+        if (process.env.NODE_ENV === 'development' && !process.env.FORCE_EMAIL_IN_DEV) {
+          console.log('Email sending skipped in development mode');
+          console.log('Would have sent email to:', process.env.CALL_SUMMARY_EMAIL || 'agents@softworkstrading.com');
+        } else {
+          // Create transport (configure based on your email provider)
+          const emailConfig = {
+            host: process.env.EMAIL_HOST || 'smtp.gmail.com', // Default to Gmail SMTP
+            port: Number(process.env.EMAIL_PORT) || 587,
+            secure: process.env.EMAIL_SECURE === 'true',
+            auth: {
+              user: process.env.EMAIL_USER,
+              pass: process.env.EMAIL_PASSWORD
+            }
+          };
+          
+          // Fallback for test environment
+          if (process.env.NODE_ENV === 'test') {
+            console.log('Using test email configuration');
+            // Create a test account if needed
+            // In test environments, we just log instead of sending
           }
-        };
-        
-        // Check if email credentials are configured
-        if (!emailConfig.auth.user || !emailConfig.auth.pass) {
-          throw new Error('Email credentials not configured');
+          
+          // Check if email credentials are configured
+          if (!emailConfig.auth.user || !emailConfig.auth.pass) {
+            console.warn('Email credentials not configured, skipping email sending');
+          } else {
+            console.log('Creating email transport with configured settings');
+            const transporter = nodemailer.createTransport(emailConfig);
+            
+            // Send email
+            await transporter.sendMail({
+              from: process.env.EMAIL_FROM || 'noreply@softworkstrading.com',
+              to: process.env.CALL_SUMMARY_EMAIL || 'agents@softworkstrading.com',
+              subject: `Call Summary - ${new Date().toLocaleString()}`,
+              text: 
+                `A new call summary has been generated.\n\n` +
+                `Timestamp: ${timestamp || new Date().toISOString()}\n` +
+                `User Email: ${userEmail || 'Not provided'}\n\n` +
+                summary
+            });
+            
+            console.log('Email sent successfully');
+            emailSent = true;
+          }
         }
-        
-        const transporter = nodemailer.createTransport(emailConfig);
-        
-        // Send email
-        await transporter.sendMail({
-          from: process.env.EMAIL_FROM || 'noreply@softworkstrading.com',
-          to: process.env.CALL_SUMMARY_EMAIL || 'agents@softworkstrading.com',
-          subject: `Call Summary - ${new Date().toLocaleString()}`,
-          text: 
-            `A new call summary has been generated.\n\n` +
-            `Timestamp: ${timestamp || new Date().toISOString()}\n` +
-            `User Email: ${userEmail || 'Not provided'}\n\n` +
-            summary
-        });
-        
-        emailSent = true;
       } catch (emailError) {
         console.error('Error sending email:', emailError);
         // Continue even if email fails - we've already logged to file
@@ -164,6 +186,7 @@ export const aiController = {
       res.json({
         success: true,
         emailSent,
+        filePath: filePath || null,
         message: emailSent 
           ? 'Call summary saved and email sent' 
           : 'Call summary saved but email could not be sent'

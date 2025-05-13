@@ -25,6 +25,10 @@ echo "Setting up image directories..."
 mkdir -p client/public/assets/images/articles
 mkdir -p public/assets/images/articles
 
+# Create logs directory for call summaries
+echo "Setting up logs directory..."
+mkdir -p logs
+
 # Copy necessary image files
 echo "Checking image files for articles..."
 cp -f client/public/assets/images/articles/* public/assets/images/articles/ 2>/dev/null || true
