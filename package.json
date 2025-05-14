@@ -1,9 +1,10 @@
 {
-  "name": "rest-express",
+  "name": "softworks-trading-web",
   "version": "1.0.0",
   "type": "module",
   "license": "MIT",
   "scripts": {
+    "deploy:render": "node scripts/render-deploy-helper.js",
     "dev": "NODE_ENV=development npx tsx server/index.ts",
     "prebuild": "node ensure-data.js",
     "build": "node build.js",
@@ -20,7 +21,11 @@
     "optimize-images": "node optimize-images.js",
     "copy-assets": "node copy-optimized-assets.js",
     "copy-server": "node copy-server-files.js",
-    "legacy:build": "node build-static.js && node copy-server-files.js"
+    "legacy:build": "node build-static.js && node copy-server-files.js",
+    "setup-mcp": "node scripts/setup-mcp.js",
+    "start:gemini-mcp": "GEMINI_API_KEY=$GEMINI_API_KEY node scripts/create-gemini-mcp.js",
+    "test:api": "node test-api-endpoints.js",
+    "test:ui": "node puppeteer-test.js"
   },
   "dependencies": {
     "@google/genai": "^0.13.0",
@@ -88,6 +93,7 @@
     "passport": "^0.7.0",
     "passport-local": "^1.0.0",
     "postcss": "^8.4.47",
+    "puppeteer": "^24.8.2",
     "react": "^18.3.1",
     "react-day-picker": "^8.10.1",
     "react-dom": "^18.3.1",
@@ -111,6 +117,7 @@
   "devDependencies": {
     "@types/bcrypt": "^5.0.2",
     "@types/connect-pg-simple": "^7.0.3",
+    "@types/cookie-parser": "^1.4.8",
     "@types/express": "4.17.21",
     "@types/express-session": "^1.18.0",
     "@types/node": "20.16.11",
