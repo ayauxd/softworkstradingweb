@@ -141,6 +141,60 @@ const WorkflowAgentModal = ({
   const [callTimeRemaining, setCallTimeRemaining] = useState(180); // 3 minutes in seconds
   const [isProcessingCallSummary, setIsProcessingCallSummary] = useState(false);
   
+  // Function to simulate the user speaking and get a response
+  const simulateUserVoice = useCallback((message: string) => {
+    // Add user message to transcript
+    setVoiceCallMessages(prev => [...prev, { from: "user", text: message }]);
+    
+    // Process response
+    aiService.sendChatMessage(message).then(response => {
+      if (response.success) {
+        // Add agent response to transcript
+        setVoiceCallMessages(prev => [...prev, { from: "agent", text: response.text }]);
+        
+        // Generate and play voice response
+        aiService.generateVoiceAudio(response.text).then(voiceResponse => {
+          if (voiceResponse.success && voiceResponse.audioData) {
+            aiService.playAudio(voiceResponse.audioData);
+          }
+        }).catch(error => {
+          console.error("Error generating voice response:", error);
+        });
+      }
+    }).catch(error => {
+      console.error("Error processing voice input:", error);
+    });
+  }, []);
+  
+  // Simulate user speaking every ~15 seconds for demo purposes
+  useEffect(() => {
+    if (isVoiceCallActive) {
+      // Sample user questions for the simulation
+      const demoUserQuestions = [
+        "How can AI help my small business?",
+        "What types of automation do you recommend for customer service?",
+        "Can you explain how a workflow agent works?",
+        "What about data privacy with AI tools?",
+      ];
+      
+      // Pick a random question for the simulation
+      const getRandomQuestion = () => {
+        const randomIndex = Math.floor(Math.random() * demoUserQuestions.length);
+        return demoUserQuestions[randomIndex];
+      };
+      
+      // Set a timeout to simulate the user speaking after 15 seconds
+      const timeout = setTimeout(() => {
+        // Only continue if the call is still active
+        if (isVoiceCallActive && callTimeRemaining > 20) {
+          simulateUserVoice(getRandomQuestion());
+        }
+      }, 15000);
+      
+      return () => clearTimeout(timeout);
+    }
+  }, [isVoiceCallActive, voiceCallMessages, callTimeRemaining, simulateUserVoice]);
+  
   // Function to handle the voice call with 2-second connecting animation
   const simulateCallConnection = useCallback(() => {
     setActiveTab("call");
@@ -634,99 +688,69 @@ const WorkflowAgentModal = ({
                     </div>
                   </div>
                   
-                  {/* Voice call transcript */}
+                  {/* Voice call visualization - without text input */}
                   <div className="flex-grow overflow-y-auto p-4 bg-gray-50 dark:bg-gray-800">
-                    {voiceCallMessages.map((message, index) => (
-                      <div key={index} className={`mb-4 ${message.from === "user" ? "text-right" : ""}`}>
-                        <div className="font-medium text-navy dark:text-soft-white">
-                          {message.from === "agent" ? "Workflow Agent" : "You"}
-                        </div>
-                        <div className={cn(
-                          "p-3 rounded-lg inline-block max-w-[75%] mt-1 text-navy dark:text-soft-white",
-                          "transition-all duration-200 text-base",
-                          message.from === "agent" 
-                            ? "bg-white dark:bg-navy shadow-md" 
-                            : "bg-cyan bg-opacity-20"
-                        )}>
-                          {message.text}
-                        </div>
+                    {/* Voice call message display */}
+                    <div className="flex flex-col items-center justify-center text-center mb-8">
+                      <div className="w-16 h-16 bg-navy dark:bg-cyan rounded-full flex items-center justify-center mb-4">
+                        <Phone className="h-8 w-8 text-white" />
                       </div>
-                    ))}
+                      <h3 className="text-lg font-medium text-navy dark:text-soft-white mb-2">
+                        Voice Call in Progress
+                      </h3>
+                      <p className="text-sm text-gray-600 dark:text-gray-400 max-w-md">
+                        Our AI assistant is listening. Speak naturally about your business challenges and automation needs.
+                      </p>
+                    </div>
+                    
+                    {/* AI speaking indicator */}
+                    <div className="bg-white dark:bg-navy shadow-md rounded-lg p-4 mb-4">
+                      <div className="flex items-center mb-2">
+                        <div className={cn(
+                          "h-2 w-2 rounded-full mr-2",
+                          voiceCallMessages.length > 0 && voiceCallMessages[voiceCallMessages.length - 1].from === "agent"
+                            ? "bg-green-500 animate-pulse"
+                            : "bg-gray-300"
+                        )}></div>
+                        <span className="font-medium text-navy dark:text-soft-white">Workflow Agent</span>
+                      </div>
+                      <p className="text-navy dark:text-soft-white">
+                        {voiceCallMessages.length > 0 
+                          ? voiceCallMessages[voiceCallMessages.length - 1].text 
+                          : "Hello! I'm your Softworks Trading workflow agent. How can I assist you today?"}
+                      </p>
+                    </div>
+                    
+                    {/* Visual sound wave effect */}
+                    <div className="flex justify-center items-center my-8">
+                      <div className="flex items-center justify-center space-x-1">
+                        <div className="w-1 h-5 bg-cyan animate-pulse"></div>
+                        <div className="w-1 h-8 bg-cyan animate-pulse [animation-delay:75ms]"></div>
+                        <div className="w-1 h-12 bg-cyan animate-pulse [animation-delay:150ms]"></div>
+                        <div className="w-1 h-8 bg-cyan animate-pulse [animation-delay:225ms]"></div>
+                        <div className="w-1 h-5 bg-cyan animate-pulse [animation-delay:300ms]"></div>
+                      </div>
+                    </div>
+                    
+                    <div className="text-center text-sm text-gray-500 dark:text-gray-400 mt-4">
+                      Voice processing is simulated for this demo.
+                    </div>
+                    
                     <div ref={messagesEndRef} />
                   </div>
                   
-                  {/* Voice input area */}
+                  {/* Voice call control area - replaced text input with help text */}
                   <div className="p-4 border-t border-gray-200 dark:border-gray-700">
-                    <div className="flex w-full">
-                      <Input
-                        type="text"
-                        value={chatInput}
-                        onChange={(e) => setChatInput(e.target.value)}
-                        onKeyDown={(e) => {
-                          if (e.key === "Enter" && chatInput.trim()) {
-                            // Add user message to transcript
-                            setVoiceCallMessages(prev => [...prev, { from: "user", text: chatInput }]);
-                            
-                            // Save message and clear input
-                            const messageText = chatInput.trim();
-                            setChatInput("");
-                            
-                            // Process response
-                            aiService.sendChatMessage(messageText).then(response => {
-                              if (response.success) {
-                                // Add agent response to transcript
-                                setVoiceCallMessages(prev => [...prev, { from: "agent", text: response.text }]);
-                                
-                                // Generate and play voice response
-                                aiService.generateVoiceAudio(response.text).then(voiceResponse => {
-                                  if (voiceResponse.success && voiceResponse.audioData) {
-                                    aiService.playAudio(voiceResponse.audioData);
-                                  }
-                                }).catch(error => {
-                                  console.error("Error generating voice response:", error);
-                                });
-                              }
-                            }).catch(error => {
-                              console.error("Error sending message:", error);
-                            });
-                          }
-                        }}
-                        placeholder="Type your message..."
-                        className="flex-1 px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-l-md"
-                      />
+                    <div className="flex flex-col w-full items-center">
+                      <p className="text-sm text-gray-600 dark:text-gray-400 mb-3">
+                        Speak clearly and ask questions about AI automation for your business
+                      </p>
                       <Button
-                        onClick={() => {
-                          if (chatInput.trim()) {
-                            // Add user message to transcript
-                            setVoiceCallMessages(prev => [...prev, { from: "user", text: chatInput }]);
-                            
-                            // Save message and clear input
-                            const messageText = chatInput.trim();
-                            setChatInput("");
-                            
-                            // Process response
-                            aiService.sendChatMessage(messageText).then(response => {
-                              if (response.success) {
-                                // Add agent response to transcript
-                                setVoiceCallMessages(prev => [...prev, { from: "agent", text: response.text }]);
-                                
-                                // Generate and play voice response
-                                aiService.generateVoiceAudio(response.text).then(voiceResponse => {
-                                  if (voiceResponse.success && voiceResponse.audioData) {
-                                    aiService.playAudio(voiceResponse.audioData);
-                                  }
-                                }).catch(error => {
-                                  console.error("Error generating voice response:", error);
-                                });
-                              }
-                            }).catch(error => {
-                              console.error("Error sending message:", error);
-                            });
-                          }
-                        }}
-                        className="bg-cyan hover:bg-cyan-light text-navy font-medium py-2 px-4 rounded-r-md transition-all duration-200"
+                        onClick={endVoiceCall}
+                        className="bg-red-500 hover:bg-red-600 text-white font-medium py-2 px-6 rounded-full transition-all duration-200"
+                        aria-label="End call"
                       >
-                        <Send className="h-5 w-5" />
+                        End Call
                       </Button>
                     </div>
                   </div>
