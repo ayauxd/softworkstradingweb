@@ -68,6 +68,8 @@ export const aiService = {
    * finally falls back to a mock service in development
    */
   sendChatMessage: async (message: string, conversationId?: string): Promise<ChatResponse> => {
+    console.log('AI Service called', { messageLength: message.length, hasConversationId: !!conversationId });
+    
     try {
       // Check if API keys are configured
       if (!aiConfig.openai.isConfigured && !aiConfig.gemini.isConfigured) {
@@ -75,9 +77,17 @@ export const aiService = {
         return mockChatResponse(message, conversationId);
       }
       
+      console.log('API Configuration:', {
+        openai: aiConfig.openai.isConfigured ? 'Configured' : 'Not configured',
+        gemini: aiConfig.gemini.isConfigured ? 'Configured' : 'Not configured',
+        environment: process.env.NODE_ENV || 'undefined'
+      });
+      
       // Try OpenAI - our working model
       try {
+        console.log('Attempting to use OpenAI service first');
         const openaiResponse = await sendToOpenAI(message, conversationId);
+        console.log('OpenAI response success');
         return {
           text: openaiResponse,
           success: true,
@@ -86,6 +96,7 @@ export const aiService = {
         };
       } catch (error) {
         console.error('OpenAI chat error:', error);
+        console.error('OpenAI error details:', error instanceof Error ? error.message : 'Unknown error');
         
         // Try Gemini as fallback
         try {

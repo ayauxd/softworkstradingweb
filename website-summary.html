@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Softworks Trading Web - Summary</title>
+  <style>
+    body {
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+      line-height: 1.6;
+      color: #333;
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+    h1 {
+      color: #0A2A43;
+      border-bottom: 2px solid #00BCD4;
+      padding-bottom: 10px;
+    }
+    h2 {
+      color: #0A2A43;
+      margin-top: 30px;
+    }
+    .section {
+      margin-bottom: 40px;
+      padding: 20px;
+      border-radius: 8px;
+      background-color: #f9fafc;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+    }
+    .feature {
+      display: flex;
+      margin-bottom: 20px;
+      border-bottom: 1px solid #eaeaea;
+      padding-bottom: 20px;
+    }
+    .feature-icon {
+      font-size: 24px;
+      margin-right: 15px;
+      color: #00BCD4;
+    }
+    .feature-content {
+      flex: 1;
+    }
+    code {
+      background-color: #f1f1f1;
+      padding: 2px 6px;
+      border-radius: 4px;
+      font-family: monospace;
+    }
+    .screenshot {
+      max-width: 100%;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      margin: 20px 0;
+    }
+    .tech-stack {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 15px;
+    }
+    .tech {
+      background-color: #0A2A43;
+      color: white;
+      padding: 5px 10px;
+      border-radius: 20px;
+      font-size: 14px;
+    }
+    .mcp-integration {
+      background-color: #f1f8ff;
+      border-left: 4px solid #00BCD4;
+      padding: 15px;
+      margin: 20px 0;
+    }
+  </style>
+</head>
+<body>
+  <h1>Softworks Trading Website</h1>
+  
+  <p>
+    This is a summary page for the Softworks Trading Web project. 
+    The actual website is built with React, TypeScript, and Tailwind CSS, 
+    and features AI integration with OpenAI, ElevenLabs, and Google Gemini.
+  </p>
+
+  <div class="section">
+    <h2>Website Pages & Features</h2>
+    
+    <div class="feature">
+      <div class="feature-icon">🏠</div>
+      <div class="feature-content">
+        <h3>Home Page</h3>
+        <p>
+          The home page features a hero section with a call to action, services section, 
+          how it works section, testimonials, and blog highlights. It has a deep navy 
+          color scheme with cyan accents.
+        </p>
+      </div>
+    </div>
+    
+    <div class="feature">
+      <div class="feature-icon">💼</div>
+      <div class="feature-content">
+        <h3>Services Section</h3>
+        <p>
+          Displays three main services: AI Strategy Consultation, Rapid Automation Deployment, 
+          and Founder's Workflow Coaching.
+        </p>
+      </div>
+    </div>
+    
+    <div class="feature">
+      <div class="feature-icon">📝</div>
+      <div class="feature-content">
+        <h3>Blog/Insights</h3>
+        <p>
+          Features a collection of articles on AI automation, productivity, 
+          and business transformation topics.
+        </p>
+      </div>
+    </div>
+    
+    <div class="feature">
+      <div class="feature-icon">📞</div>
+      <div class="feature-content">
+        <h3>Contact Section</h3>
+        <p>
+          A contact form with CSRF protection and validation that sends messages 
+          to the backend API.
+        </p>
+      </div>
+    </div>
+    
+    <div class="feature">
+      <div class="feature-icon">🤖</div>
+      <div class="feature-content">
+        <h3>AI Chat Integration</h3>
+        <p>
+          Integrated AI assistants powered by OpenAI GPT models with fallback to Google Gemini. 
+          Includes both text chat and voice call options.
+        </p>
+      </div>
+    </div>
+    
+    <div class="feature">
+      <div class="feature-icon">📃</div>
+      <div class="feature-content">
+        <h3>Policy Pages</h3>
+        <p>
+          Legal policy pages including Privacy Policy, Terms of Service, and Cookie Policy.
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <h2>Technology Stack</h2>
+    
+    <div class="tech-stack">
+      <span class="tech">React</span>
+      <span class="tech">TypeScript</span>
+      <span class="tech">Tailwind CSS</span>
+      <span class="tech">Vite</span>
+      <span class="tech">Express</span>
+      <span class="tech">OpenAI API</span>
+      <span class="tech">ElevenLabs</span>
+      <span class="tech">Google Gemini</span>
+      <span class="tech">CSRF Protection</span>
+      <span class="tech">SEO Optimization</span>
+    </div>
+    
+    <h3>Frontend Components:</h3>
+    <ul>
+      <li>React components for all UI elements</li>
+      <li>Tailwind UI components for consistent styling</li>
+      <li>Responsive design with mobile-first approach</li>
+      <li>Dark mode support</li>
+      <li>Animations and transitions</li>
+    </ul>
+    
+    <h3>Backend Services:</h3>
+    <ul>
+      <li>Express server for API endpoints</li>
+      <li>AI service integration for chat and voice</li>
+      <li>Security middleware for CSRF protection</li>
+      <li>Static file serving</li>
+    </ul>
+  </div>
+
+  <div class="section">
+    <h2>MCP Integration</h2>
+    
+    <div class="mcp-integration">
+      <h3>Model Context Protocol (MCP) Support</h3>
+      <p>
+        The project includes integrated support for Model Context Protocol (MCP), enabling 
+        enhanced AI-powered development workflows with Claude Code.
+      </p>
+      
+      <h4>Available MCP Servers:</h4>
+      <ul>
+        <li><strong>typescript</strong>: Execute TypeScript code directly</li>
+        <li><strong>node</strong>: Run JavaScript files and Node.js scripts</li>
+        <li><strong>puppeteer</strong>: Automate browser testing</li>
+        <li><strong>desktop-commander</strong>: Manage files and project structure</li>
+        <li><strong>react-tools</strong>: Analyze and optimize React components</li>
+        <li><strong>openai</strong>: Access OpenAI APIs</li>
+        <li><strong>elevenlabs</strong>: Voice generation capabilities</li>
+        <li><strong>gemini</strong>: Access Google Gemini for multimodal AI features</li>
+      </ul>
+      
+      <h4>MCP Configuration</h4>
+      <p>
+        The <code>.mcp.json</code> file configures all MCP servers, and the project includes 
+        scripts for setting up and using MCP servers for development and testing.
+      </p>
+    </div>
+  </div>
+  
+  <div class="section">
+    <h2>AI Integration</h2>
+    
+    <h3>Integrated AI Services:</h3>
+    <ul>
+      <li><strong>OpenAI GPT</strong>: Primary chat model with fallback system</li>
+      <li><strong>OpenAI TTS</strong>: Text-to-speech for voice responses</li>
+      <li><strong>ElevenLabs</strong>: High-quality voice generation (alternative)</li>
+      <li><strong>Google Gemini</strong>: Alternative model for chat responses</li>
+    </ul>
+    
+    <h3>Fallback System:</h3>
+    <p>
+      The system implements a robust fallback chain to ensure reliability:
+    </p>
+    <ul>
+      <li>If the primary service fails, it falls back to alternative services</li>
+      <li>If all AI services fail, it provides a graceful error message</li>
+      <li>Development mode offers mock responses for testing without API keys</li>
+    </ul>
+  </div>
+</body>
+</html>

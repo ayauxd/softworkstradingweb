@@ -1,5 +1,6 @@
 import { Button } from '@/components/ui/button';
-import { lazy, Suspense, useEffect, useState } from 'react';
+import { useEffect, useState, useCallback } from 'react';
+import { withMemo } from '@/components/ui/memo-wrapper';
 
 // Import animation SVG with a more reliable path
 // First try direct import, then fallback to a public URL
@@ -52,7 +53,7 @@ const HeroSection = ({ onTalkToAgent }: HeroSectionProps) => {
       });
   }, []);
 
-  const scrollToContact = () => {
+  const scrollToContact = useCallback(() => {
     const contactSection = document.getElementById('contact');
     if (contactSection) {
       const offsetTop = contactSection.getBoundingClientRect().top + window.pageYOffset - 80;
@@ -61,7 +62,7 @@ const HeroSection = ({ onTalkToAgent }: HeroSectionProps) => {
         behavior: 'smooth',
       });
     }
-  };
+  }, []);
 
   return (
     <section
@@ -166,4 +167,4 @@ const HeroSection = ({ onTalkToAgent }: HeroSectionProps) => {
   );
 };
 
-export default HeroSection;
+export default withMemo(HeroSection, 'HeroSection');

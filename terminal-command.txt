@@ -1,0 +1,8 @@
+# Run this command in your terminal to serve the application:
+cd /Users/fredpro/SoftworksTradingWeb && npx serve -s dist/public -p 5000
+
+# This will start a simple HTTP server on port 5000
+# You can then open your browser to: http://localhost:5000
+
+# If you don't have 'serve' installed, you can install it with:
+# npm install -g serve

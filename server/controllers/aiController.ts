@@ -34,12 +34,26 @@ export const aiController = {
       // Return a more detailed error message if available
       const errorMessage = error instanceof Error ? error.message : 'Unknown error';
       
-      // Return a graceful error response with the conversation ID preserved
+      // Add additional debug info
+      const debugInfo = {
+        apiConfigured: {
+          openai: !!process.env.OPENAI_API_KEY,
+          gemini: !!process.env.GEMINI_API_KEY
+        },
+        environment: process.env.NODE_ENV,
+        received: {
+          messageLength: req.body.message ? req.body.message.length : 0,
+          hasConversationId: !!req.body.conversationId
+        }
+      };
+      
+      // Return a graceful error response with the conversation ID preserved and debug info
       res.status(500).json({ 
         error: 'Failed to process chat message', 
         details: errorMessage,
-        conversationId: conversationId, // Return the conversation ID even on error
-        success: false
+        conversationId: req.body.conversationId || '', // Return the conversation ID even on error
+        success: false,
+        debug: process.env.NODE_ENV !== 'production' ? debugInfo : undefined
       });
     }
   },

@@ -1,26 +1,32 @@
 import { Request, Response } from 'express';
-import { apiService } from '../services/apiService';
+import { aiConfig } from '../config';
 
 /**
- * API controller with methods for handling API endpoints
+ * API status controller 
+ * Provides endpoints to check the status of various API integrations
  */
 export const apiController = {
   /**
-   * Get health status of the API
+   * Check status of all APIs
+   * Returns status information for all configured APIs
    */
-  healthCheck: (req: Request, res: Response) => {
-    res.json({ status: 'ok', timestamp: new Date().toISOString() });
-  },
+  getApiStatus: async (req: Request, res: Response) => {
+    const status = {
+      openai: {
+        configured: aiConfig.openai.isConfigured,
+        status: aiConfig.openai.isConfigured ? 'available' : 'not_configured'
+      },
+      elevenlabs: {
+        configured: aiConfig.elevenlabs.isConfigured,
+        status: aiConfig.elevenlabs.isConfigured ? 'available' : 'not_configured'
+      },
+      gemini: {
+        configured: aiConfig.gemini.isConfigured,
+        status: aiConfig.gemini.isConfigured ? 'available' : 'not_configured'
+      },
+      timestamp: new Date().toISOString()
+    };
 
-  /**
-   * Example endpoint for future implementation
-   */
-  exampleEndpoint: async (req: Request, res: Response) => {
-    try {
-      const result = await apiService.exampleMethod();
-      res.json(result);
-    } catch (error) {
-      res.status(500).json({ error: 'An error occurred' });
-    }
+    res.json(status);
   }
 };

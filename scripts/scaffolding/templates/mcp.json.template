@@ -1,0 +1,37 @@
+{
+  "name": "{{PROJECT_NAME}} MCP Configuration",
+  "description": "MCP servers for the {{PROJECT_NAME}} project",
+  "version": "1.0.0",
+  "servers": [
+    {
+      "name": "typescript",
+      "command": "npx tsx",
+      "description": "TypeScript execution for testing and development"
+    },
+    {
+      "name": "puppeteer",
+      "command": "puppeteer-mcp-server",
+      "description": "Browser automation for testing frontend UI"
+    },
+    {
+      "name": "node",
+      "command": "node",
+      "description": "Node.js execution for testing server components"
+    },
+    {
+      "name": "desktop-commander",
+      "command": "desktop-commander-mcp-server",
+      "description": "File system operations and project structure management"
+    }{% if AI_SERVICES %}{% for service in AI_SERVICES %},
+    {
+      "name": "{{service.name}}",
+      "command": "{{service.command}}",
+      "description": "{{service.description}}"{% if service.env %},
+      "env": {{service.env}}{% endif %}
+    }{% endfor %}{% endif %}
+  ],
+  "documentation": {
+    "url": "https://github.com/anthropics/claude-code/blob/main/docs/mcp.md",
+    "usage": "Use Claude with --with flag to access MCP capabilities"
+  }
+}

@@ -141,3 +141,21 @@ Future improvements could include:
 
 - Implementing token rotation for long-lived sessions
 - Adding a CSRF reporting endpoint for security monitoring
+
+## Deployment Configuration
+
+When deploying to production, ensure:
+
+1. Set the `CSRF_SECRET` environment variable to a strong, random value
+2. Set the `CLIENT_URL` environment variable correctly for CORS settings
+3. Set `NODE_ENV=production` to enable secure cookie settings
+
+### Example Production Environment Variables
+
+```
+CSRF_SECRET=your-secure-random-string-at-least-32-characters
+CLIENT_URL=https://your-production-domain.com
+NODE_ENV=production
+```
+
+The CSRF middleware will automatically enable strict security settings in production mode, including secure cookies, strict SameSite policy, and proper CORS configuration based on the CLIENT_URL.

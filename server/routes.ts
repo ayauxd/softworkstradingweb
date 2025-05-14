@@ -7,8 +7,43 @@ import { contactFormSchema, subscriptionSchema } from "./schemas/api";
 import aiRoutes from "./routes/ai";
 import csrfRoutes from "./routes/csrf";
 import demoRoutes from "./routes/demo";
+import debugRoutes from "./routes/debug";
+
+// CORS middleware for handling cross-origin requests
+import cors from 'cors';
 
 export async function registerRoutes(app: Express): Promise<Server> {
+  // Configure CORS for all routes
+  app.use(cors({
+    origin: (origin, callback) => {
+      // Allow requests with no origin (like mobile apps, curl, etc)
+      if (!origin) return callback(null, true);
+      
+      // Allow all origins in development
+      if (process.env.NODE_ENV !== 'production') {
+        return callback(null, true);
+      }
+      
+      // In production, you'd want to be more restrictive
+      // This allows the current host plus localhost for testing
+      const allowedOrigins = [
+        'http://localhost:3000',
+        'http://localhost:5000',
+        'https://softworkstradingweb.onrender.com',
+      ];
+      
+      if (allowedOrigins.indexOf(origin) !== -1 || !origin) {
+        callback(null, true);
+      } else {
+        console.warn(`CORS blocked request from origin: ${origin}`);
+        callback(new Error('Not allowed by CORS'), false);
+      }
+    },
+    credentials: true, // Allow cookies to be sent with requests
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+    allowedHeaders: ['Content-Type', 'Authorization', 'X-CSRF-Token', 'X-Requested-With']
+  }));
+  
   // Health check endpoint
   app.get('/api/health', (req, res) => {
     res.json({ status: 'ok', timestamp: new Date().toISOString() });
@@ -98,6 +133,9 @@ export async function registerRoutes(app: Express): Promise<Server> {
   
   // Register Demo routes
   app.use('/api/demo', demoRoutes);
+  
+  // Register Debug routes (only available in development)
+  app.use('/api/debug', debugRoutes);
 
   const httpServer = createServer(app);
 

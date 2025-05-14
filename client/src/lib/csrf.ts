@@ -5,7 +5,7 @@
  */
 
 // Cache for the CSRF token
-let cachedToken: string | null = null;
+let cachedToken: string = '';
 let tokenTimestamp: number | null = null;
 const TOKEN_EXPIRY = 30 * 60 * 1000; // 30 minutes in milliseconds
 
@@ -40,8 +40,10 @@ export const fetchCSRFToken = async (retries: number = 2): Promise<string> => {
       return cachedToken;
     }
 
-    // Fetch a new token from the API
-    const response = await fetch('/api/csrf-token');
+    // Fetch a new token from the API with credentials included
+    const response = await fetch('/api/csrf-token', {
+      credentials: 'include' // Include cookies for CSRF validation
+    });
     
     if (!response.ok) {
       // If we're in production and CSRF endpoint is missing, generate a fallback token
@@ -61,9 +63,13 @@ export const fetchCSRFToken = async (retries: number = 2): Promise<string> => {
     }
     
     const data = await response.json();
-    cachedToken = data.csrfToken;
-    tokenTimestamp = Date.now();
-    return cachedToken;
+    if (data && typeof data.csrfToken === 'string') {
+      cachedToken = data.csrfToken;
+      tokenTimestamp = Date.now();
+      return cachedToken;
+    } else {
+      throw new Error('Invalid CSRF token format received from server');
+    }
   } catch (error) {
     console.error('Error fetching CSRF token:', error);
     
@@ -118,10 +124,8 @@ export const createCSRFInput = async (): Promise<HTMLInputElement> => {
  * @param fetchFn Original fetch function
  * @returns Wrapped fetch function with CSRF protection
  */
-export const withCSRF = <T extends (...args: any[]) => Promise<any>>(fetchFn: T): T => {
-  return (async (...args: Parameters<T>) => {
-    const [url, options = {}] = args as [string, RequestInit];
-    
+export const withCSRF = <T extends (url: string, options?: RequestInit) => Promise<any>>(fetchFn: T): T => {
+  return (async (url: string, options: RequestInit = {}) => {
     // Only add CSRF token for mutation operations
     const method = options.method?.toUpperCase() || 'GET';
     if (['POST', 'PUT', 'DELETE', 'PATCH'].includes(method)) {
@@ -138,7 +142,7 @@ export const withCSRF = <T extends (...args: any[]) => Promise<any>>(fetchFn: T)
     }
     
     // Pass through for safe methods
-    return fetchFn(...args);
+    return fetchFn(url, options);
   }) as T;
 };
 

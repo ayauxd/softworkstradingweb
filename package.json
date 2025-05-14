@@ -6,6 +6,8 @@
   "scripts": {
     "deploy:render": "node scripts/render-deploy-helper.js",
     "dev": "NODE_ENV=development npx tsx server/index.ts",
+    "dev:debug": "NODE_ENV=development DEBUG=api:* npx tsx server/index.ts",
+    "start:debug": "NODE_ENV=production PORT=5000 DEBUG=api:* npx tsx server/index.ts",
     "prebuild": "node ensure-data.js",
     "build": "node build.js",
     "start": "NODE_ENV=production node dist/server/render-server.js",

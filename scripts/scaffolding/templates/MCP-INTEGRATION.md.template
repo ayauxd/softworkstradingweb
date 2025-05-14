@@ -1,0 +1,151 @@
+# Model Context Protocol (MCP) Integration
+
+This project includes integrated support for [Model Context Protocol (MCP)](https://github.com/anthropics/claude-code/blob/main/docs/mcp.md), enabling enhanced AI-powered development workflows with Claude Code.
+
+## What is MCP?
+
+MCP (Model Context Protocol) allows Claude to interact with external tools and services, enhancing its capabilities. With MCP, Claude can:
+
+- Execute TypeScript/JavaScript code
+- Automate browser interactions with Puppeteer
+- Run system commands and manage files
+- Interact with project-specific tools and APIs
+{% if AI_SERVICES %}
+- Connect with AI services for specialized tasks
+{% endif %}
+
+## Available MCP Servers
+
+This project has been pre-configured with the following MCP servers:
+
+### Core Development Servers
+
+- **typescript**: Execute TypeScript code directly
+- **node**: Run JavaScript files and Node.js scripts
+- **puppeteer**: Automate browser testing and screenshot capture
+- **desktop-commander**: Manage files and project structure
+
+{% if REACT %}
+### Frontend Development Servers
+
+- **react-tools**: Analyze and optimize React components
+{% endif %}
+
+{% if AI_SERVICES %}
+### AI Integration Servers
+
+{% for service in AI_SERVICES %}
+- **{{service.name}}**: {{service.description}}
+{% endfor %}
+{% endif %}
+
+## Getting Started with MCP
+
+### 1. Install Required Tools
+
+Run the provided setup script to install all required MCP servers:
+
+```bash
+npm run setup-mcp
+```
+
+This will:
+- Install all required packages globally
+- Configure MCP servers with Claude
+- Set up environment variables (if needed)
+
+### 2. Using MCP with Claude
+
+To use Claude with MCP capabilities:
+
+```bash
+# Use all available MCP servers
+claude --with all
+
+# Use specific MCP servers
+claude --with typescript,puppeteer
+
+# View available MCP servers
+claude mcp list
+```
+
+### 3. Development Workflow
+
+The project includes the following MCP-powered development scripts:
+
+```bash
+# Run MCP-powered development environment
+npm run mcp-dev
+
+# Run automated tests with MCP assistance
+npm run mcp-test
+```
+
+## Example MCP Use Cases
+
+### TypeScript Execution
+
+Claude can directly execute TypeScript code to test functions or prototype features:
+
+```
+claude --with typescript
+
+> Write a function to validate email addresses, then test it with various examples
+```
+
+### UI Testing with Puppeteer
+
+Automatically test UI components and capture screenshots:
+
+```
+claude --with puppeteer
+
+> Test the responsive design of our homepage by capturing screenshots at different viewport sizes
+```
+
+{% if AI_SERVICES %}
+### AI Service Integration
+
+Connect with integrated AI services:
+
+```
+{% for service in AI_SERVICES %}
+claude --with {{service.name}}
+
+> {{service.example_prompt}}
+{% endfor %}
+```
+{% endif %}
+
+## Customizing MCP Configuration
+
+To modify the MCP configuration:
+
+1. Edit the `.mcp.json` file in the project root
+2. Add or remove servers as needed
+3. Run `npm run setup-mcp` to apply changes
+
+## Troubleshooting
+
+If you encounter issues with MCP servers:
+
+1. Check if the server is properly installed:
+   ```bash
+   claude mcp list
+   ```
+
+2. Ensure required packages are installed:
+   ```bash
+   npm run setup-mcp
+   ```
+
+3. Verify environment variables (if applicable):
+   ```bash
+   # Check environment variables for AI services
+   echo $SOME_API_KEY
+   ```
+
+4. Launch Claude with debug logging:
+   ```bash
+   claude --with <server> --mcp-debug
+   ```

@@ -1,0 +1,122 @@
+/**
+ * Example AI Service MCP Usage
+ * 
+ * This file demonstrates how to use AI service MCP servers like OpenAI or Google Gemini.
+ * To run this example, use: claude --with openai,gemini
+ */
+
+// NOTE: The actual imports depend on which AI service MCP servers are configured
+// import openai from 'openai-mcp-server';
+// import gemini from 'gemini-mcp-server';
+
+/**
+ * Example function showing how to use OpenAI MCP for content generation
+ * This requires the OpenAI MCP server to be installed and configured
+ */
+async function generateWithOpenAI(prompt) {
+  console.log(`🤖 Generating content with OpenAI: "${prompt}"`);
+  
+  try {
+    // When using MCP, Claude will automatically replace this with actual implementation
+    // const response = await openai.createChatCompletion({
+    //   model: "gpt-3.5-turbo",
+    //   messages: [{ role: "user", content: prompt }],
+    //   temperature: 0.7,
+    //   max_tokens: 500
+    // });
+    
+    // const content = response.choices[0].message.content;
+    const content = "Sample response - this will be replaced by actual AI content when run with MCP";
+    
+    console.log("✅ Generation successful");
+    console.log("📄 Result:", content);
+    return content;
+  } catch (error) {
+    console.error("❌ OpenAI generation failed:", error);
+    return null;
+  }
+}
+
+/**
+ * Example function showing how to use Gemini MCP for content generation
+ * This requires the Gemini MCP server to be installed and configured
+ */
+async function generateWithGemini(prompt) {
+  console.log(`🧠 Generating content with Gemini: "${prompt}"`);
+  
+  try {
+    // When using MCP, Claude will automatically replace this with actual implementation
+    // const response = await gemini.generateContent({
+    //   prompt: prompt,
+    //   temperature: 0.7,
+    //   maxOutputTokens: 500
+    // });
+    
+    const content = "Sample response - this will be replaced by actual AI content when run with MCP";
+    
+    console.log("✅ Generation successful");
+    console.log("📄 Result:", content);
+    return content;
+  } catch (error) {
+    console.error("❌ Gemini generation failed:", error);
+    return null;
+  }
+}
+
+/**
+ * Example function showing a fallback chain between AI services
+ */
+async function generateWithFallback(prompt) {
+  console.log(`🔄 Generating content with fallback: "${prompt}"`);
+  
+  try {
+    // Try primary service first
+    const primaryResult = await generateWithOpenAI(prompt);
+    if (primaryResult) {
+      return { text: primaryResult, provider: "openai" };
+    }
+    
+    // Fallback to secondary service
+    console.log("⚠️ Primary service failed, trying fallback...");
+    const secondaryResult = await generateWithGemini(prompt);
+    if (secondaryResult) {
+      return { text: secondaryResult, provider: "gemini" };
+    }
+    
+    // All services failed
+    console.error("❌ All services failed");
+    return { 
+      text: "Sorry, I am unable to process your request at this time.",
+      provider: "none"
+    };
+  } catch (error) {
+    console.error("❌ Unexpected error:", error);
+    return { 
+      text: "An unexpected error occurred.",
+      provider: "error"
+    };
+  }
+}
+
+// Sample prompts to test
+const prompts = [
+  "Write a short paragraph about cloud computing.",
+  "List 3 benefits of containerization.",
+  "Explain microservices architecture in simple terms."
+];
+
+// Run test with the first prompt
+generateWithFallback(prompts[0]);
+
+/**
+ * Claude MCP Interaction Examples:
+ * 
+ * 1. Implementing different AI capabilities:
+ *    > Implement image generation using DALL-E with the OpenAI MCP
+ * 
+ * 2. Creating specialized models:
+ *    > Create a function that uses AI to summarize technical documentation
+ * 
+ * 3. Comparing services:
+ *    > Generate responses with both services and compare their outputs
+ */

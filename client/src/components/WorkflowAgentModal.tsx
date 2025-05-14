@@ -4,7 +4,8 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
-import { Send, X, Phone, MessageSquare } from "lucide-react";
+import { Send, X, Phone, MessageSquare, AlertCircle } from "lucide-react";
+import ApiDebugPanel from "./ApiDebugPanel";
 import { useToast } from "@/hooks/use-toast";
 import { cn } from "@/lib/utils";
 import { aiService } from "@/lib/aiService";
@@ -47,8 +48,9 @@ const WorkflowAgentModal = ({
   onModeChange 
 }: WorkflowAgentModalProps) => {
   const { toast } = useToast();
-  const [activeTab, setActiveTab] = useState<"none" | "chat" | "call">(initialMode === 'none' ? 'none' : initialMode);
+  const [activeTab, setActiveTab] = useState<"none" | "chat" | "call" | "debug">(initialMode === 'none' ? 'none' : initialMode);
   const [showCallbackForm, setShowCallbackForm] = useState(false);
+  const [showDebugPanel, setShowDebugPanel] = useState(false);
   const [chatInput, setChatInput] = useState("");
   // Initialize messages from localStorage if available, otherwise use default welcome message
   const [messages, setMessages] = useState<Array<{from: string, text: string}>>(() => {
@@ -64,7 +66,7 @@ const WorkflowAgentModal = ({
     // Return default welcome message if no saved messages or error parsing
     return [{ 
       from: "agent", 
-      text: "Hello! I'm your Softworks Trading workflow agent. How can I help you automate your business processes today?" 
+      text: "Hello! I'm your workflow agent. How can I help you today?" 
     }];
   });
   const [callbackForm, setCallbackForm] = useState({
@@ -155,7 +157,17 @@ const WorkflowAgentModal = ({
         // Generate and play voice response
         aiService.generateVoiceAudio(response.text).then(voiceResponse => {
           if (voiceResponse.success && voiceResponse.audioData) {
-            aiService.playAudio(voiceResponse.audioData);
+            aiService.playAudio(voiceResponse.audioData)
+              .then(playbackSuccess => {
+                if (!playbackSuccess) {
+                  console.warn("Voice playback failed, but continuing with chat");
+                }
+              });
+            
+            // If this is a mock response, log it for debugging
+            if (voiceResponse.provider === 'mock') {
+              console.log(`Using mock voice response of type: ${voiceResponse.responseType || 'unknown'}`);
+            }
           }
         }).catch(error => {
           console.error("Error generating voice response:", error);
@@ -218,7 +230,7 @@ const WorkflowAgentModal = ({
       setIsVoiceCallActive(true);
       
       // Initialize the call with a welcome message
-      const welcomeMessage = "Hello! I'm your Softworks Trading workflow agent. How can I help you automate your business processes today?";
+      const welcomeMessage = "Hello! I'm your workflow agent. How can I help you today?";
       
       // Add message to the call history
       setVoiceCallMessages([{
@@ -229,10 +241,21 @@ const WorkflowAgentModal = ({
       // Generate and play welcome voice message
       aiService.generateVoiceAudio(welcomeMessage).then(response => {
         if (response.success && response.audioData) {
-          aiService.playAudio(response.audioData);
+          aiService.playAudio(response.audioData)
+            .then(playbackSuccess => {
+              if (!playbackSuccess) {
+                console.warn("Welcome voice playback failed, but continuing with call");
+              }
+            });
+            
+          // If this is a mock response, log it for debugging
+          if (response.provider === 'mock') {
+            console.log(`Using mock welcome voice response of type: ${response.responseType || 'unknown'}`);
+          }
         }
       }).catch(error => {
         console.error("Error generating welcome voice:", error);
+        // Continue with call even if voice fails - fault tolerance
       });
       
       // Start countdown timer (3 minutes)
@@ -389,7 +412,16 @@ const WorkflowAgentModal = ({
           try {
             const voiceResponse = await aiService.generateVoiceAudio(response.text);
             if (voiceResponse.success && voiceResponse.audioData) {
-              aiService.playAudio(voiceResponse.audioData);
+              const playbackSuccess = await aiService.playAudio(voiceResponse.audioData);
+              
+              if (!playbackSuccess) {
+                console.warn("Voice playback failed in chat, but continuing with text response");
+              }
+              
+              // If this is a mock response, log it for debugging
+              if (voiceResponse.provider === 'mock') {
+                console.log(`Using mock voice response in chat of type: ${voiceResponse.responseType || 'unknown'}`);
+              }
             }
           } catch (voiceError) {
             console.error("Error generating voice response:", voiceError);
@@ -617,6 +649,23 @@ const WorkflowAgentModal = ({
                   </span>
                 </Button>
               </div>
+              
+              {/* Debug button only in development (non-production) */}
+              {window.location.hostname === 'localhost' && (
+                <div className="mt-4">
+                  <Button 
+                    onClick={() => setShowDebugPanel(!showDebugPanel)}
+                    variant="outline"
+                    className="w-full text-xs text-gray-500 dark:text-gray-400"
+                    size="sm"
+                  >
+                    <AlertCircle className="h-3 w-3 mr-1" />
+                    {showDebugPanel ? 'Hide' : 'Show'} API Debug Panel
+                  </Button>
+                  
+                  {showDebugPanel && <ApiDebugPanel />}
+                </div>
+              )}
             </div>
           </>
         )}

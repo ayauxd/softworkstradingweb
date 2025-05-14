@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Softworks Trading Company - AI Chat</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f9fafc;
+        }
+        .chat-container {
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            height: 70vh;
+        }
+        .chat-header {
+            background-color: #0A2A43;
+            color: white;
+            padding: 15px 20px;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+        }
+        .chat-header img {
+            height: 30px;
+            margin-right: 10px;
+        }
+        .chat-messages {
+            flex: 1;
+            padding: 20px;
+            overflow-y: auto;
+        }
+        .message {
+            margin-bottom: 15px;
+            display: flex;
+        }
+        .message.user {
+            justify-content: flex-end;
+        }
+        .message-content {
+            padding: 10px 15px;
+            border-radius: 18px;
+            max-width: 70%;
+        }
+        .user .message-content {
+            background-color: #00BCD4;
+            color: #0A2A43;
+            border-bottom-right-radius: 4px;
+        }
+        .assistant .message-content {
+            background-color: #f1f1f1;
+            border-bottom-left-radius: 4px;
+        }
+        .chat-input {
+            display: flex;
+            padding: 15px;
+            border-top: 1px solid #ddd;
+            background-color: white;
+        }
+        .chat-input input {
+            flex: 1;
+            padding: 10px 15px;
+            border: 1px solid #ddd;
+            border-radius: 20px;
+            outline: none;
+            font-size: 16px;
+        }
+        .chat-input button {
+            background-color: #00BCD4;
+            color: white;
+            border: none;
+            border-radius: 20px;
+            padding: 10px 20px;
+            margin-left: 10px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+        .chat-input button:hover {
+            background-color: #0097A7;
+        }
+        .thinking {
+            font-style: italic;
+            color: #888;
+            padding: 10px 20px;
+            margin-bottom: 10px;
+        }
+        .typing-indicator {
+            display: flex;
+            align-items: center;
+        }
+        .typing-indicator span {
+            height: 8px;
+            width: 8px;
+            border-radius: 50%;
+            background-color: #888;
+            display: inline-block;
+            margin-right: 3px;
+            animation: bounce 1.2s infinite;
+        }
+        .typing-indicator span:nth-child(2) {
+            animation-delay: 0.2s;
+        }
+        .typing-indicator span:nth-child(3) {
+            animation-delay: 0.4s;
+        }
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-4px); }
+        }
+        .connection-error {
+            background-color: #ffeeee;
+            color: #cc0000;
+            padding: 10px;
+            border-radius: 8px;
+            margin: 10px 0;
+            font-size: 14px;
+        }
+        .suggestion-chips {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: 15px;
+        }
+        .suggestion-chip {
+            background-color: #e6f7fa;
+            color: #0A2A43;
+            padding: 6px 12px;
+            border-radius: 16px;
+            font-size: 14px;
+            cursor: pointer;
+            border: 1px solid #00BCD4;
+            transition: all 0.2s;
+        }
+        .suggestion-chip:hover {
+            background-color: #00BCD4;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <div class="chat-container">
+        <div class="chat-header">
+            <span>Softworks Trading Company - AI Assistant</span>
+        </div>
+        <div class="chat-messages" id="chat-messages">
+            <div class="message assistant">
+                <div class="message-content">
+                    Hello! I'm here to help you implement practical, no-code AI solutions that save time and scale operations for entrepreneurs and SMEs. As Softworks Trading Company's workflow agent, I can assist with automating repetitive processes across services like professional services, e-commerce, and consulting. What specific business challenges are you facing that AI might help solve?
+                    <div class="suggestion-chips">
+                        <div class="suggestion-chip" onclick="suggestTopic(this.textContent)">Customer Service Automation</div>
+                        <div class="suggestion-chip" onclick="suggestTopic(this.textContent)">Data Analysis</div>
+                        <div class="suggestion-chip" onclick="suggestTopic(this.textContent)">Workflow Optimization</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="thinking" class="thinking" style="display: none;">
+            <div class="typing-indicator">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+        <div class="chat-input">
+            <input type="text" id="message-input" placeholder="Type your message here...">
+            <button id="send-button">Send</button>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const messageInput = document.getElementById('message-input');
+            const sendButton = document.getElementById('send-button');
+            const chatMessages = document.getElementById('chat-messages');
+            const thinkingIndicator = document.getElementById('thinking');
+            
+            // Function to add a message to the chat
+            function addMessage(text, isUser, source = null) {
+                const messageDiv = document.createElement('div');
+                messageDiv.className = `message ${isUser ? 'user' : 'assistant'}`;
+                
+                const messageContent = document.createElement('div');
+                messageContent.className = 'message-content';
+                messageContent.textContent = text;
+                
+                messageDiv.appendChild(messageContent);
+                
+                chatMessages.appendChild(messageDiv);
+                chatMessages.scrollTop = chatMessages.scrollHeight;
+                
+                // Add suggestions after assistant messages
+                if (!isUser && Math.random() > 0.5) {
+                    addSuggestions(messageContent);
+                }
+            }
+            
+            // Function to add suggestion chips
+            function addSuggestions(messageElement) {
+                const suggestionsContainer = document.createElement('div');
+                suggestionsContainer.className = 'suggestion-chips';
+                
+                const suggestions = [
+                    ['Tell me more about services', 'How does AI implementation work?', 'What industries do you serve?'],
+                    ['AI for small business', 'Cost of services', 'Case studies'],
+                    ['Workflow automation', 'Data analysis tools', 'Contact information']
+                ];
+                
+                // Choose a random set of suggestions
+                const suggestionSet = suggestions[Math.floor(Math.random() * suggestions.length)];
+                
+                suggestionSet.forEach(suggestion => {
+                    const chip = document.createElement('div');
+                    chip.className = 'suggestion-chip';
+                    chip.textContent = suggestion;
+                    chip.onclick = function() { suggestTopic(suggestion); };
+                    suggestionsContainer.appendChild(chip);
+                });
+                
+                messageElement.appendChild(suggestionsContainer);
+            }
+            
+            // Global function for suggestion chips
+            window.suggestTopic = function(topic) {
+                addMessage(topic, true);
+                sendMessage(topic);
+            };
+            
+            // Function to send message to server
+            async function sendMessage(message) {
+                try {
+                    thinkingIndicator.style.display = 'block';
+                    
+                    // Add small random delay to simulate thinking (200-800ms)
+                    await new Promise(resolve => setTimeout(resolve, 200 + Math.random() * 600));
+                    
+                    const response = await fetch('http://localhost:5002/api/simulate-chat', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({ message })
+                    });
+                    
+                    if (!response.ok) {
+                        throw new Error(`Request failed with status ${response.status}`);
+                    }
+                    
+                    const data = await response.json();
+                    thinkingIndicator.style.display = 'none';
+                    
+                    addMessage(data.text, false);
+                    return data;
+                } catch (error) {
+                    console.error('Error sending message:', error);
+                    thinkingIndicator.style.display = 'none';
+                    
+                    const errorDiv = document.createElement('div');
+                    errorDiv.className = 'connection-error';
+                    errorDiv.textContent = 'Connection issue. Please try again in a moment.';
+                    chatMessages.appendChild(errorDiv);
+                    chatMessages.scrollTop = chatMessages.scrollHeight;
+                    
+                    return {
+                        text: "Connection issue. Please try again in a moment.",
+                        success: false
+                    };
+                }
+            }
+            
+            // Event listener for Send button
+            sendButton.addEventListener('click', function() {
+                const message = messageInput.value.trim();
+                if (message) {
+                    addMessage(message, true);
+                    messageInput.value = '';
+                    sendMessage(message);
+                }
+            });
+            
+            // Event listener for Enter key
+            messageInput.addEventListener('keydown', function(event) {
+                if (event.key === 'Enter') {
+                    const message = messageInput.value.trim();
+                    if (message) {
+                        addMessage(message, true);
+                        messageInput.value = '';
+                        sendMessage(message);
+                    }
+                }
+            });
+            
+            // Focus input field when page loads
+            messageInput.focus();
+        });
+    </script>
+</body>
+</html>

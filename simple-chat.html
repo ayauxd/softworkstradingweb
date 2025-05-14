@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simple AI Chat</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f5f5f5;
+        }
+        .container {
+            max-width: 500px;
+            margin: 20px auto;
+            padding: 20px;
+        }
+        .chat-container {
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+        .chat-header {
+            background-color: #0A2A43;
+            color: white;
+            padding: 15px;
+            font-weight: bold;
+        }
+        .chat-messages {
+            padding: 15px;
+            max-height: 400px;
+            overflow-y: auto;
+        }
+        .message {
+            padding: 8px 12px;
+            margin-bottom: 10px;
+            border-radius: 15px;
+            max-width: 80%;
+            word-break: break-word;
+        }
+        .user-message {
+            background-color: #DCF8C6;
+            margin-left: auto;
+        }
+        .bot-message {
+            background-color: #F0F0F0;
+        }
+        .chat-input {
+            display: flex;
+            padding: 10px;
+            border-top: 1px solid #e0e0e0;
+        }
+        .chat-input input {
+            flex: 1;
+            padding: 8px 12px;
+            border: 1px solid #ddd;
+            border-radius: 20px;
+            outline: none;
+        }
+        .chat-input button {
+            background-color: #0A2A43;
+            color: white;
+            border: none;
+            border-radius: 20px;
+            padding: 8px 15px;
+            margin-left: 8px;
+            cursor: pointer;
+        }
+        .loading {
+            text-align: center;
+            padding: 10px;
+            color: #888;
+        }
+        .voice-button {
+            background: none;
+            border: none;
+            color: #0A2A43;
+            cursor: pointer;
+            margin-top: 5px;
+            font-size: 12px;
+            padding: 3px 8px;
+            border-radius: 12px;
+            background-color: #f0f0f0;
+            display: inline-flex;
+            align-items: center;
+        }
+        .voice-button svg {
+            margin-right: 5px;
+            width: 14px;
+            height: 14px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="chat-container">
+            <div class="chat-header">
+                Softworks Trading Company - AI Assistant
+            </div>
+            <div class="chat-messages" id="chat-messages">
+                <div class="message bot-message">
+                    Hello! I'm here to help you learn about our AI solutions. How can I assist you today?
+                </div>
+            </div>
+            <div id="loading" class="loading" style="display: none;">Thinking...</div>
+            <div class="chat-input">
+                <input type="text" id="message-input" placeholder="Type your message..." autocomplete="off">
+                <button id="send-button">Send</button>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        const messagesContainer = document.getElementById('chat-messages');
+        const messageInput = document.getElementById('message-input');
+        const sendButton = document.getElementById('send-button');
+        const loadingIndicator = document.getElementById('loading');
+        
+        // Add initial message with voice button
+        addVoiceButton(messagesContainer.querySelector('.bot-message'));
+        
+        // Send message when the send button is clicked
+        sendButton.addEventListener('click', sendMessage);
+        
+        // Send message when Enter key is pressed
+        messageInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                sendMessage();
+            }
+        });
+        
+        // Function to add voice button to a message
+        function addVoiceButton(messageElement) {
+            const voiceButton = document.createElement('button');
+            voiceButton.className = 'voice-button';
+            voiceButton.innerHTML = `
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M11 5L6 9H2v6h4l5 4V5z"></path>
+                    <path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"></path>
+                </svg>
+                Speak
+            `;
+            
+            voiceButton.addEventListener('click', () => {
+                const text = messageElement.textContent.replace('Speak', '').trim();
+                generateVoice(text);
+            });
+            
+            messageElement.appendChild(voiceButton);
+        }
+        
+        // Function to generate voice for text
+        async function generateVoice(text) {
+            try {
+                const response = await fetch('http://localhost:5002/api/voice', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ text })
+                });
+                
+                const data = await response.json();
+                
+                if (data.success && data.audioData) {
+                    const audio = new Audio(data.audioData);
+                    audio.play();
+                }
+            } catch (error) {
+                console.error('Error generating voice:', error);
+                alert('Voice generation failed. Please try again.');
+            }
+        }
+        
+        // Function to send a message
+        async function sendMessage() {
+            const message = messageInput.value.trim();
+            
+            if (!message) return;
+            
+            // Clear input
+            messageInput.value = '';
+            
+            // Add user message to chat
+            const userMessageElement = document.createElement('div');
+            userMessageElement.className = 'message user-message';
+            userMessageElement.textContent = message;
+            messagesContainer.appendChild(userMessageElement);
+            
+            // Show loading indicator
+            loadingIndicator.style.display = 'block';
+            
+            try {
+                // Send message to server
+                const response = await fetch('http://localhost:5002/api/chat', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ message })
+                });
+                
+                const data = await response.json();
+                
+                // Hide loading indicator
+                loadingIndicator.style.display = 'none';
+                
+                // Add bot response to chat
+                const botMessageElement = document.createElement('div');
+                botMessageElement.className = 'message bot-message';
+                botMessageElement.textContent = data.text;
+                messagesContainer.appendChild(botMessageElement);
+                
+                // Add voice button to bot message
+                addVoiceButton(botMessageElement);
+                
+                // Scroll to bottom
+                messagesContainer.scrollTop = messagesContainer.scrollHeight;
+            } catch (error) {
+                console.error('Error sending message:', error);
+                
+                // Hide loading indicator
+                loadingIndicator.style.display = 'none';
+                
+                // Add error message
+                const errorMessageElement = document.createElement('div');
+                errorMessageElement.className = 'message bot-message';
+                errorMessageElement.style.backgroundColor = '#ffeeee';
+                errorMessageElement.textContent = 'Sorry, there was an error processing your message. Please try again.';
+                messagesContainer.appendChild(errorMessageElement);
+                
+                // Scroll to bottom
+                messagesContainer.scrollTop = messagesContainer.scrollHeight;
+            }
+        }
+    </script>
+</body>
+</html>

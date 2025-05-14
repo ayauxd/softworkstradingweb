@@ -1,0 +1,49 @@
+{
+  "name": "SoftworksTradingWeb MCP Configuration",
+  "description": "MCP servers for the Softworks Trading Web project",
+  "version": "1.0.0",
+  "servers": [
+    {
+      "name": "typescript",
+      "command": "npx tsx",
+      "description": "TypeScript execution for testing and development"
+    },
+    {
+      "name": "puppeteer",
+      "command": "puppeteer-mcp-server",
+      "description": "Browser automation for testing frontend UI"
+    },
+    {
+      "name": "node",
+      "command": "node",
+      "description": "Node.js execution for testing server components"
+    },
+    {
+      "name": "react-tools",
+      "command": "npx -p @dogtiti/vite-plugin-react-mcp vite-plugin-react-mcp",
+      "description": "React component analysis and optimization"
+    },
+    {
+      "name": "elevenlabs",
+      "command": "@angelogiacco/elevenlabs-mcp-server",
+      "description": "ElevenLabs voice generation integration"
+    },
+    {
+      "name": "openai",
+      "command": "openai-mcp-server",
+      "description": "OpenAI API integration"
+    },
+    {
+      "name": "gemini",
+      "command": "node scripts/create-gemini-mcp.js",
+      "description": "Google Gemini API integration",
+      "env": {
+        "GEMINI_API_KEY": "${GEMINI_API_KEY}"
+      }
+    }
+  ],
+  "documentation": {
+    "url": "https://github.com/anthropics/claude-code/blob/main/docs/mcp.md",
+    "usage": "Use Claude with --with flag to access MCP capabilities"
+  }
+}

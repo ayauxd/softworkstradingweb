@@ -1,0 +1,28 @@
+# MCP-related targets to be included in the main Makefile
+
+# Install and configure MCP servers
+setup-mcp:
+	@echo "Setting up MCP servers..."
+	@node scripts/setup-mcp.js
+
+# Run development with MCP capabilities
+mcp-dev: setup-mcp
+	@echo "Starting development environment with MCP capabilities..."
+	@claude --with all --cd $(PWD)
+
+# Run tests with MCP assistance
+mcp-test: setup-mcp
+	@echo "Running tests with MCP assistance..."
+	@claude --with typescript,puppeteer,node --cd $(PWD) --script scripts/run-mcp-tests.js
+
+# Generate documentation with AI assistance
+mcp-docs: setup-mcp
+	@echo "Generating documentation with AI assistance..."
+	@claude --with openai,typescript --cd $(PWD) --script scripts/generate-docs.js
+
+# List available MCP servers
+mcp-list:
+	@echo "Listing available MCP servers..."
+	@claude mcp list
+
+.PHONY: setup-mcp mcp-dev mcp-test mcp-docs mcp-list

@@ -1,10 +1,43 @@
 import LogoIcon from "./LogoIcon";
 import { Mail, Phone, MapPin, Linkedin, Facebook, Instagram } from "lucide-react";
 import { SiX } from "react-icons/si";
+import { useState, useCallback } from 'react';
+import { withMemo } from './ui/memo-wrapper';
+
+// Chevron icon component to prevent duplication
+const ChevronIcon = withMemo(() => (
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    width="16"
+    height="16"
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="2"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+    className="text-cyan mr-2"
+    aria-hidden="true"
+  >
+    <polyline points="9 18 15 12 9 6"></polyline>
+  </svg>
+), 'ChevronIcon');
+
+// Define service list outside component to prevent recreation
+const SERVICES = [
+  "Rapid Automation Deployment", 
+  "Founders' Workflow Coaching", 
+  "AI Strategy Consultation", 
+  "Process Optimization", 
+  "AI Implementation"
+];
+
+// Define quick links outside component
+const QUICK_LINKS = ["home", "services", "testimonials", "insights", "contact"];
 
 const Footer = () => {
-  // Smooth scroll function
-  const scrollToSection = (id: string) => {
+  // Smooth scroll function with useCallback
+  const scrollToSection = useCallback((id: string) => {
     const element = document.getElementById(id);
     if (element) {
       const offsetTop = element.getBoundingClientRect().top + window.pageYOffset - 80;
@@ -13,7 +46,7 @@ const Footer = () => {
         behavior: "smooth"
       });
     }
-  };
+  }, []);
 
   return (
     <footer className="bg-navy-dark text-soft-white py-10 sm:py-12" role="contentinfo">
@@ -23,7 +56,7 @@ const Footer = () => {
           <div className="border-b border-gray-700 pb-6 sm:border-0 sm:pb-0">
             <h3 className="text-lg font-semibold mb-4 text-cyan-light">Quick Links</h3>
             <ul className="grid grid-cols-2 sm:grid-cols-1 gap-y-2">
-              {["home", "services", "testimonials", "insights", "contact"].map((link) => (
+              {QUICK_LINKS.map((link) => (
                 <li key={link}>
                   <a 
                     href={`#${link}`} 
@@ -56,13 +89,7 @@ const Footer = () => {
           <div className="border-b border-gray-700 pb-6 sm:border-0 sm:pb-0">
             <h3 className="text-lg font-semibold mb-4 text-cyan-light">Services</h3>
             <ul className="space-y-2">
-              {[
-                "Rapid Automation Deployment", 
-                "Founders' Workflow Coaching", 
-                "AI Strategy Consultation", 
-                "Process Optimization", 
-                "AI Implementation"
-              ].map((service) => (
+              {SERVICES.map((service) => (
                 <li key={service}>
                   <a 
                     href="#services" 
@@ -178,4 +205,4 @@ const Footer = () => {
   );
 };
 
-export default Footer;
+export default withMemo(Footer, 'Footer');

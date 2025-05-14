@@ -1,0 +1,63 @@
+/**
+ * Example TypeScript MCP Usage
+ * 
+ * This file demonstrates how to use the TypeScript MCP server for testing and development.
+ * To run this example, use: claude --with typescript
+ */
+
+// Sample TypeScript function
+function validateInput(input: string, type: 'email' | 'phone' | 'url'): boolean {
+  const patterns = {
+    email: /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
+    phone: /^\+?[1-9]\d{9,14}$/,
+    url: /^(https?:\/\/)?([\da-z\.-]+)\.([a-z\.]{2,6})([\/\w \.-]*)*\/?$/
+  };
+  
+  return patterns[type].test(input);
+}
+
+// Sample data to test
+const testCases = [
+  { input: 'user@example.com', type: 'email' as const, expected: true },
+  { input: 'invalid-email', type: 'email' as const, expected: false },
+  { input: '+12125551234', type: 'phone' as const, expected: true },
+  { input: '123', type: 'phone' as const, expected: false },
+  { input: 'https://example.com', type: 'url' as const, expected: true },
+  { input: 'not a url', type: 'url' as const, expected: false }
+];
+
+// Run tests
+console.log('🧪 Testing input validation function:');
+console.log('==================================');
+
+let passed = 0;
+let failed = 0;
+
+for (const testCase of testCases) {
+  const result = validateInput(testCase.input, testCase.type);
+  const success = result === testCase.expected;
+  
+  if (success) {
+    passed++;
+    console.log(`✅ PASS: ${testCase.input} (${testCase.type}) => ${result}`);
+  } else {
+    failed++;
+    console.log(`❌ FAIL: ${testCase.input} (${testCase.type}) => ${result}, expected ${testCase.expected}`);
+  }
+}
+
+console.log('==================================');
+console.log(`Test Results: ${passed} passed, ${failed} failed`);
+
+/**
+ * Claude MCP Interaction Examples:
+ * 
+ * 1. Adding new validation patterns:
+ *    > Add a new validation pattern for postal codes to the validateInput function
+ * 
+ * 2. Creating test utilities:
+ *    > Create a test runner function that can be reused for different validation functions
+ * 
+ * 3. Fixing bugs:
+ *    > The phone regex doesn't properly validate international numbers - please fix it
+ */

@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simple Chat Test</title>
+</head>
+<body>
+    <h1>Simple Chat Test</h1>
+    <div>
+        <button id="testButton">Test Chat API</button>
+        <div id="result" style="margin-top: 20px; padding: 10px; border: 1px solid #ccc;"></div>
+    </div>
+
+    <script>
+        document.getElementById('testButton').addEventListener('click', async () => {
+            const resultDiv = document.getElementById('result');
+            resultDiv.textContent = 'Testing API...';
+            
+            try {
+                const response = await fetch('http://localhost:5002/api/simulate-chat', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ message: 'Tell me about your services' })
+                });
+                
+                if (!response.ok) {
+                    throw new Error(`HTTP error! Status: ${response.status}`);
+                }
+                
+                const data = await response.json();
+                resultDiv.textContent = 'API Response: ' + JSON.stringify(data, null, 2);
+            } catch (error) {
+                resultDiv.textContent = 'Error: ' + error.message;
+                console.error('Error testing API:', error);
+            }
+        });
+    </script>
+</body>
+</html>

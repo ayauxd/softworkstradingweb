@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Chat Demo</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f8f9fa;
+        }
+        .chat-container {
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            overflow: hidden;
+            background-color: white;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        .chat-header {
+            background-color: #0A2A43;
+            color: white;
+            padding: 15px;
+            font-weight: bold;
+            font-size: 18px;
+        }
+        .chat-messages {
+            height: 350px;
+            overflow-y: auto;
+            padding: 15px;
+        }
+        .message {
+            margin-bottom: 15px;
+            padding: 10px 15px;
+            border-radius: 20px;
+            max-width: 80%;
+        }
+        .user-message {
+            background-color: #e3f2fd;
+            margin-left: auto;
+            border-top-right-radius: 0;
+        }
+        .ai-message {
+            background-color: #f1f1f1;
+            margin-right: auto;
+            border-top-left-radius: 0;
+        }
+        .chat-input {
+            display: flex;
+            padding: 15px;
+            border-top: 1px solid #ddd;
+        }
+        .chat-input input {
+            flex: 1;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 20px;
+            margin-right: 10px;
+        }
+        .chat-input button {
+            background-color: #00BCD4;
+            color: white;
+            border: none;
+            border-radius: 20px;
+            padding: 10px 15px;
+            cursor: pointer;
+        }
+        .typing-indicator {
+            display: inline-block;
+            width: 50px;
+            text-align: left;
+        }
+        .typing-indicator span {
+            height: 5px;
+            width: 5px;
+            background-color: #3a3a3a;
+            display: inline-block;
+            border-radius: 50%;
+            animation: typing 1.5s infinite ease-in-out;
+            margin-right: 2px;
+        }
+        .typing-indicator span:nth-child(2) {
+            animation-delay: 0.2s;
+        }
+        .typing-indicator span:nth-child(3) {
+            animation-delay: 0.4s;
+        }
+        @keyframes typing {
+            0% { transform: translateY(0); }
+            50% { transform: translateY(-5px); }
+            100% { transform: translateY(0); }
+        }
+    </style>
+</head>
+<body>
+    <h1>Softworks Trading AI Chat Demo</h1>
+    <p>Test the OpenAI integration by sending a message below:</p>
+    
+    <div class="chat-container">
+        <div class="chat-header">
+            Workflow Agent
+        </div>
+        <div class="chat-messages" id="messageArea">
+            <div class="message ai-message">
+                Hello! I'm here to help you automate your workflows. What specific process are you looking to improve?
+            </div>
+        </div>
+        <div class="chat-input">
+            <input 
+                type="text" 
+                id="userInput" 
+                placeholder="Type your message here..." 
+                autofocus
+            >
+            <button id="sendButton">Send</button>
+        </div>
+    </div>
+    
+    <script>
+        const messageArea = document.getElementById('messageArea');
+        const userInput = document.getElementById('userInput');
+        const sendButton = document.getElementById('sendButton');
+        
+        // No API key needed in client code
+        // The API request is securely proxied through the server
+        // This is a security best practice to avoid exposing API keys to clients
+        
+        // Add a user message to the chat
+        function addUserMessage(text) {
+            const messageDiv = document.createElement('div');
+            messageDiv.classList.add('message', 'user-message');
+            messageDiv.textContent = text;
+            messageArea.appendChild(messageDiv);
+            messageArea.scrollTop = messageArea.scrollHeight;
+        }
+        
+        // Add an AI message to the chat
+        function addAIMessage(text) {
+            const messageDiv = document.createElement('div');
+            messageDiv.classList.add('message', 'ai-message');
+            messageDiv.textContent = text;
+            messageArea.appendChild(messageDiv);
+            messageArea.scrollTop = messageArea.scrollHeight;
+        }
+        
+        // Add typing indicator
+        function addTypingIndicator() {
+            const indicatorDiv = document.createElement('div');
+            indicatorDiv.classList.add('message', 'ai-message', 'typing-indicator-container');
+            indicatorDiv.id = 'typingIndicator';
+            
+            const indicator = document.createElement('div');
+            indicator.classList.add('typing-indicator');
+            
+            for (let i = 0; i < 3; i++) {
+                const dot = document.createElement('span');
+                indicator.appendChild(dot);
+            }
+            
+            indicatorDiv.appendChild(indicator);
+            messageArea.appendChild(indicatorDiv);
+            messageArea.scrollTop = messageArea.scrollHeight;
+        }
+        
+        // Remove typing indicator
+        function removeTypingIndicator() {
+            const indicator = document.getElementById('typingIndicator');
+            if (indicator) {
+                indicator.remove();
+            }
+        }
+        
+        // Send message to server-side API endpoint (safely proxied)
+        async function sendToOpenAI(message) {
+            try {
+                const response = await fetch('/api/demo/chat', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        message: message
+                    })
+                });
+                
+                if (!response.ok) {
+                    throw new Error(`API error: ${response.status}`);
+                }
+                
+                const data = await response.json();
+                return data.message;
+            } catch (error) {
+                console.error('Error calling API:', error);
+                return 'Sorry, I encountered an error while processing your request. Please try again.';
+            }
+        }
+        
+        // Handle send button click
+        async function handleSend() {
+            const message = userInput.value.trim();
+            if (!message) return;
+            
+            // Clear input
+            userInput.value = '';
+            
+            // Add user message to chat
+            addUserMessage(message);
+            
+            // Show typing indicator
+            addTypingIndicator();
+            
+            // Get AI response
+            const aiResponse = await sendToOpenAI(message);
+            
+            // Remove typing indicator and add AI response
+            removeTypingIndicator();
+            addAIMessage(aiResponse);
+        }
+        
+        // Event listeners
+        sendButton.addEventListener('click', handleSend);
+        
+        userInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                handleSend();
+            }
+        });
+    </script>
+</body>
+</html>

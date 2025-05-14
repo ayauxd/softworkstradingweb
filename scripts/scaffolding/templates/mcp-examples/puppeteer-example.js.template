@@ -1,0 +1,72 @@
+/**
+ * Example Puppeteer MCP Usage
+ * 
+ * This file demonstrates how to use the Puppeteer MCP server for automated browser testing.
+ * To run this example, use: claude --with puppeteer
+ */
+
+// Import puppeteer from the MCP server
+import puppeteer from 'puppeteer-mcp-server';
+
+async function testWebsiteResponsiveness() {
+  console.log('🌐 Starting website responsiveness test...');
+  
+  // Launch browser
+  const browser = await puppeteer.launch({ headless: false });
+  const page = await browser.newPage();
+  
+  try {
+    // Navigate to the project's website
+    await page.goto('http://localhost:3000', { waitUntil: 'networkidle0' });
+    console.log('📄 Page loaded successfully');
+    
+    // Test different viewport sizes
+    const viewports = [
+      { width: 1920, height: 1080, name: 'desktop' },
+      { width: 1024, height: 768, name: 'tablet-landscape' },
+      { width: 768, height: 1024, name: 'tablet-portrait' },
+      { width: 375, height: 812, name: 'mobile' }
+    ];
+    
+    for (const viewport of viewports) {
+      console.log(`📱 Testing viewport: ${viewport.name} (${viewport.width}x${viewport.height})`);
+      
+      // Set viewport size
+      await page.setViewport(viewport);
+      
+      // Wait for any responsive adjustments
+      await page.waitForTimeout(1000);
+      
+      // Take screenshot
+      await page.screenshot({ 
+        path: `./tests/screenshots/${viewport.name}.png`,
+        fullPage: true
+      });
+      
+      console.log(`📸 Screenshot captured for ${viewport.name}`);
+    }
+    
+    console.log('✅ Responsiveness test completed successfully!');
+  } catch (error) {
+    console.error('❌ Error during testing:', error);
+  } finally {
+    // Close browser
+    await browser.close();
+  }
+}
+
+// Run the test
+testWebsiteResponsiveness();
+
+/**
+ * Claude MCP Interaction Examples:
+ * 
+ * 1. Visual regression testing:
+ *    > Create a visual regression test that compares new screenshots with baseline images
+ * 
+ * 2. Interaction testing:
+ *    > Add a test that clicks on menu items and verifies the correct page loads
+ * 
+ * 3. Performance analysis:
+ *    > Measure and report page load times for different viewports
+ */

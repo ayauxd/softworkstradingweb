@@ -1,21 +1,42 @@
-// Import the contents from .eslintrc.cjs for compatibility with ESLint v9
-import { createRequire } from 'node:module';
-const require = createRequire(import.meta.url);
-const eslintrc = require('./.eslintrc.cjs');
-
 export default [
   {
-    // Use the existing configuration from .eslintrc.cjs
-    ...eslintrc,
-    // Add any additional ESLint v9 specific configuration here
+    files: ["**/*.{js,jsx,ts,tsx}"],
+    ignores: ["dist/**", "node_modules/**", ".eslintrc.cjs"],
     languageOptions: {
-      ecmaVersion: 'latest',
-      sourceType: 'module',
-      parser: '@typescript-eslint/parser',
-      parserOptions: eslintrc.parserOptions,
+      ecmaVersion: "latest",
+      sourceType: "module",
+      parserOptions: {
+        ecmaFeatures: {
+          jsx: true,
+        },
+      },
       globals: {
-        ...eslintrc.env
-      }
-    }
-  }
+        browser: true,
+        es2021: true,
+        node: true,
+      },
+    },
+    rules: {
+      // General ESLint rules
+      "no-console": ["warn", { allow: ["warn", "error", "info"] }],
+      
+      // React specific rules
+      "react/react-in-jsx-scope": "off", // Not needed with modern JSX transform
+      "react/prop-types": "off", // We use TypeScript for prop validation
+    },
+  },
+  // Node/server specific rules
+  {
+    files: ["server/**/*.{js,ts}"],
+    rules: {
+      "no-console": "off", // Allow console in server code
+    },
+  },
+  // Test specific rules
+  {
+    files: ["**/*.test.{js,ts,jsx,tsx}"],
+    rules: {
+      "no-console": "off",
+    },
+  },
 ];

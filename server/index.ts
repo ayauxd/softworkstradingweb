@@ -37,10 +37,31 @@ function sanitizeLogData(data: Record<string, any>): Record<string, any> {
   return sanitized;
 }
 
+// Enhanced request logging for debugging API issues
 app.use((req, res, next) => {
   const start = Date.now();
   const path = req.path;
   let capturedJsonResponse: Record<string, any> | undefined = undefined;
+  
+  // Log requests to AI endpoints with detailed info
+  if (path.startsWith('/api/ai/')) {
+    console.log('🔍 AI API Request:', {
+      method: req.method,
+      path: req.path,
+      query: req.query,
+      body: sanitizeLogData(req.body),
+      cookies: req.cookies ? Object.keys(req.cookies) : 'none',
+      headers: Object.keys(req.headers).reduce((acc, key) => {
+        // Don't log actual auth tokens but show they exist
+        if (key.toLowerCase().includes('token') || key.toLowerCase().includes('auth')) {
+          acc[key] = req.headers[key] ? '[PRESENT]' : '[MISSING]';
+        } else {
+          acc[key] = req.headers[key];
+        }
+        return acc;
+      }, {} as Record<string, any>)
+    });
+  }
 
   const originalResJson = res.json;
   res.json = function (bodyJson, ...args) {
@@ -52,6 +73,18 @@ app.use((req, res, next) => {
     const duration = Date.now() - start;
     if (path.startsWith('/api')) {
       let logLine = `${req.method} ${path} ${res.statusCode} in ${duration}ms`;
+      
+      // Log more details for AI endpoint responses
+      if (path.startsWith('/api/ai/')) {
+        console.log('🔍 AI API Response:', {
+          method: req.method,
+          path: req.path,
+          statusCode: res.statusCode,
+          duration: `${duration}ms`,
+          response: capturedJsonResponse ? sanitizeLogData(capturedJsonResponse) : 'No JSON response'
+        });
+      }
+      
       if (capturedJsonResponse) {
         // Sanitize sensitive data before logging
         const sanitizedResponse = sanitizeLogData(capturedJsonResponse);
