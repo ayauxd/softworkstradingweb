@@ -1,9 +1,13 @@
 import express, { type Request, Response, NextFunction } from 'express';
 import { registerRoutes } from './routes';
 import { setupVite, serveStatic, log } from './vite';
+import dotenv from 'dotenv';
 import { serverConfig } from './config';
 import { configureSecurity } from './middleware/security';
 import { configureCSRF } from './middleware/csrf';
+
+// Load environment variables from .env file
+dotenv.config();
 
 const app = express();
 app.use(express.json());
@@ -68,7 +72,7 @@ app.use((req, res, next) => {
 (async () => {
   const server = await registerRoutes(app);
 
-  app.use((err: any, _req: Request, res: Response, _next: NextFunction) => {
+  app.use((err: Error & { status?: number; statusCode?: number; code?: string }, _req: Request, res: Response, _next: NextFunction) => {
     const status = err.status || err.statusCode || 500;
     const isProduction = process.env.NODE_ENV === 'production';
 
@@ -79,7 +83,7 @@ app.use((req, res, next) => {
         : err.message || 'Internal Server Error';
 
     // Log the full error for debugging, but don't expose it to the client
-    console.error(`[ERROR] ${err.stack || err}`);
+    console.error(`[ERROR] ${err instanceof Error ? err.stack : JSON.stringify(err)}`);
 
     res.status(status).json({
       message,
@@ -113,6 +117,12 @@ app.use((req, res, next) => {
       log(`  ${key}: ${value}`);
     });
   
+  // Debug API configuration
+  log('API Configuration:');
+  log(`  OpenAI configured: ${process.env.OPENAI_API_KEY ? 'Yes' : 'No'}`);
+  log(`  ElevenLabs configured: ${process.env.ELEVENLABS_API_KEY ? 'Yes' : 'No'}`);
+  log(`  Default voice ID: ${process.env.ELEVENLABS_DEFAULT_VOICE_ID || 'Not set'}`);
+  
   const PORT = process.env.PORT || serverConfig.port;
   
   // Use config values for port and host with fallbacks for cloud environments
@@ -142,12 +152,14 @@ app.use((req, res, next) => {
           try {
             const files = fs.readdirSync(dir);
             log(`Files in ${dir}: ${files.length > 0 ? files.join(', ') : 'No files'}`);
-          } catch (err) {
-            log(`Error reading directory ${dir}: ${err.message}`);
+          } catch (error) {
+            const errorMessage = error instanceof Error ? error.message : String(error);
+            log(`Error reading directory ${dir}: ${errorMessage}`);
           }
         });
-      } catch (err) {
-        log(`Error checking files: ${err.message}`);
+      } catch (error) {
+        const errorMessage = error instanceof Error ? error.message : String(error);
+        log(`Error checking files: ${errorMessage}`);
       }
     }
   );
