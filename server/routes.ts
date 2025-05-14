@@ -30,6 +30,9 @@ export async function registerRoutes(app: Express): Promise<Server> {
         'http://localhost:3000',
         'http://localhost:5000',
         'https://softworkstradingweb.onrender.com',
+        'https://softworks-trading.onrender.com',
+        'https://www.softworkstrading.com',
+        'https://softworkstrading.com',
       ];
       
       if (allowedOrigins.indexOf(origin) !== -1 || !origin) {

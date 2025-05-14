@@ -60,7 +60,15 @@ export const aiService = {
       let responseText;
       let responseStatus;
       try {
-        const response = await fetch('/api/ai/chat', {
+        // Get API base URL from environment or default to relative path
+        const apiBaseUrl = window.location.hostname === 'www.softworkstrading.com' 
+          ? 'https://softworks-trading.onrender.com' 
+          : '';
+          
+        console.log('Attempting to call OpenAI via API...');
+        console.log(`Using API base URL: ${apiBaseUrl || 'relative path'}`);
+        
+        const response = await fetch(`${apiBaseUrl}/api/ai/chat`, {
           method: 'POST',
           headers,
           body: JSON.stringify({ message, conversationId: currentConversationId }),
@@ -147,7 +155,14 @@ export const aiService = {
         // Continue without CSRF token, server might accept the request
       }
       
-      const response = await fetch('/api/ai/voice', {
+      // Get API base URL from environment or default to relative path
+      const apiBaseUrl = window.location.hostname === 'www.softworkstrading.com' 
+        ? 'https://softworks-trading.onrender.com' 
+        : '';
+      
+      console.log(`Using API base URL for voice generation: ${apiBaseUrl || 'relative path'}`);
+      
+      const response = await fetch(`${apiBaseUrl}/api/ai/voice`, {
         method: 'POST',
         headers,
         body: JSON.stringify({ text, voiceId })
@@ -217,8 +232,15 @@ export const aiService = {
         // Continue without CSRF token, server might accept the request
       }
       
+      // Get API base URL from environment or default to relative path
+      const apiBaseUrl = window.location.hostname === 'www.softworkstrading.com' 
+        ? 'https://softworks-trading.onrender.com' 
+        : '';
+      
+      console.log(`Using API base URL for call summary: ${apiBaseUrl || 'relative path'}`);
+      
       // Send call summary to server
-      const response = await fetch('/api/ai/call-summary', {
+      const response = await fetch(`${apiBaseUrl}/api/ai/call-summary`, {
         method: 'POST',
         headers,
         body: JSON.stringify({

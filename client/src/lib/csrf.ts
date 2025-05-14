@@ -40,8 +40,15 @@ export const fetchCSRFToken = async (retries: number = 2): Promise<string> => {
       return cachedToken;
     }
 
+    // Get API base URL from environment or default to relative path
+    const apiBaseUrl = window.location.hostname === 'www.softworkstrading.com' 
+      ? 'https://softworks-trading.onrender.com' 
+      : '';
+    
+    console.log(`Using API base URL for CSRF token: ${apiBaseUrl || 'relative path'}`);
+    
     // Fetch a new token from the API with credentials included
-    const response = await fetch('/api/csrf-token', {
+    const response = await fetch(`${apiBaseUrl}/api/csrf-token`, {
       credentials: 'include' // Include cookies for CSRF validation
     });
     
