@@ -100,7 +100,14 @@ export const apiConfig = {
 export const corsConfig = {
   clientUrl: config.CLIENT_URL,
   // Add any other cors origins if needed
-  allowedOrigins: [config.CLIENT_URL],
+  allowedOrigins: [
+    config.CLIENT_URL,
+    'https://softworks-trading.onrender.com',
+    'https://www.softworkstrading.com',
+    'https://softworkstrading.com',
+    'http://localhost:3000',
+    'http://localhost:5000'
+  ],
 };
 
 // AI service configuration

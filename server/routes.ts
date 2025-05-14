@@ -8,6 +8,7 @@ import aiRoutes from "./routes/ai";
 import csrfRoutes from "./routes/csrf";
 import demoRoutes from "./routes/demo";
 import debugRoutes from "./routes/debug";
+import { corsConfig } from "./config";
 
 // CORS middleware for handling cross-origin requests
 import cors from 'cors';
@@ -24,16 +25,10 @@ export async function registerRoutes(app: Express): Promise<Server> {
         return callback(null, true);
       }
       
-      // In production, you'd want to be more restrictive
-      // This allows the current host plus localhost for testing
-      const allowedOrigins = [
-        'http://localhost:3000',
-        'http://localhost:5000',
-        'https://softworkstradingweb.onrender.com',
-        'https://softworks-trading.onrender.com',
-        'https://www.softworkstrading.com',
-        'https://softworkstrading.com',
-      ];
+      // In production, use the allowed origins from config
+      const allowedOrigins = corsConfig.allowedOrigins;
+      
+      console.log(`CORS check for origin: ${origin}, allowed origins:`, allowedOrigins);
       
       if (allowedOrigins.indexOf(origin) !== -1 || !origin) {
         callback(null, true);

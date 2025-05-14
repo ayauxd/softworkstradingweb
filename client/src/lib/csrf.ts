@@ -3,6 +3,7 @@
  * This module provides functions to fetch and use CSRF tokens for form submissions
  * and API requests.
  */
+import { getApiBaseUrl } from './utils';
 
 // Cache for the CSRF token
 let cachedToken: string = '';
@@ -40,10 +41,8 @@ export const fetchCSRFToken = async (retries: number = 2): Promise<string> => {
       return cachedToken;
     }
 
-    // Get API base URL from environment or default to relative path
-    const apiBaseUrl = window.location.hostname === 'www.softworkstrading.com' 
-      ? 'https://softworks-trading.onrender.com' 
-      : '';
+    // Get API base URL
+    const apiBaseUrl = getApiBaseUrl();
     
     console.log(`Using API base URL for CSRF token: ${apiBaseUrl || 'relative path'}`);
     

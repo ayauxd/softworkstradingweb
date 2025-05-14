@@ -1,6 +1,7 @@
 import { fetchCSRFToken } from './csrf';
 import { ChatResponse, VoiceResponse } from '../../../shared/aiModels';
 import { generateSystemPrompt } from './companyInfo';
+import { getApiBaseUrl } from './utils';
 
 // Helper to manage conversation IDs in localStorage
 export const conversationManager = {
@@ -60,10 +61,8 @@ export const aiService = {
       let responseText;
       let responseStatus;
       try {
-        // Get API base URL from environment or default to relative path
-        const apiBaseUrl = window.location.hostname === 'www.softworkstrading.com' 
-          ? 'https://softworks-trading.onrender.com' 
-          : '';
+        // Get API base URL
+        const apiBaseUrl = getApiBaseUrl();
           
         console.log('Attempting to call OpenAI via API...');
         console.log(`Using API base URL: ${apiBaseUrl || 'relative path'}`);
@@ -155,10 +154,8 @@ export const aiService = {
         // Continue without CSRF token, server might accept the request
       }
       
-      // Get API base URL from environment or default to relative path
-      const apiBaseUrl = window.location.hostname === 'www.softworkstrading.com' 
-        ? 'https://softworks-trading.onrender.com' 
-        : '';
+      // Get API base URL
+      const apiBaseUrl = getApiBaseUrl();
       
       console.log(`Using API base URL for voice generation: ${apiBaseUrl || 'relative path'}`);
       
@@ -232,10 +229,8 @@ export const aiService = {
         // Continue without CSRF token, server might accept the request
       }
       
-      // Get API base URL from environment or default to relative path
-      const apiBaseUrl = window.location.hostname === 'www.softworkstrading.com' 
-        ? 'https://softworks-trading.onrender.com' 
-        : '';
+      // Get API base URL
+      const apiBaseUrl = getApiBaseUrl();
       
       console.log(`Using API base URL for call summary: ${apiBaseUrl || 'relative path'}`);
       

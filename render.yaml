@@ -17,7 +17,7 @@ services:
       - key: CSRF_SECRET
         sync: false
       - key: CLIENT_URL
-        value: https://softworks-trading.onrender.com
+        value: https://www.softworkstrading.com
       - key: OPENAI_API_KEY
         sync: false
       - key: ELEVENLABS_API_KEY
