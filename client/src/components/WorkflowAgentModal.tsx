@@ -64,7 +64,7 @@ const WorkflowAgentModal = ({
     // Return default welcome message if no saved messages or error parsing
     return [{ 
       from: "agent", 
-      text: "Hello! I'm here to help you implement practical, no-code AI solutions that save time and scale operations for entrepreneurs and SMEs. As Softworks Trading Company's workflow agent, I can assist with automating repetitive processes across services like professional services, e-commerce, and consulting. What specific business challenges are you facing that AI might help solve?" 
+      text: "Hello! I'm your Softworks Trading workflow agent. How can I help you automate your business processes today?" 
     }];
   });
   const [callbackForm, setCallbackForm] = useState({
@@ -166,15 +166,20 @@ const WorkflowAgentModal = ({
     });
   }, []);
   
-  // Simulate user speaking every ~15 seconds for demo purposes
+  // State to track user speech simulation
+  const [isSimulatingUserSpeech, setIsSimulatingUserSpeech] = useState(false);
+
+  // Simulate user speaking every ~8 seconds for demo purposes
   useEffect(() => {
-    if (isVoiceCallActive) {
+    if (isVoiceCallActive && !isSimulatingUserSpeech) {
       // Sample user questions for the simulation
       const demoUserQuestions = [
         "How can AI help my small business?",
         "What types of automation do you recommend for customer service?",
         "Can you explain how a workflow agent works?",
         "What about data privacy with AI tools?",
+        "How much does it cost to implement AI automation?",
+        "What's the first step in automating my business processes?",
       ];
       
       // Pick a random question for the simulation
@@ -183,17 +188,24 @@ const WorkflowAgentModal = ({
         return demoUserQuestions[randomIndex];
       };
       
-      // Set a timeout to simulate the user speaking after 15 seconds
+      // Set a timeout to simulate the user speaking after 8 seconds
       const timeout = setTimeout(() => {
         // Only continue if the call is still active
         if (isVoiceCallActive && callTimeRemaining > 20) {
-          simulateUserVoice(getRandomQuestion());
+          // Start user speech simulation
+          setIsSimulatingUserSpeech(true);
+          
+          // Simulate user speaking for 2 seconds before getting response
+          setTimeout(() => {
+            simulateUserVoice(getRandomQuestion());
+            setIsSimulatingUserSpeech(false);
+          }, 2000);
         }
-      }, 15000);
+      }, 8000);
       
       return () => clearTimeout(timeout);
     }
-  }, [isVoiceCallActive, voiceCallMessages, callTimeRemaining, simulateUserVoice]);
+  }, [isVoiceCallActive, voiceCallMessages, callTimeRemaining, simulateUserVoice, isSimulatingUserSpeech]);
   
   // Function to handle the voice call with 2-second connecting animation
   const simulateCallConnection = useCallback(() => {
@@ -206,7 +218,7 @@ const WorkflowAgentModal = ({
       setIsVoiceCallActive(true);
       
       // Initialize the call with a welcome message
-      const welcomeMessage = "Hello! I'm your Softworks Trading workflow agent. I'm here to help you implement practical AI solutions for your business. This call will last up to 3 minutes. How can I assist you today?";
+      const welcomeMessage = "Hello! I'm your Softworks Trading workflow agent. How can I help you automate your business processes today?";
       
       // Add message to the call history
       setVoiceCallMessages([{
@@ -721,19 +733,46 @@ const WorkflowAgentModal = ({
                       </p>
                     </div>
                     
-                    {/* Visual sound wave effect */}
-                    <div className="flex justify-center items-center my-8">
-                      <div className="flex items-center justify-center space-x-1">
-                        <div className="w-1 h-5 bg-cyan animate-pulse"></div>
-                        <div className="w-1 h-8 bg-cyan animate-pulse [animation-delay:75ms]"></div>
-                        <div className="w-1 h-12 bg-cyan animate-pulse [animation-delay:150ms]"></div>
-                        <div className="w-1 h-8 bg-cyan animate-pulse [animation-delay:225ms]"></div>
-                        <div className="w-1 h-5 bg-cyan animate-pulse [animation-delay:300ms]"></div>
+                    {/* Visual sound wave effect with different states for AI speaking vs listening */}
+                    <div className="flex flex-col items-center my-8">
+                      <div className="flex items-center justify-center space-x-1 mb-2">
+                        {voiceCallMessages.length > 0 && voiceCallMessages[voiceCallMessages.length - 1].from === "agent" ? (
+                          /* AI speaking animation */
+                          <>
+                            <div className="w-1 h-5 bg-cyan animate-pulse"></div>
+                            <div className="w-1 h-8 bg-cyan animate-pulse [animation-delay:75ms]"></div>
+                            <div className="w-1 h-12 bg-cyan animate-pulse [animation-delay:150ms]"></div>
+                            <div className="w-1 h-8 bg-cyan animate-pulse [animation-delay:225ms]"></div>
+                            <div className="w-1 h-5 bg-cyan animate-pulse [animation-delay:300ms]"></div>
+                          </>
+                        ) : isSimulatingUserSpeech ? (
+                          /* User speaking animation - active microphone */
+                          <div className="w-16 h-16 rounded-full bg-green-100 dark:bg-green-900 flex items-center justify-center border-4 border-green-500 border-opacity-70 animate-pulse">
+                            <div className="w-8 h-8 rounded-full bg-green-500 flex items-center justify-center">
+                              <div className="w-4 h-4 rounded-full bg-white"></div>
+                            </div>
+                          </div>
+                        ) : (
+                          /* Listening animation - inactive microphone */
+                          <div className="w-16 h-16 rounded-full bg-gray-100 dark:bg-gray-700 flex items-center justify-center border-4 border-cyan border-opacity-50">
+                            <div className="w-8 h-8 rounded-full bg-cyan flex items-center justify-center">
+                              <div className="w-4 h-4 rounded-full bg-white"></div>
+                            </div>
+                          </div>
+                        )}
                       </div>
-                    </div>
-                    
-                    <div className="text-center text-sm text-gray-500 dark:text-gray-400 mt-4">
-                      Voice processing is simulated for this demo.
+                      
+                      <div className="text-center text-sm font-medium text-gray-600 dark:text-gray-300">
+                        {voiceCallMessages.length > 0 && voiceCallMessages[voiceCallMessages.length - 1].from === "agent" 
+                          ? "AI is speaking..." 
+                          : isSimulatingUserSpeech
+                            ? "You are speaking..."
+                            : "Listening for your voice..."}
+                      </div>
+                      
+                      <div className="text-center text-xs text-gray-500 dark:text-gray-400 mt-2">
+                        Voice processing is simulated for this demo
+                      </div>
                     </div>
                     
                     <div ref={messagesEndRef} />
