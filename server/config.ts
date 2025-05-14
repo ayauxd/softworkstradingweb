@@ -26,7 +26,6 @@ const envSchema = z.object({
   OPENAI_API_KEY: z.string().optional(),
   ELEVENLABS_API_KEY: z.string().optional(),
   ELEVENLABS_DEFAULT_VOICE_ID: z.string().optional(),
-  GEMINI_API_KEY: z.string().optional(),
 });
 
 // Local defaults for development to avoid exposing in .env files
@@ -120,9 +119,5 @@ export const aiConfig = {
     apiKey: config.ELEVENLABS_API_KEY,
     defaultVoiceId: config.ELEVENLABS_DEFAULT_VOICE_ID,
     isConfigured: !!config.ELEVENLABS_API_KEY,
-  },
-  gemini: {
-    apiKey: config.GEMINI_API_KEY,
-    isConfigured: !!config.GEMINI_API_KEY,
-  },
+  }
 };

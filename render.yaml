@@ -24,8 +24,6 @@ services:
         sync: false
       - key: ELEVENLABS_DEFAULT_VOICE_ID
         sync: false
-      - key: GEMINI_API_KEY
-        sync: false
     headers:
       - path: /*
         name: Cache-Control

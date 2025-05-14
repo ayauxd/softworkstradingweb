@@ -9,12 +9,10 @@ dist/
 build/
 server/public/
 
-# Environment variables
+# Environment variables - Never commit any environment files except examples
 .env
-.env.local
-.env.development.local
-.env.test.local
-.env.production.local
+.env.*
+!.env.example
 
 # Logs
 logs

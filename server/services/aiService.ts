@@ -1,6 +1,6 @@
 import { storage } from '../storage';
 import { aiConfig } from '../config';
-import { generateOpenAIResponse, generateGeminiResponse } from './aiIntegration';
+import { generateOpenAIResponse } from './aiIntegration';
 import { generateElevenLabsSpeech, generateOpenAITTS } from './voiceIntegration';
 import { ChatResponse, VoiceResponse } from '../../shared/aiModels';
 
@@ -72,14 +72,13 @@ export const aiService = {
     
     try {
       // Check if API keys are configured
-      if (!aiConfig.openai.isConfigured && !aiConfig.gemini.isConfigured) {
-        console.log('No API keys configured, using mock AI service');
+      if (!aiConfig.openai.isConfigured) {
+        console.log('No OpenAI API key configured, using mock AI service');
         return mockChatResponse(message, conversationId);
       }
       
       console.log('API Configuration:', {
         openai: aiConfig.openai.isConfigured ? 'Configured' : 'Not configured',
-        gemini: aiConfig.gemini.isConfigured ? 'Configured' : 'Not configured',
         environment: process.env.NODE_ENV || 'undefined'
       });
       
@@ -98,31 +97,18 @@ export const aiService = {
         console.error('OpenAI chat error:', error);
         console.error('OpenAI error details:', error instanceof Error ? error.message : 'Unknown error');
         
-        // Try Gemini as fallback
-        try {
-          const geminiResponse = await sendToGemini(message, conversationId);
-          return {
-            text: geminiResponse,
-            success: true,
-            provider: 'gemini',
-            conversationId: conversationId
-          };
-        } catch (geminiError) {
-          console.error('Gemini chat error:', geminiError);
-          
-          // If in development, use mock service
-          if (process.env.NODE_ENV === 'development') {
-            return mockChatResponse(message, conversationId);
-          }
-          
-          // All services failed, return graceful error message
-          return {
-            text: 'Sorry, I am currently unable to process your message. Please try again later.',
-            success: false,
-            provider: 'none',
-            conversationId: conversationId
-          };
+        // If in development, use mock service
+        if (process.env.NODE_ENV === 'development') {
+          return mockChatResponse(message, conversationId);
         }
+        
+        // Service failed, return graceful error message
+        return {
+          text: 'Sorry, I am currently unable to process your message. Please try again later.',
+          success: false,
+          provider: 'none',
+          conversationId: conversationId
+        };
       }
     } catch (error) {
       console.error('Chat service error:', error);
@@ -224,16 +210,7 @@ async function sendToOpenAI(message: string, conversationId?: string): Promise<s
   return await generateOpenAIResponse(message, conversationId);
 }
 
-/**
- * Send a message to Gemini (Google's AI model)
- */
-async function sendToGemini(message: string, conversationId?: string): Promise<string> {
-  if (!aiConfig.gemini.isConfigured) {
-    throw new Error('Gemini API key not configured');
-  }
-
-  return await generateGeminiResponse(message, conversationId);
-}
+// Gemini API support has been removed as requested
 
 /**
  * Generate speech audio using ElevenLabs
