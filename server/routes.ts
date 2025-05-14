@@ -5,6 +5,8 @@ import { csrfProtection } from "./middleware/csrf";
 import { validateAndSanitize } from "./middleware/validation";
 import { contactFormSchema, subscriptionSchema } from "./schemas/api";
 import aiRoutes from "./routes/ai";
+import csrfRoutes from "./routes/csrf";
+import demoRoutes from "./routes/demo";
 
 export async function registerRoutes(app: Express): Promise<Server> {
   // Health check endpoint
@@ -90,6 +92,12 @@ export async function registerRoutes(app: Express): Promise<Server> {
   
   // Register AI routes
   app.use('/api/ai', aiRoutes);
+  
+  // Register CSRF routes
+  app.use('/api', csrfRoutes);
+  
+  // Register Demo routes
+  app.use('/api/demo', demoRoutes);
 
   const httpServer = createServer(app);
 

@@ -8,6 +8,24 @@ services:
         value: 10000
       - key: NODE_ENV
         value: production
+      - key: HOST
+        value: 0.0.0.0
+      - key: API_TIMEOUT
+        value: 30000
+      - key: SESSION_SECRET
+        sync: false
+      - key: CSRF_SECRET
+        sync: false
+      - key: CLIENT_URL
+        value: https://softworks-trading.onrender.com
+      - key: OPENAI_API_KEY
+        sync: false
+      - key: ELEVENLABS_API_KEY
+        sync: false
+      - key: ELEVENLABS_DEFAULT_VOICE_ID
+        sync: false
+      - key: GEMINI_API_KEY
+        sync: false
     headers:
       - path: /*
         name: Cache-Control
