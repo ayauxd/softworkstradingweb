@@ -27,7 +27,9 @@
     "setup-mcp": "node scripts/setup-mcp.js",
     "start:gemini-mcp": "GEMINI_API_KEY=$GEMINI_API_KEY node scripts/create-gemini-mcp.js",
     "test:api": "node test-api-endpoints.js",
-    "test:ui": "node puppeteer-test.js"
+    "test:ui": "node puppeteer-test.js",
+    "maintenance": "node maintenance-cleanup.js",
+    "maintenance:clean": "node maintenance-cleanup.js --clean"
   },
   "dependencies": {
     "@google/genai": "^0.13.0",

@@ -43,3 +43,9 @@ Thumbs.db
 *.swo
 *.tar.gz
 **/.claude/settings.local.json
+
+# Large files and archives
+website-dist.zip
+*.zip
+*.pid
+*.bak
