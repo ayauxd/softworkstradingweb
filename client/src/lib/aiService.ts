@@ -3,8 +3,16 @@ import { ChatResponse, VoiceResponse } from '../../../shared/aiModels';
 import { generateSystemPrompt } from './companyInfo';
 import { getApiBaseUrl } from './utils';
 
-// Helper to manage conversation IDs in localStorage
+/**
+ * Enhanced conversation manager with better memory management
+ */
 export const conversationManager = {
+  // Maximum number of chat messages to store in localStorage
+  MAX_MESSAGES: 50,
+  
+  // Key used for localStorage
+  STORAGE_KEY: 'softworksTradingChat',
+  
   getCurrentConversationId: (): string | null => {
     return localStorage.getItem('currentConversationId');
   },
@@ -20,12 +28,95 @@ export const conversationManager = {
   },
   
   clearCurrentConversation: (): void => {
+    const id = localStorage.getItem('currentConversationId');
+    if (id) {
+      // Remove the messages for this conversation
+      const chatStorage = conversationManager.getChatStorage();
+      delete chatStorage[id];
+      localStorage.setItem(conversationManager.STORAGE_KEY, JSON.stringify(chatStorage));
+    }
     localStorage.removeItem('currentConversationId');
+  },
+  
+  /**
+   * Get the chat messages for the current conversation
+   */
+  getCurrentMessages: () => {
+    const id = localStorage.getItem('currentConversationId');
+    if (!id) return [];
+    
+    const chatStorage = conversationManager.getChatStorage();
+    return chatStorage[id] || [];
+  },
+  
+  /**
+   * Save messages for the current conversation
+   */
+  saveMessages: (messages: any[]) => {
+    const id = localStorage.getItem('currentConversationId');
+    if (!id) return;
+    
+    // Truncate messages if they exceed the maximum
+    const truncatedMessages = messages.length > conversationManager.MAX_MESSAGES 
+      ? messages.slice(-conversationManager.MAX_MESSAGES)
+      : messages;
+    
+    const chatStorage = conversationManager.getChatStorage();
+    chatStorage[id] = truncatedMessages;
+    
+    // Prune old conversations if there are too many
+    const MAX_CONVERSATIONS = 5;
+    const conversationIds = Object.keys(chatStorage);
+    if (conversationIds.length > MAX_CONVERSATIONS) {
+      // Sort by the timestamp in the conversation ID (older first)
+      conversationIds.sort((a, b) => {
+        const aTime = parseInt(a.split('_')[1]) || 0;
+        const bTime = parseInt(b.split('_')[1]) || 0;
+        return aTime - bTime;
+      });
+      
+      // Remove oldest conversations
+      const idsToRemove = conversationIds.slice(0, conversationIds.length - MAX_CONVERSATIONS);
+      for (const oldId of idsToRemove) {
+        delete chatStorage[oldId];
+      }
+      
+      console.log(`Pruned ${idsToRemove.length} old conversations from storage`);
+    }
+    
+    localStorage.setItem(conversationManager.STORAGE_KEY, JSON.stringify(chatStorage));
+  },
+  
+  /**
+   * Get the chat storage object from localStorage
+   */
+  getChatStorage: (): Record<string, any[]> => {
+    try {
+      const storage = localStorage.getItem(conversationManager.STORAGE_KEY);
+      return storage ? JSON.parse(storage) : {};
+    } catch (error) {
+      console.error('Error parsing chat storage:', error);
+      return {};
+    }
+  },
+  
+  /**
+   * Calculate the current storage usage
+   */
+  getStorageUsage: (): { bytes: number, percent: number } => {
+    const storage = localStorage.getItem(conversationManager.STORAGE_KEY) || '';
+    const bytes = new Blob([storage]).size;
+    
+    // LocalStorage has a limit of 5MB in most browsers
+    const maxBytes = 5 * 1024 * 1024;
+    const percent = (bytes / maxBytes) * 100;
+    
+    return { bytes, percent };
   }
 };
 
 /**
- * Client-side service for interacting with AI endpoints
+ * Client-side service for interacting with AI endpoints with enhanced features
  */
 export const aiService = {
   /**
@@ -33,6 +124,9 @@ export const aiService = {
    */
   sendChatMessage: async (message: string, conversationId?: string): Promise<ChatResponse> => {
     try {
+      // Track performance metrics
+      const startTime = performance.now();
+      
       // Get current conversation ID or generate a new one if not provided
       const currentConversationId = conversationId || 
                                    conversationManager.getCurrentConversationId() || 
@@ -54,77 +148,56 @@ export const aiService = {
         // Continue without CSRF token, server might accept the request anyway
       }
       
-      console.log('Sending chat request with headers:', JSON.stringify(headers));
-      console.log('Request payload:', { message, conversationId: currentConversationId });
+      // Get API base URL
+      const apiBaseUrl = getApiBaseUrl();
+        
+      console.log('Sending chat request...', { 
+        conversationId: currentConversationId,
+        messageLength: message.length,
+        apiBaseUrl: apiBaseUrl || 'relative path'
+      });
       
-      // Call the server API endpoint with debug logging
-      let responseText;
-      let responseStatus;
-      try {
-        // Get API base URL
-        const apiBaseUrl = getApiBaseUrl();
-          
-        console.log('Attempting to call OpenAI via API...');
-        console.log(`Using API base URL: ${apiBaseUrl || 'relative path'}`);
-        
-        const response = await fetch(`${apiBaseUrl}/api/ai/chat`, {
-          method: 'POST',
-          headers,
-          body: JSON.stringify({ message, conversationId: currentConversationId }),
-          credentials: 'include' // Include cookies for proper CSRF validation
-        });
-        
-        responseStatus = response.status;
-        responseText = await response.text();
-        
-        console.log('API Response Status:', response.status);
-        console.log('API Response Headers:', JSON.stringify(Object.fromEntries([...response.headers])));
-        console.log('API Response Text:', responseText.substring(0, 500) + (responseText.length > 500 ? '...' : ''));
-        
-        // Parse the response if it's JSON
-        let parsedResponse;
-        try {
-          parsedResponse = JSON.parse(responseText);
-          return parsedResponse;
-        } catch (parseError) {
-          console.error('Error parsing JSON response:', parseError);
-          throw new Error(`Invalid JSON response from server: ${responseText.substring(0, 100)}...`);
-        }
-      } catch (fetchError) {
-        console.error('Fetch error during API call:', fetchError);
-        console.error('Response status:', responseStatus);
-        console.error('Response text:', responseText);
-        throw fetchError;
+      // Call the server API endpoint
+      const response = await fetch(`${apiBaseUrl}/api/ai/chat`, {
+        method: 'POST',
+        headers,
+        body: JSON.stringify({ 
+          message, 
+          conversationId: currentConversationId,
+          systemPrompt: generateSystemPrompt() // Provide system prompt for new conversations
+        }),
+        credentials: 'include' // Include cookies for proper CSRF validation
+      });
+      
+      // Log performance
+      const endTime = performance.now();
+      const responseTime = endTime - startTime;
+      console.log(`Chat request completed in ${responseTime.toFixed(2)}ms`);
+      
+      if (!response.ok) {
+        console.error(`AI chat request failed: ${response.status}`);
+        throw new Error(`Server returned ${response.status}: ${await response.text()}`);
       }
       
-      // For development, return a mock response if the server is not responding properly
-      // This section is now handled in the try/catch above
-      if (false) {
-        
-        // Determine a reasonable response based on the message
-        let mockResponse = "I understand your question. As your AI assistant, I'm here to help with implementing practical automation solutions for your business.";
-        
-        // Simple keyword matching for better mock responses
-        const lowerMessage = message.toLowerCase();
-        if (lowerMessage.includes("hello") || lowerMessage.includes("hi")) {
-          mockResponse = "Hello! I'm your workflow agent. How can I help you today?";
-        } else if (lowerMessage.includes("help") || lowerMessage.includes("what can you do")) {
-          mockResponse = "I can help you implement AI automation for your business tasks, suggest efficiency improvements, and answer questions about our services. What specific area are you interested in?";
-        } else if (lowerMessage.includes("automate") || lowerMessage.includes("workflow")) {
-          mockResponse = "Automation is our specialty! We can help identify repetitive tasks in your workflow that are ideal for AI automation. This typically saves our clients 10-20 hours per week. Would you like to discuss a specific process?";
-        }
-        
-        return {
-          text: mockResponse,
-          success: true,
-          provider: 'mock',
-          conversationId: currentConversationId
-        };
-      }
-      // This section is now handled in the try/catch above
-      return { text: "Error occurred.", success: false, provider: 'error' };
+      const result = await response.json();
+      
+      // Log information about the response
+      console.log('Chat response received', {
+        provider: result.provider,
+        success: result.success,
+        responseLength: result.text?.length || 0,
+        metrics: result.metrics
+      });
+      
+      return result;
     } catch (error) {
       console.error('Error sending chat message:', error);
+      
+      // Get storage info for debugging
+      const storageInfo = conversationManager.getStorageUsage();
+      console.log('Current localStorage usage:', 
+        `${(storageInfo.bytes / 1024).toFixed(2)}KB (${storageInfo.percent.toFixed(2)}%)`);
+      
       return {
         text: 'Sorry, there was an error processing your message. Please try again.',
         success: false,
@@ -138,6 +211,9 @@ export const aiService = {
    */
   generateVoiceAudio: async (text: string, voiceId?: string): Promise<VoiceResponse> => {
     try {
+      // Track performance metrics
+      const startTime = performance.now();
+      
       // Setup headers
       const headers: Record<string, string> = {
         'Content-Type': 'application/json'
@@ -157,13 +233,22 @@ export const aiService = {
       // Get API base URL
       const apiBaseUrl = getApiBaseUrl();
       
-      console.log(`Using API base URL for voice generation: ${apiBaseUrl || 'relative path'}`);
+      console.log('Sending voice generation request...', {
+        textLength: text.length,
+        voiceId: voiceId || 'default',
+        apiBaseUrl: apiBaseUrl || 'relative path'
+      });
       
       const response = await fetch(`${apiBaseUrl}/api/ai/voice`, {
         method: 'POST',
         headers,
         body: JSON.stringify({ text, voiceId })
       });
+      
+      // Log performance
+      const endTime = performance.now();
+      const responseTime = endTime - startTime;
+      console.log(`Voice request completed in ${responseTime.toFixed(2)}ms`);
       
       if (!response.ok) {
         console.warn(`AI voice request failed: ${response.status} - Using fallback mock response`);
@@ -193,7 +278,18 @@ export const aiService = {
         };
       }
       
-      return await response.json();
+      const result = await response.json();
+      
+      // Log information about the response
+      console.log('Voice response received', {
+        provider: result.provider,
+        success: result.success,
+        responseType: result.responseType,
+        audioDataLength: result.audioData?.length || 0,
+        metrics: result.metrics
+      });
+      
+      return result;
     } catch (error) {
       console.error('Error generating voice audio:', error);
       
@@ -213,6 +309,9 @@ export const aiService = {
    */
   sendCallSummary: async (callSummary: string, userEmail?: string): Promise<boolean> => {
     try {
+      // Track performance metrics
+      const startTime = performance.now();
+      
       // Setup headers
       const headers: Record<string, string> = {
         'Content-Type': 'application/json'
@@ -232,7 +331,11 @@ export const aiService = {
       // Get API base URL
       const apiBaseUrl = getApiBaseUrl();
       
-      console.log(`Using API base URL for call summary: ${apiBaseUrl || 'relative path'}`);
+      console.log('Sending call summary...', {
+        summaryLength: callSummary.length,
+        hasEmail: !!userEmail,
+        apiBaseUrl: apiBaseUrl || 'relative path'
+      });
       
       // Send call summary to server
       const response = await fetch(`${apiBaseUrl}/api/ai/call-summary`, {
@@ -245,17 +348,14 @@ export const aiService = {
         })
       });
       
+      // Log performance
+      const endTime = performance.now();
+      const responseTime = endTime - startTime;
+      console.log(`Call summary request completed in ${responseTime.toFixed(2)}ms`);
+      
       // For development, provide a mock response if server is not responding
       if (!response.ok) {
         console.warn(`Call summary API request failed: ${response.status} - Using fallback`);
-        
-        // Log info for development debugging (would be stored in a real implementation)
-        console.info('Call summary would be saved: ', {
-          summary: callSummary.substring(0, 100) + '...',
-          userEmail: userEmail || 'Not provided',
-          timestamp: new Date().toISOString(),
-          provider: 'mock'
-        });
         
         // Fallback: Try to send email directly using mailto link
         try {
@@ -288,14 +388,21 @@ export const aiService = {
   },
   
   /**
-   * Play audio from data URL or base64 string
+   * Play audio from data URL or base64 string with enhanced error handling
    */
-  playAudio: (audioData: string): Promise<boolean> => {
+  playAudio: async (audioData: string): Promise<boolean> => {
     return new Promise((resolve) => {
       try {
         // If empty audio data is provided, resolve with false
         if (!audioData || audioData.trim() === '') {
           console.warn('Empty audio data provided, cannot play audio');
+          resolve(false);
+          return;
+        }
+        
+        // Check if browser supports Audio API
+        if (typeof Audio === 'undefined') {
+          console.error('Audio API not supported in this browser');
           resolve(false);
           return;
         }
@@ -314,10 +421,6 @@ export const aiService = {
         // Add error handling
         audio.onerror = (e) => {
           console.error('Error playing audio:', e);
-          // Alert the user about audio issues (can be removed in production)
-          if (process.env.NODE_ENV !== 'production') {
-            alert('Audio playback error. Check console for details.');
-          }
           resolve(false);
         };
         
@@ -338,15 +441,47 @@ export const aiService = {
             // Will resolve when audio ends via onended handler
           }).catch(error => {
             console.error('Error playing audio:', error);
+            
             // More specific error message for autoplay issues
             if (error.name === 'NotAllowedError') {
               console.warn('Audio autoplay was blocked. User must interact with the page first.');
-              // Fallback for autoplay blocking - add a play button temporarily
-              if (process.env.NODE_ENV !== 'production') {
-                alert('Audio autoplay was blocked. Please interact with the page first.');
-              }
+              
+              // Create a temporary UI element to allow user to play audio manually
+              const playButton = document.createElement('button');
+              playButton.textContent = 'Play Message';
+              playButton.style.position = 'fixed';
+              playButton.style.bottom = '20px';
+              playButton.style.right = '20px';
+              playButton.style.zIndex = '9999';
+              playButton.style.padding = '10px 20px';
+              playButton.style.backgroundColor = '#00BCD4';
+              playButton.style.color = '#fff';
+              playButton.style.border = 'none';
+              playButton.style.borderRadius = '4px';
+              playButton.style.cursor = 'pointer';
+              
+              playButton.onclick = () => {
+                audio.play().then(() => {
+                  document.body.removeChild(playButton);
+                }).catch(e => {
+                  console.error('Failed to play audio even after user interaction:', e);
+                  document.body.removeChild(playButton);
+                  resolve(false);
+                });
+              };
+              
+              document.body.appendChild(playButton);
+              
+              // Auto-remove the button after 10 seconds
+              setTimeout(() => {
+                if (document.body.contains(playButton)) {
+                  document.body.removeChild(playButton);
+                  resolve(false);
+                }
+              }, 10000);
+            } else {
+              resolve(false);
             }
-            resolve(false);
           });
         } else {
           // Older browsers don't return a promise
@@ -358,5 +493,31 @@ export const aiService = {
         resolve(false);
       }
     });
+  },
+  
+  /**
+   * Get metrics about API usage
+   */
+  getMetrics: async (): Promise<Record<string, any>> => {
+    try {
+      // Get API base URL
+      const apiBaseUrl = getApiBaseUrl();
+      
+      // Get metrics from server
+      const response = await fetch(`${apiBaseUrl}/api/metrics`, {
+        method: 'GET',
+        headers: { 'Content-Type': 'application/json' }
+      });
+      
+      if (!response.ok) {
+        console.warn(`Metrics API request failed: ${response.status}`);
+        return { error: 'Failed to retrieve metrics' };
+      }
+      
+      return await response.json();
+    } catch (error) {
+      console.error('Error fetching metrics:', error);
+      return { error: 'Error fetching metrics' };
+    }
   }
 };
