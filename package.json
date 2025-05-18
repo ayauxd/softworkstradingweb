@@ -29,7 +29,8 @@
     "test:api": "node test-api-endpoints.js",
     "test:ui": "node puppeteer-test.js",
     "maintenance": "node maintenance-cleanup.js",
-    "maintenance:clean": "node maintenance-cleanup.js --clean"
+    "maintenance:clean": "node maintenance-cleanup.js --clean",
+    "test:api-connectivity": "node -r dotenv/config check-api-connectivity.js"
   },
   "dependencies": {
     "@google/genai": "^0.13.0",

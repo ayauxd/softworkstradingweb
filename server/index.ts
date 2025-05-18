@@ -4,6 +4,7 @@ import { setupVite, serveStatic, log } from './vite';
 import dotenv from 'dotenv';
 import { serverConfig } from './config';
 import { configureSecurity } from './middleware/security';
+import { configureCORS } from './middleware/cors';
 import { configureCSRF } from './middleware/csrf';
 
 // Load environment variables from .env file
@@ -12,6 +13,9 @@ dotenv.config();
 const app = express();
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
+
+// Configure CORS first (before other middleware)
+configureCORS(app);
 
 // Apply security configuration with consolidated CSP
 configureSecurity(app);

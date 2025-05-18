@@ -52,7 +52,13 @@ export const configureSecurity = (app: Express) => {
             'https://images.unsplash.com',
           ],
           fontSrc: ["'self'", 'https://fonts.gstatic.com'],
-          connectSrc: ["'self'", 'https://*.softworkstrading.com'],
+          connectSrc: [
+            "'self'", 
+            'https://*.softworkstrading.com',
+            'https://softworks-trading.onrender.com',
+            // Allow local development
+            ...(process.env.NODE_ENV === 'development' ? ['http://localhost:*'] : [])
+          ],
           workerSrc: ["'self'"],
           manifestSrc: ["'self'"],
           objectSrc: ["'none'"], // More restrictive

@@ -18,6 +18,17 @@ export function getApiBaseUrl(): string {
     return 'https://softworks-trading.onrender.com';
   }
   
-  // Local development or Render preview deployments - use relative paths
-  return '';
+  // If we're on the Render domain itself, use a relative URL
+  if (hostname === 'softworks-trading.onrender.com') {
+    return '';
+  }
+  
+  // For localhost development, default to relative URLs
+  if (hostname === 'localhost' || hostname === '127.0.0.1') {
+    return '';
+  }
+  
+  // For any other domains (like preview deployments), try to use the same origin
+  // This helps avoid CORS issues with preview deployments
+  return window.location.origin;
 }

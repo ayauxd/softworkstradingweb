@@ -1,6 +1,8 @@
 import { Router } from 'express';
 import { aiConfig } from '../config';
 import { aiService } from '../services/aiService';
+import { OpenAI } from 'openai';
+import { ElevenLabs } from 'elevenlabs';
 
 const router = Router();
 
@@ -167,6 +169,90 @@ router.get('/environment', (req, res) => {
       }
     }
   });
+});
+
+/**
+ * Basic health check endpoint
+ * Always available even in production
+ */
+router.get('/health', (req, res) => {
+  res.json({
+    status: 'ok',
+    message: 'API is up and running',
+    environment: process.env.NODE_ENV,
+    timestamp: new Date().toISOString()
+  });
+});
+
+/**
+ * Check if OpenAI API key is configured and valid
+ */
+router.get('/check-openai-key', async (req, res) => {
+  try {
+    if (!process.env.OPENAI_API_KEY) {
+      return res.status(400).json({
+        configured: false,
+        message: 'OpenAI API key is not configured'
+      });
+    }
+
+    // Create a minimal client to test the API key
+    const openai = new OpenAI({
+      apiKey: process.env.OPENAI_API_KEY
+    });
+
+    // Make a simple models list call to test the API key
+    await openai.models.list();
+    
+    res.json({
+      configured: true,
+      message: 'OpenAI API key is valid'
+    });
+  } catch (error) {
+    const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+    
+    console.error('Error checking OpenAI API key:', errorMessage);
+    res.status(500).json({
+      configured: false,
+      message: `OpenAI API key validation failed: ${errorMessage}`
+    });
+  }
+});
+
+/**
+ * Check if ElevenLabs API key is configured and valid
+ */
+router.get('/check-elevenlabs-key', async (req, res) => {
+  try {
+    if (!process.env.ELEVENLABS_API_KEY) {
+      return res.status(400).json({
+        configured: false,
+        message: 'ElevenLabs API key is not configured'
+      });
+    }
+
+    // Create a minimal client to test the API key
+    const elevenlabs = new ElevenLabs({
+      apiKey: process.env.ELEVENLABS_API_KEY
+    });
+
+    // Make a simple voices list call to test the API key
+    await elevenlabs.voices.getAll();
+    
+    res.json({
+      configured: true,
+      message: 'ElevenLabs API key is valid',
+      hasDefaultVoice: !!process.env.ELEVENLABS_DEFAULT_VOICE_ID
+    });
+  } catch (error) {
+    const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+    
+    console.error('Error checking ElevenLabs API key:', errorMessage);
+    res.status(500).json({
+      configured: false,
+      message: `ElevenLabs API key validation failed: ${errorMessage}`
+    });
+  }
 });
 
 export default router;
