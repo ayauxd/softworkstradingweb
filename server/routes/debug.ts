@@ -1,6 +1,7 @@
 import { Router } from 'express';
 import { aiConfig } from '../config';
 import { aiService } from '../services/aiService';
+import { emailService } from '../services/emailService';
 import { OpenAI } from 'openai';
 import { ElevenLabs } from 'elevenlabs';
 
@@ -253,6 +254,84 @@ router.get('/check-elevenlabs-key', async (req, res) => {
       message: `ElevenLabs API key validation failed: ${errorMessage}`
     });
   }
+});
+
+/**
+ * Check if email service is configured and valid
+ */
+router.get('/check-email-config', (req, res) => {
+  try {
+    // Get status from email service
+    const status = emailService.getStatus();
+    
+    res.json({
+      configured: status.configured,
+      contactEmail: status.contactEmail,
+      smtpHost: process.env.SMTP_HOST || 'not configured',
+      smtpUser: process.env.SMTP_USER ? `${process.env.SMTP_USER.substring(0, 5)}...` : 'not configured',
+      message: status.configured 
+        ? 'Email service is properly configured' 
+        : 'Email service is not configured. Check environment variables.'
+    });
+  } catch (error) {
+    const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+    
+    console.error('Error checking email configuration:', errorMessage);
+    res.status(500).json({
+      configured: false,
+      message: `Email configuration check failed: ${errorMessage}`
+    });
+  }
+});
+
+/**
+ * Send a test email (protected, only available in development)
+ */
+router.post('/send-test-email', (req, res) => {
+  // Only allow in development environment
+  if (process.env.NODE_ENV !== 'development') {
+    return res.status(403).json({
+      success: false,
+      message: 'Test emails can only be sent in development environment'
+    });
+  }
+  
+  const { to, subject, message } = req.body;
+  
+  // Validate inputs
+  if (!to || !subject || !message) {
+    return res.status(400).json({
+      success: false,
+      message: 'Missing required fields: to, subject, message'
+    });
+  }
+  
+  // Send test email
+  emailService.sendEmail({
+    to,
+    subject,
+    text: message,
+    html: `<p>${message.replace(/\\n/g, '<br>')}</p>`,
+  })
+  .then(success => {
+    if (success) {
+      res.json({
+        success: true,
+        message: `Test email sent to ${to}`
+      });
+    } else {
+      res.status(500).json({
+        success: false,
+        message: 'Failed to send test email. Email service might not be configured properly.'
+      });
+    }
+  })
+  .catch(error => {
+    res.status(500).json({
+      success: false,
+      message: `Error sending test email: ${error.message}`
+    });
+  });
 });
 
 export default router;

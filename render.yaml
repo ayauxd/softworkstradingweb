@@ -24,6 +24,19 @@ services:
         sync: false
       - key: ELEVENLABS_DEFAULT_VOICE_ID
         sync: false
+      # Email Configuration
+      - key: SMTP_HOST
+        value: smtp.gmail.com
+      - key: SMTP_PORT
+        value: "587"
+      - key: SMTP_SECURE
+        value: "false"
+      - key: SMTP_USER
+        sync: false
+      - key: SMTP_PASSWORD
+        sync: false
+      - key: CONTACT_EMAIL
+        value: info@softworkstrading.com
     headers:
       - path: /*
         name: Cache-Control
