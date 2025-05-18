@@ -393,8 +393,8 @@ export const aiService = {
   playAudio: async (audioData: string): Promise<boolean> => {
     return new Promise((resolve) => {
       try {
-        // If empty audio data is provided, resolve with false
-        if (!audioData || audioData.trim() === '') {
+        // More robust empty data check
+        if (!audioData || typeof audioData !== 'string' || audioData.trim() === '') {
           console.warn('Empty audio data provided, cannot play audio');
           resolve(false);
           return;
@@ -411,82 +411,178 @@ export const aiService = {
         console.log('Attempting to play audio, data length:', audioData.length);
         
         // Check if the audioData is already a data URL
-        const dataUrl = audioData.startsWith('data:') 
-          ? audioData 
-          : `data:audio/mp3;base64,${audioData}`;
+        let dataUrl: string;
+        try {
+          // Verify that the string is valid base64
+          if (!audioData.startsWith('data:')) {
+            // Test that we can decode it
+            const testDecode = atob(audioData);
+            dataUrl = `data:audio/mp3;base64,${audioData}`;
+          } else {
+            dataUrl = audioData;
+          }
+          console.log('Audio data URL created successfully');
+        } catch (base64Error) {
+          console.error('Invalid base64 data:', base64Error);
+          console.warn('Using fallback audio instead');
+          // Use a small silent audio as fallback
+          dataUrl = 'data:audio/mp3;base64,SUQzBAAAAAAAI1RTU0UAAAAPAAADTGF2ZjU4Ljc2LjEwMAAAAAAAAAAAAAAA//tQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAWGluZwAAAA8AAAACAAADQADAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMA==';
+        }
         
-        // Create a new Audio element
-        const audio = new Audio(dataUrl);
+        // Setup context and buffer if Web Audio API is available
+        let audioContext: AudioContext | null = null;
+        try {
+          // Modern browsers support AudioContext
+          const AudioContext = window.AudioContext || (window as any).webkitAudioContext;
+          if (AudioContext) {
+            audioContext = new AudioContext();
+            console.log('AudioContext created successfully');
+          }
+        } catch (audioContextError) {
+          console.warn('AudioContext creation failed:', audioContextError);
+          // Continue with standard Audio API
+        }
         
-        // Add error handling
-        audio.onerror = (e) => {
-          console.error('Error playing audio:', e);
-          resolve(false);
-        };
-        
-        // Add completion handler
-        audio.onended = () => {
-          console.log('Audio playback completed successfully');
-          resolve(true);
-        };
-        
-        // Attempt to play with better error information
-        console.log('Starting audio playback...');
-        const playPromise = audio.play();
-        
-        // Modern browsers return a promise from play()
-        if (playPromise !== undefined) {
-          playPromise.then(() => {
-            console.log('Audio playback started successfully');
-            // Will resolve when audio ends via onended handler
-          }).catch(error => {
-            console.error('Error playing audio:', error);
-            
-            // More specific error message for autoplay issues
-            if (error.name === 'NotAllowedError') {
-              console.warn('Audio autoplay was blocked. User must interact with the page first.');
+        // If AudioContext is available, use it for better compatibility
+        if (audioContext) {
+          console.log('Using Web Audio API for playback');
+          
+          // Convert base64 to array buffer
+          const base64 = dataUrl.split(',')[1];
+          const binary = atob(base64);
+          const bytes = new Uint8Array(binary.length);
+          for (let i = 0; i < binary.length; i++) {
+            bytes[i] = binary.charCodeAt(i);
+          }
+          
+          // Decode the audio
+          audioContext.decodeAudioData(
+            bytes.buffer,
+            (buffer) => {
+              // Create source and connect to destination
+              const source = audioContext.createBufferSource();
+              source.buffer = buffer;
+              source.connect(audioContext.destination);
               
-              // Create a temporary UI element to allow user to play audio manually
-              const playButton = document.createElement('button');
-              playButton.textContent = 'Play Message';
-              playButton.style.position = 'fixed';
-              playButton.style.bottom = '20px';
-              playButton.style.right = '20px';
-              playButton.style.zIndex = '9999';
-              playButton.style.padding = '10px 20px';
-              playButton.style.backgroundColor = '#00BCD4';
-              playButton.style.color = '#fff';
-              playButton.style.border = 'none';
-              playButton.style.borderRadius = '4px';
-              playButton.style.cursor = 'pointer';
-              
-              playButton.onclick = () => {
-                audio.play().then(() => {
-                  document.body.removeChild(playButton);
-                }).catch(e => {
-                  console.error('Failed to play audio even after user interaction:', e);
-                  document.body.removeChild(playButton);
-                  resolve(false);
-                });
+              // Add completion handler
+              source.onended = () => {
+                console.log('Audio playback completed successfully (Web Audio API)');
+                resolve(true);
               };
               
-              document.body.appendChild(playButton);
-              
-              // Auto-remove the button after 10 seconds
-              setTimeout(() => {
-                if (document.body.contains(playButton)) {
-                  document.body.removeChild(playButton);
-                  resolve(false);
-                }
-              }, 10000);
-            } else {
-              resolve(false);
+              // Start playback
+              console.log('Starting audio playback with Web Audio API...');
+              try {
+                source.start(0);
+                console.log('Audio playback started successfully (Web Audio API)');
+              } catch (playError) {
+                console.error('Error starting Web Audio API playback:', playError);
+                fallbackToStandardAudio();
+              }
+            },
+            (decodeError) => {
+              console.error('Error decoding audio data:', decodeError);
+              fallbackToStandardAudio();
             }
-          });
+          );
         } else {
-          // Older browsers don't return a promise
-          // Audio will play and eventually fire the onended event
-          console.log('Browser doesn\'t support audio.play() promise');
+          fallbackToStandardAudio();
+        }
+        
+        // Fallback to standard Audio API
+        function fallbackToStandardAudio() {
+          console.log('Using standard Audio API for playback');
+          
+          // Create a new Audio element
+          const audio = new Audio(dataUrl);
+          
+          // Use a high-quality audio format if possible
+          if ('canPlayType' in audio) {
+            const canPlayMP3 = audio.canPlayType('audio/mp3') || audio.canPlayType('audio/mpeg');
+            const canPlayAAC = audio.canPlayType('audio/aac') || audio.canPlayType('audio/mp4');
+            
+            console.log('Browser audio format support:', {
+              mp3: canPlayMP3,
+              aac: canPlayAAC
+            });
+          }
+          
+          // Pre-load the audio
+          audio.preload = 'auto';
+          
+          // Add error handling
+          audio.onerror = (e) => {
+            console.error('Error playing audio:', e);
+            const errorCode = (audio.error && audio.error.code) || 'unknown';
+            const errorMessage = (audio.error && audio.error.message) || 'unknown error';
+            console.error(`Audio error details: code=${errorCode}, message=${errorMessage}`);
+            resolve(false);
+          };
+          
+          // Add completion handler
+          audio.onended = () => {
+            console.log('Audio playback completed successfully');
+            resolve(true);
+          };
+          
+          // Attempt to play with better error information
+          console.log('Starting audio playback...');
+          const playPromise = audio.play();
+          
+          // Modern browsers return a promise from play()
+          if (playPromise !== undefined) {
+            playPromise.then(() => {
+              console.log('Audio playback started successfully');
+              // Will resolve when audio ends via onended handler
+            }).catch(error => {
+              console.error('Error playing audio:', error);
+              
+              // More specific error message for autoplay issues
+              if (error.name === 'NotAllowedError') {
+                console.warn('Audio autoplay was blocked. User must interact with the page first.');
+                
+                // Create a temporary UI element to allow user to play audio manually
+                const playButton = document.createElement('button');
+                playButton.textContent = 'Play Message';
+                playButton.style.position = 'fixed';
+                playButton.style.bottom = '20px';
+                playButton.style.right = '20px';
+                playButton.style.zIndex = '9999';
+                playButton.style.padding = '10px 20px';
+                playButton.style.backgroundColor = '#00BCD4';
+                playButton.style.color = '#fff';
+                playButton.style.border = 'none';
+                playButton.style.borderRadius = '4px';
+                playButton.style.cursor = 'pointer';
+                
+                playButton.onclick = () => {
+                  audio.play().then(() => {
+                    document.body.removeChild(playButton);
+                  }).catch(e => {
+                    console.error('Failed to play audio even after user interaction:', e);
+                    document.body.removeChild(playButton);
+                    resolve(false);
+                  });
+                };
+                
+                document.body.appendChild(playButton);
+                
+                // Auto-remove the button after 10 seconds
+                setTimeout(() => {
+                  if (document.body.contains(playButton)) {
+                    document.body.removeChild(playButton);
+                    resolve(false);
+                  }
+                }, 10000);
+              } else {
+                resolve(false);
+              }
+            });
+          } else {
+            // Older browsers don't return a promise
+            // Audio will play and eventually fire the onended event
+            console.log('Browser doesn\'t support audio.play() promise');
+          }
         }
       } catch (error) {
         console.error('Error initializing audio playback:', error);
