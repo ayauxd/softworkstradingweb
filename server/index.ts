@@ -145,6 +145,31 @@ app.use((req, res, next) => {
   } else {
     serveStatic(app);
   }
+  
+  // Log all routes for debugging
+  console.log("\n============= REGISTERED ROUTES =============");
+  console.log("The following routes are registered in the Express app:");
+  
+  function printRoutes(stack: any[], basePath = '') {
+    stack.forEach(layer => {
+      if (layer.route) {
+        // Routes registered directly on the app
+        const methods = Object.keys(layer.route.methods).filter(m => layer.route.methods[m]).join(', ').toUpperCase();
+        console.log(`${methods} ${basePath}${layer.route.path}`);
+      } else if (layer.name === 'router' && layer.handle.stack) {
+        // Router middleware
+        const path = layer.regexp.source.replace("^\\", "").replace("\\/?(?=\\/|$)", "").replace("\\\\", "\\");
+        const routePath = path.endsWith('/?') ? path.slice(0, -2) : path;
+        const newBase = basePath + (routePath === '/' ? '' : routePath);
+        printRoutes(layer.handle.stack, newBase);
+      }
+    });
+  }
+  
+  if (app._router && app._router.stack) {
+    printRoutes(app._router.stack);
+  }
+  console.log("=============================================\n");
 
   // Log all environment variables for debugging
   log('Environment variables:');

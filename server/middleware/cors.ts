@@ -57,13 +57,46 @@ export const configureCORS = (app: Express) => {
   // Add OPTIONS preflight handler
   app.options('*', cors());
 
-  // Log CORS configuration
-  console.log(`CORS configured with ${allowedOrigins.length} allowed origins`);
+  // Log CORS configuration with details
+  console.log(`============= CORS CONFIGURATION =============`);
+  console.log(`CORS configured with ${allowedOrigins.length} allowed origins:`);
+  allowedOrigins.forEach(origin => console.log(`  - ${origin}`));
+  console.log(`Environment: ${process.env.NODE_ENV}`);
+  console.log(`CLIENT_URL: ${process.env.CLIENT_URL || 'Not set'}`);
+  console.log(`==============================================`);
+  
+  // Add a diagnostic endpoint to check CORS configuration
+  app.use('/api/cors-check', (req, res) => {
+    const origin = req.headers.origin || 'no-origin';
+    const referer = req.headers.referer || 'no-referer';
+    const host = req.headers.host || 'no-host';
+    
+    console.log(`CORS Check Request from origin: ${origin}`);
+    console.log(`Host: ${host}, Referer: ${referer}`);
+    
+    // Log if this origin is allowed
+    const isAllowed = !origin || origin === 'no-origin' || allowedOrigins.includes(origin);
+    console.log(`Is origin allowed? ${isAllowed ? 'YES' : 'NO'}`);
+    
+    res.json({
+      corsEnabled: true,
+      requestOrigin: origin,
+      host: host,
+      referer: referer,
+      isAllowed: isAllowed,
+      allowedOrigins: allowedOrigins,
+      message: isAllowed ? 
+        'This origin is allowed to access the API' : 
+        'This origin is NOT allowed to access the API'
+    });
+  });
   
   // Handle CORS errors
   app.use((err: Error, req: any, res: any, next: any) => {
     if (err.message.includes('CORS policy violation')) {
       console.error(`CORS Error: ${err.message}`);
+      console.error(`Request Origin: ${req.headers.origin}`);
+      console.error(`Allowed Origins: ${allowedOrigins.join(', ')}`);
       return res.status(403).json({
         error: 'CORS policy violation',
         message: 'This origin is not allowed to access the API'
