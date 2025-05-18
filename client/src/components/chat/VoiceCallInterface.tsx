@@ -1,8 +1,9 @@
 import { useState, useEffect, useRef, useCallback, useMemo } from "react";
 import { Button } from "@/components/ui/button";
-import { Phone } from "lucide-react";
+import { Phone, AlertTriangle, Clock } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { aiService } from "@/lib/aiService";
+import ConsultationSummary from "./ConsultationSummary";
 
 interface VoiceCallInterfaceProps {
   onEndCall: () => void;
@@ -22,6 +23,10 @@ const VoiceCallInterface = ({
   const [voiceCallMessages, setVoiceCallMessages] = useState<Array<{from: string, text: string}>>([]);
   const [callTimeRemaining, setCallTimeRemaining] = useState(180); // 3 minutes in seconds
   const [isProcessingCallSummary, setIsProcessingCallSummary] = useState(false);
+  const [showConsultationSummary, setShowConsultationSummary] = useState(false);
+  const [generatedSummary, setGeneratedSummary] = useState("");
+  const [showTimeWarning, setShowTimeWarning] = useState(false);
+  const [timeCritical, setTimeCritical] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
   
   // Initialize the call when not in connecting state
@@ -126,16 +131,62 @@ const VoiceCallInterface = ({
     }
   }, [isVoiceCallActive, voiceCallMessages, callTimeRemaining, simulateUserVoice, isSimulatingUserSpeech]);
   
-  // Function to start the 3-minute call timer
+  // Function to start the 3-minute call timer with notifications
   const startCallTimer = useCallback(() => {
     const timerInterval = setInterval(() => {
       setCallTimeRemaining(prev => {
+        // Time's up - end the call
         if (prev <= 1) {
-          // Time's up - end the call
           clearInterval(timerInterval);
           handleEndCall();
           return 0;
         }
+        
+        // Show 1-minute remaining warning at 60 seconds
+        if (prev === 60 && !showTimeWarning) {
+          setShowTimeWarning(true);
+          // Add a system message about time remaining
+          const timeWarningMsg = "You have 1 minute remaining in this call.";
+          setVoiceCallMessages(msgs => [
+            ...msgs, 
+            { from: "system", text: timeWarningMsg }
+          ]);
+          
+          // Generate and play voice for the warning
+          aiService.generateVoiceAudio(timeWarningMsg).then(response => {
+            if (response.success && response.audioData) {
+              aiService.playAudio(response.audioData)
+                .catch(error => console.error("Error playing warning audio:", error));
+            }
+          }).catch(error => {
+            console.error("Error generating warning voice:", error);
+          });
+        }
+        
+        // Show 10-seconds warning at 10 seconds
+        if (prev === 10) {
+          setTimeCritical(true);
+          // Add a system message about time remaining
+          const finalWarningMsg = "We have 10 seconds left. I've drafted a summary of our conversation for your review.";
+          setVoiceCallMessages(msgs => [
+            ...msgs, 
+            { from: "system", text: finalWarningMsg }
+          ]);
+          
+          // Start generating the summary in the background
+          generateCallSummary();
+          
+          // Generate and play voice for the warning
+          aiService.generateVoiceAudio(finalWarningMsg).then(response => {
+            if (response.success && response.audioData) {
+              aiService.playAudio(response.audioData)
+                .catch(error => console.error("Error playing final warning audio:", error));
+            }
+          }).catch(error => {
+            console.error("Error generating final warning voice:", error);
+          });
+        }
+        
         return prev - 1;
       });
     }, 1000);
@@ -151,41 +202,62 @@ const VoiceCallInterface = ({
     return `${minutes}:${seconds.toString().padStart(2, '0')}`;
   }, [callTimeRemaining]);
   
-  // Function to end the voice call and generate summary
-  const handleEndCall = useCallback(async () => {
-    setIsVoiceCallActive(false);
-    setIsProcessingCallSummary(true);
-    
+  // Generate call summary separately so it can be done in the background
+  const generateCallSummary = useCallback(async () => {
     try {
       // If there are no messages other than the welcome message, end without summary
       if (voiceCallMessages.length <= 1) {
-        onEndCall();
-        return;
+        return "";
       }
       
       // Prepare the call transcript
-      const transcript = voiceCallMessages.map(msg => 
-        `${msg.from.toUpperCase()}: ${msg.text}`
-      ).join('\n');
+      const transcript = voiceCallMessages
+        .filter(msg => msg.from !== "system") // Filter out system messages
+        .map(msg => `${msg.from.toUpperCase()}: ${msg.text}`)
+        .join('\n');
       
       // Generate a call summary using OpenAI
-      const summaryPrompt = `You are an AI assistant for Softworks Trading Company. Please summarize the following call transcript and extract key action items and follow-up tasks. Keep the summary concise (max 250 words):\n\n${transcript}`;
+      const summaryPrompt = `You are an AI assistant for Softworks Trading Company. Please summarize the following call transcript and extract key action items and follow-up tasks. Format the summary with clear sections: 1) Key Points Discussed, 2) Potential Solutions, and 3) Recommended Next Steps. Keep the summary concise (max 300 words):\n\n${transcript}`;
       
       const summaryResponse = await aiService.sendChatMessage(summaryPrompt);
       
       if (summaryResponse.success) {
-        // Notify parent component about the summary
-        if (onCallSummary) {
-          onCallSummary(summaryResponse.text);
-        }
+        setGeneratedSummary(summaryResponse.text);
+        return summaryResponse.text;
       }
+      
+      return "";
     } catch (error) {
-      console.error('Error processing call summary:', error);
-    } finally {
-      setIsProcessingCallSummary(false);
-      onEndCall();
+      console.error('Error generating call summary:', error);
+      return "";
     }
-  }, [voiceCallMessages, onEndCall, onCallSummary]);
+  }, [voiceCallMessages]);
+  
+  // Function to end the voice call and show consultation summary
+  const handleEndCall = useCallback(async () => {
+    setIsVoiceCallActive(false);
+    
+    // If summary wasn't generated during the call, generate it now
+    if (!generatedSummary) {
+      setIsProcessingCallSummary(true);
+      try {
+        const summary = await generateCallSummary();
+        if (summary && onCallSummary) {
+          onCallSummary(summary);
+        }
+      } catch (error) {
+        console.error('Error processing call summary:', error);
+      } finally {
+        setIsProcessingCallSummary(false);
+      }
+    } else if (onCallSummary) {
+      // If summary was already generated, pass it to parent
+      onCallSummary(generatedSummary);
+    }
+    
+    // Show the consultation summary screen
+    setShowConsultationSummary(true);
+  }, [voiceCallMessages, onCallSummary, generatedSummary, generateCallSummary]);
   
   // Scroll to bottom of call transcript when messages change
   useEffect(() => {
@@ -224,6 +296,20 @@ const VoiceCallInterface = ({
     );
   }
   
+  // Consultation summary UI
+  if (showConsultationSummary) {
+    return (
+      <ConsultationSummary
+        callSummary={generatedSummary}
+        onSubmit={() => onEndCall()}
+        onBack={() => {
+          setShowConsultationSummary(false);
+          setIsVoiceCallActive(true);
+        }}
+      />
+    );
+  }
+  
   // Active Voice Call UI
   return (
     <div className="flex flex-col h-full">
@@ -234,10 +320,29 @@ const VoiceCallInterface = ({
           <span className="text-sm text-navy dark:text-gray-300">Call in progress</span>
         </div>
         <div className="flex items-center">
-          <span className="text-sm mr-4">{formattedTimeRemaining}</span>
+          <div className={cn(
+            "flex items-center px-2 py-1 rounded",
+            showTimeWarning && "bg-yellow-100 dark:bg-yellow-900/30",
+            timeCritical && "bg-red-100 dark:bg-red-900/30 animate-pulse"
+          )}>
+            <Clock className={cn(
+              "h-3 w-3 mr-1",
+              !showTimeWarning && "text-gray-500",
+              showTimeWarning && !timeCritical && "text-yellow-500",
+              timeCritical && "text-red-500"
+            )} />
+            <span className={cn(
+              "text-sm",
+              !showTimeWarning && "text-gray-500",
+              showTimeWarning && !timeCritical && "text-yellow-600 dark:text-yellow-400 font-medium",
+              timeCritical && "text-red-600 dark:text-red-400 font-medium"
+            )}>
+              {formattedTimeRemaining}
+            </span>
+          </div>
           <button
             onClick={handleEndCall}
-            className="bg-red-500 hover:bg-red-600 text-white rounded-full p-2 transition-colors duration-200"
+            className="bg-red-500 hover:bg-red-600 text-white rounded-full p-2 transition-colors duration-200 ml-4"
             aria-label="End call"
           >
             <Phone className="h-4 w-4" />
@@ -258,6 +363,26 @@ const VoiceCallInterface = ({
           <p className="text-sm text-gray-600 dark:text-gray-400 max-w-md">
             Our AI assistant is listening. Speak naturally about your business challenges and automation needs.
           </p>
+          
+          {/* Time warning message */}
+          {showTimeWarning && (
+            <div className={cn(
+              "mt-4 px-4 py-2 rounded-md max-w-md",
+              timeCritical 
+                ? "bg-red-100 dark:bg-red-900/20 border border-red-200 dark:border-red-800" 
+                : "bg-yellow-100 dark:bg-yellow-900/20 border border-yellow-200 dark:border-yellow-800"
+            )}>
+              <p className={cn(
+                "text-sm font-medium flex items-center",
+                timeCritical ? "text-red-700 dark:text-red-400" : "text-yellow-700 dark:text-yellow-400"
+              )}>
+                <AlertTriangle className="h-4 w-4 mr-2" />
+                {timeCritical 
+                  ? "The call will end in a few seconds. A summary is being prepared."
+                  : "This call has a 3-minute limit. You have 1 minute remaining."}
+              </p>
+            </div>
+          )}
         </div>
         
         {/* AI speaking indicator */}

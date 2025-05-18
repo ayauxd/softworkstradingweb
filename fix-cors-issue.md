@@ -1,6 +1,6 @@
-# CORS Issue Fix Summary
+# CORS Issue Fix and Voice Call Enhancement Summary
 
-This document summarizes the changes made to fix the CORS issue between the frontend at www.softworkstrading.com and the backend at softworks-trading.onrender.com.
+This document summarizes the changes made to fix the CORS issue between the frontend at www.softworkstrading.com and the backend at softworks-trading.onrender.com, as well as enhancements to the voice call feature.
 
 ## Issue Description
 
@@ -65,3 +65,24 @@ If issues persist after deploying these changes:
    ```bash
    API_URL=https://softworks-trading.onrender.com FRONTEND_DOMAIN=https://www.softworkstrading.com npm run test:api-connectivity
    ```
+
+## Voice Call Enhancement
+
+In addition to the CORS fix, the voice call feature was enhanced with the following improvements:
+
+1. **Timer Notifications**:
+   - Added visual and audio notification at 1 minute remaining
+   - Added final warning at 10 seconds remaining
+   - Updated timer display with color-coded warnings
+
+2. **Consultation Summary**:
+   - Created new ConsultationSummary component with contact form
+   - Enhanced summary generation to start in the background during the final 10 seconds
+   - Added copy-to-clipboard feature for the generated summary
+
+3. **Flow Improvements**:
+   - Streamlined the call-to-summary flow for better user experience
+   - Added ability to return to the call from summary screen
+   - Improved error handling and fallbacks
+
+Documentation for the enhanced voice call feature is available in `docs/VOICE-CALL-FEATURES.md`.

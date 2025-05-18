@@ -71,14 +71,10 @@ const WorkflowAgentModal = ({
   
   // Handle call end
   const handleCallEnd = useCallback(() => {
-    // Show the callback form only if we have a summary
-    if (callSummary) {
-      setShowCallbackForm(true);
-    } else {
-      // If no summary, just close the modal
-      onClose();
-    }
-  }, [callSummary, onClose]);
+    // The VoiceCallInterface component now handles displaying the summary screen
+    // So we don't need to show the callback form, as it's replaced by the consultation summary
+    onClose();
+  }, [onClose]);
   
   // Handle call summary from voice interface
   const handleCallSummary = useCallback((summary: string) => {
@@ -204,13 +200,7 @@ const WorkflowAgentModal = ({
           />
         )}
         
-        {/* Callback Form */}
-        {activeTab === "call" && showCallbackForm && (
-          <CallbackForm 
-            initialMessage={`Call Summary: ${callSummary}\n\nPlease add any additional context or questions.`}
-            onSubmitSuccess={handleCallbackSubmitted}
-          />
-        )}
+        {/* The callback form is now handled by the VoiceCallInterface component */}
       </DialogContent>
     </Dialog>
   );
